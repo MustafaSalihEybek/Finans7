@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/appBgColor"
+    android:scrollbars="none"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.HomeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/pager_bg"
+            android:layout_height="wrap_content">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/home_fragment_viewPagerMainHeadline"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_alignParentTop="true"
+                android:scrollbars="none" />
+
+            <me.relex.circleindicator.CircleIndicator
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/home_fragment_viewPagerMainHeadline"
+                android:id="@+id/home_fragment_circleIndicator"
+                app:ci_orientation="horizontal"
+                app:ci_drawable="@drawable/circle_indicator_selected"
+                app:ci_drawable_unselected="@drawable/circle_indicator_unselected"/>
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:scrollbars="none"
+            android:layout_marginTop="35dp"
+            android:id="@+id/home_fragment_recyclerViewFourNews"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/home_fragment_txtLastNewsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Son Haberler"
+                    android:textColor="?attr/boldColor"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:id="@+id/home_fragment_imgLastNewsLeft"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_icon_left"
+                        android:background="@drawable/arrow_bg"
+                        android:layout_height="30dp"/>
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_marginStart="5dp"
+                        android:id="@+id/home_fragment_imgLastNewsRight"
+                        android:src="@drawable/ic_icon_right"
+                        android:background="@drawable/arrow_bg"
+                        android:layout_height="30dp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:id="@+id/home_fragment_viewPagerLastNews"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/home_fragment_txtHeadlineNewsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Günün Manşeti"
+                    android:textColor="?attr/boldColor"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:id="@+id/home_fragment_imgHeadlineNewsLeft"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_icon_left"
+                        android:background="@drawable/arrow_bg"
+                        android:layout_height="30dp"/>
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_marginStart="5dp"
+                        android:id="@+id/home_fragment_imgHeadlineNewsRight"
+                        android:src="@drawable/ic_icon_right"
+                        android:background="@drawable/arrow_bg"
+                        android:layout_height="30dp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:id="@+id/home_fragment_viewPagerHeadlineNews"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/home_fragment_txtMostReadNewsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="En Çok Okunanlar"
+                    android:textColor="?attr/boldColor"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:id="@+id/home_fragment_imgMostReadNewsLeft"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_icon_left"
+                        android:background="@drawable/arrow_bg"
+                        android:layout_height="30dp"/>
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_marginStart="5dp"
+                        android:id="@+id/home_fragment_imgMostReadNewsRight"
+                        android:src="@drawable/ic_icon_right"
+                        android:background="@drawable/arrow_bg"
+                        android:layout_height="30dp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:id="@+id/home_fragment_viewPagerMostReadNews"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

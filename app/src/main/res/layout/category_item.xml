@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="category"
+            type="com.finans7.model.category.CategoryModel" />
+    </data>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="180dp"
+    android:padding="5dp"
+    android:orientation="vertical"
+    android:background="@drawable/category_item_bg"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:src="@drawable/altin"
+        android:scaleType="centerCrop"
+        android:layout_height="150dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="Altın"
+        android:layout_gravity="center_horizontal"
+        android:textSize="17sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="3dp"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="?attr/normalColor"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+
+</layout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ThemeColors">
+        <attr name="statusBarColor" format="color"/>
+        <attr name="appBarColor" format="color"/>
+        <attr name="appBarTextColor" format="color"/>
+        <attr name="appBarMenuColor" format="color"/>
+        <attr name="shadowColor" format="color"/>
+        <attr name="boldColor" format="color"/>
+        <attr name="normalColor" format="color"/>
+        <attr name="bottomBarSelectedColor" format="color"/>
+        <attr name="bottomBarUnSelectedColor" format="color"/>
+        <attr name="indicatorSelectedColor" format="color"/>
+        <attr name="indicatorUnSelectedColor" format="color"/>
+        <attr name="newBgColor" format="color"/>
+        <attr name="appBgColor" format="color"/>
+        <attr name="arrowBorderColor" format="color"/>
+        <attr name="arrowTintColor" format="color"/>
+        <attr name="arrowInnerColor" format="color"/>
+        <attr name="borderColor" format="color"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,36 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Finans7" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">?attr/appBarColor</item>
+        <item name="colorPrimaryVariant">?attr/statusBarColor</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:statusBarColor">?attr/statusBarColor</item>
+        <!-- Customize your theme here. -->
+        <item name="statusBarColor">#FFFFFF</item>
+        <item name="appBgColor">#EFEFEF</item>
+        <item name="appBarColor">#FFFFFF</item>
+        <item name="appBarTextColor">#707070</item>
+        <item name="appBarMenuColor">#1A1A1A</item>
+        <item name="shadowColor">#EAEAEA</item>
+        <item name="boldColor">#1A1A1A</item>
+        <item name="normalColor">#8F8F8F</item>
+        <item name="bottomBarSelectedColor">#3E3E3E</item>
+        <item name="bottomBarUnSelectedColor">#999999</item>
+        <item name="indicatorSelectedColor">#3E3E3E</item>
+        <item name="indicatorUnSelectedColor">#999999</item>
+        <item name="newBgColor">#FFFFFF</item>
+        <item name="arrowBorderColor">#999999</item>
+        <item name="arrowInnerColor">#FFFFFF</item>
+        <item name="arrowTintColor">#888888</item>
+        <item name="borderColor">#EAEAEA</item>
+    </style>
+</resources>
