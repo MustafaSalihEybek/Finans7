@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:hint="Haber Başlığı ya da içeriği"
             android:background="?attr/searchBarBgColor"
+            android:inputType="text"
             android:textColor="?attr/searchBarTxtColor"
             android:id="@+id/search_fragment_editSearch"
             android:textColorHint="?attr/searchBarTxtColor"

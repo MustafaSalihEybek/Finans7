@@ -82,11 +82,6 @@ object AppUtil {
         return tagList
     }
 
-    fun getJsonData(data: String) : JSONObject {
-        val obj: JSONObject = JSONObject(data)
-        return obj
-    }
-
     @SuppressLint("HardwareIds")
     fun getDeviceId(context: Context) : String {
         return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)

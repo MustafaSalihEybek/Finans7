@@ -1,10 +1,7 @@
 package com.finans7.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -93,14 +90,5 @@ class PostFragment(val postData: PostListModel) : Fragment() {
                 commentsAdapter.loadData(rootComment.commentList)
             }
         })
-    }
-
-    private fun getScale(): Int {
-        val display: Display =
-            (v.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager?)!!.defaultDisplay
-        val width: Int = display.getWidth()
-        var valResult: Double = (width / Singleton.MAIN_IMAGE_WIDTH)
-        valResult *= 100.0
-        return valResult.toInt()
     }
 }
