@@ -33,6 +33,9 @@ class MainFragment : Fragment() {
     private lateinit var categoryLit: RootCategory
     private lateinit var navCategoriesAdapter: NavCategoriesAdapter
 
+    private lateinit var categoryFragment: CategoryFragment
+    private var categoryRetrieved: Boolean = false
+
     private fun init(){
         mToggle = ActionBarDrawerToggle(
             (v.context as Activity),
@@ -44,7 +47,7 @@ class MainFragment : Fragment() {
         mainBinding.mainFragmentDrawerLayout.addDrawerListener(mToggle)
         mToggle.syncState()
 
-        fragmentList = arrayOf(HomeFragment(), SearchFragment(), CategoryFragment())
+        fragmentList = arrayOf(HomeFragment(), SearchFragment())
         selectPage(0)
 
         mainBinding.mainFragmentRecyclerView.setHasFixedSize(true)
@@ -61,7 +64,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mainBinding = FragmentMainBinding.inflate(inflater)
+        mainBinding = FragmentMainBinding.inflate(inflater, container, false)
         return mainBinding.root
     }
 
@@ -83,7 +86,10 @@ class MainFragment : Fragment() {
                 }
 
                 R.id.bottom_menu_all_news -> {
-                    selectPage(2)
+                    if (categoryRetrieved) {
+                        categoryFragment = CategoryFragment(categoryLit.AllCategoryList, v)
+                        categoryFragment.show(childFragmentManager, "Categories")
+                    }
                     true
                 }
 
@@ -114,6 +120,8 @@ class MainFragment : Fragment() {
             it?.let {
                 categoryLit = it
                 navCategoriesAdapter.loadData(it.MainCategoryList)
+
+                categoryRetrieved = true
             }
         })
     }

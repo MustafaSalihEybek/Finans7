@@ -41,6 +41,20 @@ fun downloadNewImage(view: ImageView, imageName: String?){
     }
 }
 
+@BindingAdapter("android:downloadAvatarImg")
+fun downloadAvatarImage(view: ImageView, imageName: String?){
+    imageName?.let {
+        view.downloadImageUrl(AppUtil.getAvatarImageUrl(it))
+    }
+}
+
+@BindingAdapter("android:downloadUserImg")
+fun downloadUserImage(view: ImageView, imageName: String?){
+    imageName?.let {
+        view.downloadImageUrl(AppUtil.getUserImageUrl(it))
+    }
+}
+
 @BindingAdapter("android:setNewsDate")
 fun setNewsDate(view: TextView, news: News){
     if (news.INSERTDAY != null && news.INSERTMONTH != null && news.INSERTYEAR != null)

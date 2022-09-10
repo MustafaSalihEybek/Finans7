@@ -18,5 +18,14 @@
         <attr name="arrowTintColor" format="color"/>
         <attr name="arrowInnerColor" format="color"/>
         <attr name="borderColor" format="color"/>
+        <attr name="tagBorderColor" format="color"/>
+        <attr name="tagTextColor" format="color"/>
+        <attr name="searchBarBgColor" format="color"/>
+        <attr name="searchBarTxtColor" format="color"/>
+        <attr name="ticketBgColor" format="color"/>
+        <attr name="ticketTxtColor" format="color"/>
+        <attr name="commentBoxBgColor" format="color"/>
+        <attr name="commentBoxTextColor" format="color"/>
+        <attr name="splashBgColor" format="color"/>
     </declare-styleable>
 </resources>

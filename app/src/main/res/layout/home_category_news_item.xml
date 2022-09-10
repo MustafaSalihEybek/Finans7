@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="newsdata"
+            type="com.finans7.model.homepage.News" />
+    </data>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="@drawable/new_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:downloadImg="@{newsdata.MAINIMAGE}"
+        android:layout_height="210dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="@{newsdata.POSTTIME}"
+        android:layout_marginTop="5dp"
+        android:textColor="?attr/boldColor"
+        android:textSize="17sp"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="16sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="?attr/boldColor"
+        android:lines="2"
+        android:ellipsize="end"
+        android:text="@{newsdata.POSTTITLE}"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+
+</layout>

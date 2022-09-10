@@ -2,6 +2,7 @@ package com.finans7.api
 
 import com.finans7.model.category.RootCategory
 import com.finans7.model.categorynews.RootCategoryNews
+import com.finans7.model.comment.RootComment
 import com.finans7.model.homepage.HomePageNews
 import com.finans7.model.postdetail.PostDetailModel
 import io.reactivex.Single
@@ -22,4 +23,13 @@ interface AppAPI {
 
     @GET("/f7api/getByCategory")
     fun getNewsByCategory(@Query("CategoryName") categoryName: String, @Query("Skip") skip: Int) : Single<RootCategoryNews>
+
+    @GET("/f7api/getBySearch")
+    fun getNewsBySearch(@Query("CategoryName") categoryName: String, @Query("Skip") skip: Int) : Single<RootCategoryNews>
+
+    @GET("/f7api/getByTags")
+    fun getNewsByTag(@Query("CategoryName") categoryName: String, @Query("Skip") skip: Int) : Single<RootCategoryNews>
+
+    @GET("/f7api/getComments")
+    fun getComments(@Query("PostId") postId: Int, @Query("Skip") skip: Int, @Query("sortType") sortType: Int, @Query("userId") userId: String) : Single<RootComment>
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.finans7.R
 import com.finans7.adapter.NewsByCategoryAdapter
 import com.finans7.databinding.FragmentNewsByCategoryBinding
@@ -27,6 +28,7 @@ class NewsByCategoryFragment : Fragment(), View.OnClickListener {
     private lateinit var rootCategoryNews: RootCategoryNews
     private lateinit var postList: List<PostListModel>
     private lateinit var newsByCategoryAdapter: NewsByCategoryAdapter
+    private lateinit var newsLayoutManager: LinearLayoutManager
 
     private fun init(){
         arguments?.let {
@@ -34,8 +36,9 @@ class NewsByCategoryFragment : Fragment(), View.OnClickListener {
             newByCategoryBinding.category = categoryData
 
             newByCategoryBinding.newsByCategoryFragmentRecyclerView.setHasFixedSize(true)
-            newByCategoryBinding.newsByCategoryFragmentRecyclerView.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
-            newsByCategoryAdapter = NewsByCategoryAdapter(arrayListOf(), v)
+            newsLayoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
+            newByCategoryBinding.newsByCategoryFragmentRecyclerView.layoutManager = newsLayoutManager
+            newsByCategoryAdapter = NewsByCategoryAdapter(arrayListOf(), v, false)
             newByCategoryBinding.newsByCategoryFragmentRecyclerView.adapter = newsByCategoryAdapter
 
             newsByCategoryViewModel = ViewModelProvider(this).get(NewsByCategoryViewModel::class.java)
@@ -81,6 +84,22 @@ class NewsByCategoryFragment : Fragment(), View.OnClickListener {
                 postList = it.postList
 
                 newsByCategoryAdapter.loadData(it.postList)
+                attachUpcomingNewsOnScrollListener()
+            }
+        })
+    }
+
+    private fun attachUpcomingNewsOnScrollListener(){
+        newByCategoryBinding.newsByCategoryFragmentRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val totalItemCount = newsLayoutManager.itemCount
+                val visibleItemCount = newsLayoutManager.childCount
+                val firstVisibleItem = newsLayoutManager.findFirstVisibleItemPosition()
+
+                if (firstVisibleItem + visibleItemCount >= totalItemCount / 2){
+                    newByCategoryBinding.newsByCategoryFragmentRecyclerView.removeOnScrollListener(this)
+                    newsByCategoryViewModel.getNewsByCategory(categoryData.SLUG, newsByCategoryAdapter.itemCount)
+                }
             }
         })
     }

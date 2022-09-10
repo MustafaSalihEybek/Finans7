@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,6 +41,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:scrollbars="none"
+            android:nestedScrollingEnabled="false"
             android:layout_marginTop="35dp"
             android:id="@+id/home_fragment_recyclerViewFourNews"
             android:layout_height="wrap_content"/>
@@ -174,6 +175,71 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/home_fragment_txtTrendingNewsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Trend Haberler"
+                    android:textColor="?attr/boldColor"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:id="@+id/home_fragment_imgTrendingNewsLeft"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_icon_left"
+                        android:background="@drawable/arrow_bg"
+                        android:layout_height="30dp"/>
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_marginStart="5dp"
+                        android:id="@+id/home_fragment_imgTrendingNewsRight"
+                        android:src="@drawable/ic_icon_right"
+                        android:background="@drawable/arrow_bg"
+                        android:layout_height="30dp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:id="@+id/home_fragment_viewPagerTrendingNews"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:scrollbars="none"
+                android:nestedScrollingEnabled="false"
+                android:id="@+id/home_fragment_recyclerViewTrendingNews"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
                     android:id="@+id/home_fragment_txtMostReadNewsTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -219,6 +285,43 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/home_fragment_txtInterestNewsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="İlginizi Çekebilecek Haberler"
+                android:textColor="?attr/boldColor"
+                android:textSize="17sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:scrollbars="none"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="5dp"
+                android:id="@+id/home_fragment_recyclerViewInterestingNews"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:scrollbars="none"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/home_fragment_recyclerViewNewsByCategory"
+            android:nestedScrollingEnabled="false"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

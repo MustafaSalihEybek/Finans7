@@ -123,6 +123,11 @@
 
     </LinearLayout>
 
+    <WebView
+        android:layout_width="match_parent"
+        android:id="@+id/new_fragment_webView"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>
 
 </layout>

@@ -1,6 +1,8 @@
 package com.finans7.view
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -58,7 +60,9 @@ class NewFragment(val newsData: News) : Fragment() {
         newViewModel.postDetailData.observe(viewLifecycleOwner, Observer {
             it?.let {
                 postDetailData = it
-                println(it.previousPost)
+
+                newBinding.newFragmentWebView.settings.setGeolocationEnabled(true)
+                newBinding.newFragmentWebView.loadData(postDetailData.postDetailFromModel.postcontent, "text/html", "UTF-8")
             }
         })
     }

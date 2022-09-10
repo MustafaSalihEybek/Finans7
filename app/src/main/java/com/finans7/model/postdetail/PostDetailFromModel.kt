@@ -1,0 +1,43 @@
+package com.finans7.model.postdetail
+
+import com.finans7.model.homepage.News
+
+data class PostDetailFromModel(
+    val postid: Int,
+    val categoryid: Int,
+    val postauthor: String?,
+    val postdate: String,
+    val postcontent: String,
+    val posttitle: String,
+    val poststatus: String?,
+    val lastupdate: String,
+    val postparentid: Int?,
+    val posttype: Int,
+    val postmimetype: Int?,
+    val commentcount: Int?,
+    val mainimage: String,
+    val imagewidth: Int,
+    val imageheight: Int,
+    val isvideo: Boolean,
+    val videoname: String,
+    val keywords: String,
+    val tags: String,
+    val metadescription: String,
+    val mainimagealt: String,
+    val shortdescription: String,
+    val lessongroupid: Int,
+    val beslimanset: Boolean,
+    val anamanset: Boolean,
+    val sagmanset: Boolean,
+    val haberbandi: Boolean,
+    val ozelhaberler: Boolean,
+    val gununmanseti: Boolean,
+    val aramanset: Boolean,
+    val yatayhaber: Boolean,
+    val releatedpostids: Int?,
+    val sagmansetimage: String?,
+    val sagmansetimagebasE64: String?,
+    val sagmansetimagename: String?,
+    val mainimagebasE64: String?,
+    val mainimagename: String?
+)

@@ -32,5 +32,22 @@
         <item name="arrowInnerColor">#FFFFFF</item>
         <item name="arrowTintColor">#888888</item>
         <item name="borderColor">#EAEAEA</item>
+        <item name="tagBorderColor">#999999</item>
+        <item name="tagTextColor">#999999</item>
+        <item name="searchBarBgColor">#AABECD</item>
+        <item name="searchBarTxtColor">#5E5E5E</item>
+        <item name="ticketBgColor">#D6D6D6</item>
+        <item name="ticketTxtColor">#606060</item>
+        <item name="commentBoxBgColor">#D6D6D6</item>
+        <item name="commentBoxTextColor">#606060</item>
+        <item name="splashBgColor">#ffffff</item>
+    </style>
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>

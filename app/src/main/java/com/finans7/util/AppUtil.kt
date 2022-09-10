@@ -4,15 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.Settings
 import android.util.TypedValue
-import androidx.annotation.ColorInt
-import com.finans7.R
 import com.finans7.api.AppAPI
+import com.finans7.model.Tag
 import com.finans7.model.homepage.News
-import com.finans7.repository.GetCategoryListRepository
-import com.finans7.repository.GetHomePageNewsRepository
-import com.finans7.repository.GetNewsByCategory
-import com.finans7.repository.GetPostDetailRepository
+import com.finans7.repository.*
+import com.finans7.view.dialog.SplashDialog
 import io.reactivex.disposables.CompositeDisposable
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,6 +23,11 @@ object AppUtil {
     lateinit var getCategoryListRepository: GetCategoryListRepository
     lateinit var getPostDetailRepository: GetPostDetailRepository
     lateinit var getNewsByCategory: GetNewsByCategory
+    lateinit var getNewsBySearchRepository: GetNewsBySearchRepository
+    lateinit var getCommentsRepository: GetCommentsRepository
+
+    @SuppressLint("StaticFieldLeak")
+    private lateinit var splashDialog: SplashDialog
 
     lateinit var newsData: News
 
@@ -50,6 +53,16 @@ object AppUtil {
         return imageUrl
     }
 
+    fun getAvatarImageUrl(imageName: String) : String {
+        imageUrl = "${Singleton.SERVICE_URL}${Singleton.AVATAR_IMAGE_PATH}$imageName"
+        return imageUrl
+    }
+
+    fun getUserImageUrl(imageName: String) : String {
+        imageUrl = "${Singleton.SERVICE_URL}${Singleton.USER_IMAGE_PATH}$imageName"
+        return imageUrl
+    }
+
     fun getEditNumberByString(number: Int) : String {
         var numberS: String = "$number"
 
@@ -59,8 +72,42 @@ object AppUtil {
         return numberS
     }
 
+    fun getTagList(tags: String) : ArrayList<Tag> {
+        val tagList: ArrayList<Tag> = ArrayList()
+        val tagArr: List<String> = tags.split(",")
+
+        for (tag in tagArr)
+            tagList.add(Tag(tag))
+
+        return tagList
+    }
+
+    fun getJsonData(data: String) : JSONObject {
+        val obj: JSONObject = JSONObject(data)
+        return obj
+    }
+
     @SuppressLint("HardwareIds")
     fun getDeviceId(context: Context) : String {
         return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+    }
+
+    fun getDeviceName() : String {
+        return android.os.Build.MODEL
+    }
+
+    fun getDeviceVersion() : String {
+        return android.os.Build.VERSION.RELEASE
+    }
+
+    fun showSplashDialog(mContext: Context){
+        splashDialog = SplashDialog(mContext)
+        splashDialog.setCancelable(false)
+        splashDialog.show()
+    }
+
+    fun closeSplashDialog(){
+        if (splashDialog.isShowing)
+            splashDialog.dismiss()
     }
 }
