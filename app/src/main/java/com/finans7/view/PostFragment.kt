@@ -1,17 +1,14 @@
 package com.finans7.view
 
-import android.os.Build
+import android.content.Context
 import android.os.Bundle
-import android.text.Html
+import android.view.*
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.webkit.WebSettings
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.finans7.R
 import com.finans7.adapter.CommentsAdapter
 import com.finans7.adapter.TagsAdapter
 import com.finans7.adapter.decoration.LinearManagerDecoration
@@ -23,6 +20,7 @@ import com.finans7.util.AppUtil
 import com.finans7.util.Singleton
 import com.finans7.util.show
 import com.finans7.viewmodel.PostViewModel
+
 
 class PostFragment(val postData: PostListModel) : Fragment() {
     private lateinit var v: View
@@ -41,7 +39,7 @@ class PostFragment(val postData: PostListModel) : Fragment() {
 
         postBinding.postFragmentWebView.settings.setGeolocationEnabled(true)
         //postBinding.postFragmentWebView.settings.textZoom = 200 font size
-        postBinding.postFragmentWebView.loadData(postData.postcontent, "text/html", "UTF-8")
+        postBinding.postFragmentWebView.loadDataWithBaseURL(null, "<style>img{display: inline;height: auto;max-width: 100%;}</style>" + postData.postcontent, "text/html", "UTF-8", null)
 
         postBinding.postFragmentRecyclerViewTags.setHasFixedSize(true)
         postBinding.postFragmentRecyclerViewTags.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.HORIZONTAL, false)
@@ -95,5 +93,14 @@ class PostFragment(val postData: PostListModel) : Fragment() {
                 commentsAdapter.loadData(rootComment.commentList)
             }
         })
+    }
+
+    private fun getScale(): Int {
+        val display: Display =
+            (v.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager?)!!.defaultDisplay
+        val width: Int = display.getWidth()
+        var valResult: Double = (width / Singleton.MAIN_IMAGE_WIDTH)
+        valResult *= 100.0
+        return valResult.toInt()
     }
 }

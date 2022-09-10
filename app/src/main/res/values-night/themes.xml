@@ -1,19 +1,46 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Finans7" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">?attr/appBarColor</item>
+        <item name="colorPrimaryVariant">?attr/statusBarColor</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/statusBarColor</item>
         <!-- Customize your theme here. -->
+        <item name="statusBarColor">#141414</item>
+        <item name="appBgColor">#333333</item>
+        <item name="appBarColor">#141414</item>
+        <item name="appBarTextColor">#FFFFFF</item>
+        <item name="appBarMenuColor">#FFFFFF</item>
+        <item name="shadowColor">#C2C2C2</item>
+        <item name="boldColor">#FFFFFF</item>
+        <item name="normalColor">#FFFFFF</item>
+        <item name="bottomBarSelectedColor">#FFFFFF</item>
+        <item name="bottomBarUnSelectedColor">#C2C2C2</item>
+        <item name="indicatorSelectedColor">#FFFFFF</item>
+        <item name="indicatorUnSelectedColor">#C2C2C2</item>
+        <item name="newBgColor">#1E1E1E</item>
+        <item name="arrowBorderColor">#999999</item>
+        <item name="arrowInnerColor">#1E1E1E</item>
+        <item name="arrowTintColor">#888888</item>
+        <item name="borderColor">#FFFFFF</item>
+        <item name="tagBorderColor">#FFFFFF</item>
+        <item name="tagTextColor">#FFFFFF</item>
+        <item name="searchBarBgColor">#434343</item>
+        <item name="searchBarTxtColor">#ffffff</item>
+        <item name="ticketBgColor">#434343</item>
+        <item name="ticketTxtColor">#CDCDCD</item>
+        <item name="commentBoxBgColor">#6E6E6E</item>
+        <item name="commentBoxTextColor">#CDCDCD</item>
+        <item name="splashBgColor">#000000</item>
+        <item name="navBgColor">#1E1E1E</item>
     </style>
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">

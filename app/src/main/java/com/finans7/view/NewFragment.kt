@@ -62,7 +62,7 @@ class NewFragment(val newsData: News) : Fragment() {
                 postDetailData = it
 
                 newBinding.newFragmentWebView.settings.setGeolocationEnabled(true)
-                newBinding.newFragmentWebView.loadData(postDetailData.postDetailFromModel.postcontent, "text/html", "UTF-8")
+                newBinding.newFragmentWebView.loadDataWithBaseURL(null, "<style>img{display: inline;height: auto;max-width: 100%;}</style>" + postDetailData.postDetailFromModel.postcontent, "text/html", "UTF-8", null)
             }
         })
     }

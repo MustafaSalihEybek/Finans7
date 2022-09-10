@@ -21,6 +21,7 @@
             <ImageView
                 android:layout_width="130dp"
                 android:layout_height="25dp"
+                android:id="@+id/main_fragment_imgAppLogo"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/logo_light" />
 
@@ -30,7 +31,8 @@
                 android:layout_height="20dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="17dp"
-                android:src="@drawable/share_black" />
+                android:src="@drawable/share_black"
+                app:tint="?attr/appBarMenuColor" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -60,6 +62,7 @@
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_gravity="start"
+        android:background="?attr/navBgColor"
         android:id="@+id/main_fragment_navigationView"
         android:layout_height="match_parent">
 
@@ -68,8 +71,45 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
-            <include
-                layout="@layout/nav_header"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/nav_header_linearSetting"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="27dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/setting"
+                        android:layout_height="27dp"
+                        app:tint="?attr/boldColor"/>
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_marginTop="7dp"
+                        android:src="?attr/shadowColor"
+                        android:layout_height="2dp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="160dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/main_fragment_imgNavAppLogo"
+                    android:layout_below="@+id/nav_header_linearSetting"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-10dp"
+                    android:src="@drawable/logo_light" />
+
+            </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"

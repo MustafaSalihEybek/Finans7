@@ -27,5 +27,6 @@
         <attr name="commentBoxBgColor" format="color"/>
         <attr name="commentBoxTextColor" format="color"/>
         <attr name="splashBgColor" format="color"/>
+        <attr name="navBgColor" format="color"/>
     </declare-styleable>
 </resources>

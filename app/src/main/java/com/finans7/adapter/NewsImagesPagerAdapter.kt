@@ -17,6 +17,7 @@ class NewsImagesPagerAdapter(val imageUrlList: ArrayList<String>, val context: C
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         imgPage = ImageView(context)
+        imgPage.scaleType = ImageView.ScaleType.FIT_XY
         imgPage.downloadImageUrl(imageUrlList.get(position))
 
         imgPage.setOnClickListener {

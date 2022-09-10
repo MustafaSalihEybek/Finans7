@@ -6,6 +6,7 @@
 
     <ImageView
         android:layout_width="150dp"
+        android:id="@+id/splash_dialog_imgAppLogo"
         android:layout_centerInParent="true"
         android:src="@drawable/app_logo"
         android:layout_height="150dp"/>

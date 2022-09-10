@@ -1,6 +1,8 @@
 package com.finans7.view
 
 import android.app.Activity
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -17,6 +19,7 @@ import com.finans7.adapter.NavCategoriesAdapter
 import com.finans7.databinding.FragmentMainBinding
 import com.finans7.model.category.RootCategory
 import com.finans7.util.AppUtil
+import com.finans7.util.Singleton
 import com.finans7.util.show
 import com.finans7.viewmodel.MainViewModel
 
@@ -58,6 +61,11 @@ class MainFragment : Fragment() {
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         observeLiveData()
         mainViewModel.getCategoryList()
+
+        if (Singleton.themeMode.equals("Dark")){
+            mainBinding.mainFragmentImgAppLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
+            mainBinding.mainFragmentImgNavAppLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
+        }
     }
 
     override fun onCreateView(

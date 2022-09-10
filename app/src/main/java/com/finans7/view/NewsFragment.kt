@@ -1,5 +1,7 @@
 package com.finans7.view
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +15,7 @@ import com.finans7.adapter.NewsFragmentAdapter
 import com.finans7.databinding.FragmentNewsBinding
 import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.News
+import com.finans7.util.Singleton
 
 class NewsFragment : Fragment(), View.OnClickListener {
     private lateinit var v: View
@@ -52,6 +55,9 @@ class NewsFragment : Fragment(), View.OnClickListener {
             }, 100)
 
             newsBinding.newsFragmentImgBack.setOnClickListener(this)
+
+            if (Singleton.themeMode.equals("Dark"))
+                newsBinding.newsFragmentImgAppLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
         }
     }
 
