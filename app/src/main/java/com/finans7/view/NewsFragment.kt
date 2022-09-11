@@ -22,31 +22,18 @@ class NewsFragment : Fragment(), View.OnClickListener {
     private lateinit var newsBinding: FragmentNewsBinding
     private lateinit var newsFragmentAdapter: NewsFragmentAdapter
 
-    private var newsList: Array<News>? = null
-    private var postList: Array<PostListModel>? = null
+    private lateinit var postList: Array<PostListModel>
     private var newsIn: Int = 0
-    private var fromCategory: Boolean = false
 
     private fun init(){
         arguments?.let {
-            newsList = NewsFragmentArgs.fromBundle(it).newsList
             postList = NewsFragmentArgs.fromBundle(it).postList
             newsIn = NewsFragmentArgs.fromBundle(it).newsIn
-            fromCategory = NewsFragmentArgs.fromBundle(it).fromCategory
 
             newsFragmentAdapter = NewsFragmentAdapter(this)
 
-            if (!fromCategory){
-                newsList?.let {
-                    for (new in it)
-                        newsFragmentAdapter.addFragment(NewFragment(new))
-                }
-            } else {
-                postList?.let {
-                    for (post in it)
-                        newsFragmentAdapter.addFragment(PostFragment(post))
-                }
-            }
+            for (post in postList)
+                newsFragmentAdapter.addFragment(PostFragment(post))
 
             newsBinding.newsFragmentViewPager.adapter = newsFragmentAdapter
 

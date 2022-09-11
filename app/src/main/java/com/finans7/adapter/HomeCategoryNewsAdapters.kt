@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.finans7.databinding.HomeCategoryNewsItemBinding
+import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.News
 
-class HomeCategoryNewsAdapters(val newsList: List<News>) : RecyclerView.Adapter<HomeCategoryNewsAdapters.HomeCategoryNewsHolder>() {
+class HomeCategoryNewsAdapters(val newsList: List<PostListModel>) : RecyclerView.Adapter<HomeCategoryNewsAdapters.HomeCategoryNewsHolder>() {
     private lateinit var v: HomeCategoryNewsItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCategoryNewsHolder {

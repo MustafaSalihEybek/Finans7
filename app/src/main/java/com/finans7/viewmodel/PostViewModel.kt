@@ -3,7 +3,9 @@ package com.finans7.viewmodel
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.finans7.model.comment.RootComment
+import com.finans7.model.postdetail.PostDetailModel
 import com.finans7.repository.GetCommentsRepository
+import com.finans7.repository.GetPostDetailRepository
 import com.finans7.util.AppUtil
 import com.finans7.viewmodel.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,6 +15,7 @@ import io.reactivex.schedulers.Schedulers
 
 class PostViewModel(application: Application) : BaseViewModel(application) {
     val rootComment = MutableLiveData<RootComment>()
+    val postDetailModel = MutableLiveData<PostDetailModel>()
 
     fun getComments(postId: Int, skip: Int, sortType: Int, userId: String){
         AppUtil.getCommentsRepository = GetCommentsRepository()
@@ -25,6 +28,26 @@ class PostViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object : DisposableSingleObserver<RootComment>(){
                     override fun onSuccess(t: RootComment) {
                         rootComment.value = t
+                    }
+
+                    override fun onError(e: Throwable) {
+                        errorMessage.value = e.localizedMessage
+                    }
+                })
+        )
+    }
+
+    fun getPostDetail(postId: Int, userId: String){
+        AppUtil.getPostDetailRepository = GetPostDetailRepository()
+        AppUtil.disposable = CompositeDisposable()
+
+        AppUtil.disposable.add(
+            AppUtil.getPostDetailRepository.getPostDetail(postId, userId)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<PostDetailModel>(){
+                    override fun onSuccess(t: PostDetailModel) {
+                        postDetailModel.value = t
                     }
 
                     override fun onError(e: Throwable) {

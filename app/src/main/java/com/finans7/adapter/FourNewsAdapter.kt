@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.finans7.databinding.FourNewItemBinding
+import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.News
 
-class FourNewsAdapter(private var newsList: List<News>) : RecyclerView.Adapter<FourNewsAdapter.FourNewsHolder>() {
+class FourNewsAdapter(private var newsList: List<PostListModel>) : RecyclerView.Adapter<FourNewsAdapter.FourNewsHolder>() {
     private lateinit var v: FourNewItemBinding
     private lateinit var listener: FourNewsItemClickListener
     private var aPos: Int = 0
@@ -31,13 +32,13 @@ class FourNewsAdapter(private var newsList: List<News>) : RecyclerView.Adapter<F
 
     inner class FourNewsHolder(var fNV: FourNewItemBinding) : RecyclerView.ViewHolder(fNV.root)
 
-    fun loadData(newsData: List<News>){
+    fun loadData(newsData: List<PostListModel>){
         newsList = newsData
         notifyDataSetChanged()
     }
 
     interface FourNewsItemClickListener{
-        fun onItemClick(newsData: News, newsIn: Int)
+        fun onItemClick(newsData: PostListModel, newsIn: Int)
     }
 
     fun setFourNewsOnItemClickListener(listener: FourNewsItemClickListener){

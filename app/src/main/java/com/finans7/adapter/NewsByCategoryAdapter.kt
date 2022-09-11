@@ -43,9 +43,9 @@ class NewsByCategoryAdapter(var postList: ArrayList<PostListModel>, val vV: View
 
     private fun goToNewsPage(postData: PostListModel){
         if (!fromMain)
-            navDirections = NewsByCategoryFragmentDirections.actionNewsByCategoryFragmentToNewsFragment(null, arrayOf(postData), 0, true)
+            navDirections = NewsByCategoryFragmentDirections.actionNewsByCategoryFragmentToNewsFragment(arrayOf(postData), 0)
         else
-            navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(null, arrayOf(postData), 0, true)
+            navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(arrayOf(postData), 0)
 
         Navigation.findNavController(vV).navigate(navDirections)
     }

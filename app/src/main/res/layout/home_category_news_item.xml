@@ -4,7 +4,7 @@
     <data>
         <variable
             name="newsdata"
-            type="com.finans7.model.homepage.News" />
+            type="com.finans7.model.categorynews.PostListModel" />
     </data>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

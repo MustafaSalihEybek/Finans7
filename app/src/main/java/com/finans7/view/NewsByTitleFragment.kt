@@ -9,9 +9,10 @@ import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.finans7.R
 import com.finans7.databinding.FragmentNewsByTitleBinding
+import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.News
 
-class NewsByTitleFragment(val newsData: News, val newsList: List<News>, val newsIn: Int) : Fragment() {
+class NewsByTitleFragment(val newsData: PostListModel, val newsList: List<PostListModel>, val newsIn: Int) : Fragment() {
     private lateinit var v: View
     private lateinit var newsByTitleBinding: FragmentNewsByTitleBinding
     private lateinit var navDirections: NavDirections
@@ -38,8 +39,8 @@ class NewsByTitleFragment(val newsData: News, val newsList: List<News>, val news
         }
     }
 
-    private fun goToNewsPage(newsList: List<News>, newsIn: Int){
-        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(newsList.toTypedArray(), null, newsIn, false)
+    private fun goToNewsPage(newsList: List<PostListModel>, newsIn: Int){
+        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(newsList.toTypedArray(), newsIn)
         Navigation.findNavController(v).navigate(navDirections)
     }
 }

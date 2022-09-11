@@ -19,6 +19,7 @@ import com.finans7.databinding.FragmentPostBinding
 import com.finans7.model.Tag
 import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.comment.RootComment
+import com.finans7.model.postdetail.PostDetailModel
 import com.finans7.util.AppUtil
 import com.finans7.util.SharedPreferences
 import com.finans7.util.Singleton
@@ -32,6 +33,7 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
     private lateinit var postViewModel: PostViewModel
     private lateinit var navDirections: NavDirections
 
+    private lateinit var postDetailModel: PostDetailModel
     private lateinit var rootComment: RootComment
     private lateinit var commentsAdapter: CommentsAdapter
 
@@ -39,22 +41,13 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
     private lateinit var tagsAdapter: TagsAdapter
 
     private lateinit var sharedPreferences: SharedPreferences
+    private var commentAmount: Int = 0
 
-    @SuppressLint("SetJavaScriptEnabled")
     private fun init(){
         postBinding.postdata = postData
         tagList = AppUtil.getTagList(postData.tags)
 
         sharedPreferences = SharedPreferences(v.context)
-
-        postBinding.postFragmentWebView.settings.javaScriptEnabled = true
-        postBinding.postFragmentWebView.settings.setGeolocationEnabled(true)
-        postBinding.postFragmentWebView.settings.textZoom = sharedPreferences.getFontSize()
-        postBinding.postFragmentWebView.loadDataWithBaseURL(null, "<style>img{display: inline;height: auto;max-width: 100%;}</style>" + postData.postcontent, "text/html", "UTF-8", null)
-
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK) && Singleton.themeMode.equals("Dark")) {
-            WebSettingsCompat.setForceDark(postBinding.postFragmentWebView.settings, WebSettingsCompat.FORCE_DARK_ON);
-        }
 
         postBinding.postFragmentRecyclerViewTags.setHasFixedSize(true)
         postBinding.postFragmentRecyclerViewTags.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.HORIZONTAL, false)
@@ -70,12 +63,18 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
         postViewModel = ViewModelProvider(this).get(PostViewModel::class.java)
         observeLiveData()
         postViewModel.getComments(postData.postid, 0, 1, AppUtil.getDeviceId(v.context))
+        postViewModel.getPostDetail(postData.postid, AppUtil.getDeviceId(v.context))
 
         postBinding.postFragmentLinearComments.setOnClickListener(this)
         postBinding.postFragmentEditSearch.setOnClickListener(this)
         postBinding.postFragmentRelativeCommentCount.setOnClickListener(this)
         postBinding.postFragmentImgMessage.setOnClickListener(this)
         postBinding.postFragmentImgShare.setOnClickListener(this)
+        postBinding.postFragmentImgFacebook.setOnClickListener(this)
+        postBinding.postFragmentImgTwitter.setOnClickListener(this)
+        postBinding.postFragmentImgGmail.setOnClickListener(this)
+        postBinding.postFragmentImgPinterest.setOnClickListener(this)
+        postBinding.postFragmentImgWhatsApp.setOnClickListener(this)
     }
 
     override fun onCreateView(
@@ -99,7 +98,47 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
                 R.id.post_fragment_editSearch -> goToCommentsPage(postData.postid, postData.posttitle)
                 R.id.post_fragment_imgMessage -> goToCommentsPage(postData.postid, postData.posttitle)
                 R.id.post_fragment_relativeCommentCount -> goToCommentsPage(postData.postid, postData.posttitle)
-                R.id.post_fragment_imgShare -> shareNews()
+                R.id.post_fragment_imgShare -> AppUtil.shareNews("${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}", v.context)
+                R.id.post_fragment_imgFacebook -> {
+                    AppUtil.shareWithSocialMedia(
+                        "${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}",
+                        v.context,
+                        Singleton.FACEBOOK_PACKAGE,
+                        "${Singleton.FACEBOOK_PAGE}${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}"
+                    )
+                }
+                R.id.post_fragment_imgTwitter -> {
+                    AppUtil.shareWithSocialMedia(
+                        "${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}",
+                        v.context,
+                        Singleton.TWITTER_PACKAGE,
+                        "${Singleton.TWITTER_PAGE}Haberi Paylaş : ${postData.posttitle}&url=${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}"
+                    )
+                }
+                R.id.post_fragment_imgGmail -> {
+                    AppUtil.shareWithSocialMedia(
+                        "${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}",
+                        v.context,
+                        Singleton.GMAIL_PACKAGE,
+                        "${Singleton.GMAIL_PAGE}${postData.posttitle}&BODY=${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}"
+                    )
+                }
+                R.id.post_fragment_imgPinterest -> {
+                    AppUtil.shareWithSocialMedia(
+                        "${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}",
+                        v.context,
+                        Singleton.PINTEREST_PACKAGE,
+                        "${Singleton.PINTEREST_PAGE}${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}"
+                    )
+                }
+                R.id.post_fragment_imgWhatsApp -> {
+                    AppUtil.shareWithSocialMedia(
+                        "${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}",
+                        v.context,
+                        Singleton.WHATSAPP_PACKAGE,
+                        "${Singleton.WHATSAPP_PAGE}${Singleton.BASE_URL}/haber/${AppUtil.getUrl(postData.posttitle)}-${postData.postid}"
+                    )
+                }
             }
         }
     }
@@ -107,7 +146,7 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
     private fun observeLiveData(){
         postViewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             it?.let {
-                it.show(v, it)
+                println(it)
             }
         })
 
@@ -118,22 +157,38 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
                 if (rootComment.commentList.isNotEmpty()){
                     postBinding.postFragmentTxtCommentMessage.visibility = View.GONE
                     postBinding.postFragmentRecyclerViewComments.visibility = View.VISIBLE
-
-                    postBinding.postFragmentTxtCommentCount.text = rootComment.commentList.size.toString()
                 } else {
                     postBinding.postFragmentRecyclerViewComments.visibility = View.GONE
                     postBinding.postFragmentTxtCommentMessage.visibility = View.VISIBLE
-
-                    postBinding.postFragmentTxtCommentCount.text = "0"
                 }
 
                 commentsAdapter.loadData(rootComment.commentList)
             }
         })
+
+        postViewModel.postDetailModel.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                loadPostContent(it)
+            }
+        })
     }
 
-    private fun shareNews(){
-        println("Url: ${Singleton.NEWS_SHARE_BASE_URL}${AppUtil.getUrlByTitle(postData.posttitle)}-${postData.postid}")
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun loadPostContent(postDetailModel: PostDetailModel){
+        postBinding.postFragmentWebView.settings.javaScriptEnabled = true
+        postBinding.postFragmentWebView.settings.setGeolocationEnabled(true)
+        postBinding.postFragmentWebView.settings.textZoom = sharedPreferences.getFontSize()
+        postBinding.postFragmentWebView.loadDataWithBaseURL(null, "<style>img{display: inline;height: auto;max-width: 100%;}</style>" + postDetailModel.postDetailFromModel.postcontent, "text/html", "UTF-8", null)
+
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK) && Singleton.themeMode.equals("Dark")) {
+            WebSettingsCompat.setForceDark(postBinding.postFragmentWebView.settings, WebSettingsCompat.FORCE_DARK_ON);
+        }
+
+        postDetailModel.postDetailFromModel.commentcount?.let {
+            commentAmount = it
+        }
+
+        postBinding.postFragmentTxtCommentCount.text = commentAmount.toString()
     }
 
     private fun goToCommentsPage(postId: Int, postTitle: String){

@@ -42,6 +42,9 @@
         <item name="splashBgColor">#000000</item>
         <item name="navBgColor">#1E1E1E</item>
         <item name="settingsBgColor">#1E1E1E</item>
+        <item name="seekBarBgColor">?attr/normalColor</item>
+        <item name="seekBarTintColor">#A6A6A6</item>
+        <item name="seekBarThumbColor">?attr/boldColor</item>
     </style>
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">

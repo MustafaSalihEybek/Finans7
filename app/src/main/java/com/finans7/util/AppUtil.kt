@@ -1,9 +1,10 @@
 package com.finans7.util
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.provider.Settings
 import android.util.TypedValue
 import com.finans7.api.AppAPI
@@ -12,12 +13,11 @@ import com.finans7.model.homepage.News
 import com.finans7.repository.*
 import com.finans7.view.dialog.SplashDialog
 import io.reactivex.disposables.CompositeDisposable
-import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
-import kotlin.collections.ArrayList
+import java.text.Normalizer
+
 
 object AppUtil {
     lateinit var disposable: CompositeDisposable
@@ -104,7 +104,19 @@ object AppUtil {
         return android.os.Build.VERSION.RELEASE
     }
 
-    fun getUrlByTitle(postTitle: String) = postTitle.lowercase().getTurkishToEnglish()
+    fun getUrl(url: String, replacement: String = "-") = Normalizer
+        .normalize(url, Normalizer.Form.NFD).lowercase().replace("ı","i")
+        .replace("İ","i")
+        .replace("ü","u")
+        .replace("ü","u")
+        .replace("Ü","u")
+        .replace("Ğ","g")
+        .replace("ğ","g")
+        .replace("Ç","c")
+        .replace("ç","c")
+        .replace("[^\\p{ASCII}]".toRegex(), "")
+        .replace("[^a-zA-Z0-9\\s]+".toRegex(), "").trim()
+        .replace("\\s+".toRegex(), replacement)
 
     fun shareNews(url: String, context: Context){
         shareIntent = Intent(Intent.ACTION_SEND)
@@ -112,6 +124,39 @@ object AppUtil {
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_TEXT, url)
         context.startActivity(shareIntent)
+    }
+
+    fun shareWithSocialMedia(url: String, context: Context, socialPackage: String, socialUrl: String) {
+        if (checkAppInstall(socialPackage, context)){
+            shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.setPackage(socialPackage)
+            shareIntent.type = "text/plain"
+            shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            shareIntent.putExtra(Intent.EXTRA_TEXT, url)
+        } else{
+            shareIntent = Intent(Intent.ACTION_VIEW)
+            shareIntent.data = Uri.parse(socialUrl)
+        }
+
+        context.startActivity(shareIntent)
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    private fun checkAppInstall(socialPackage: String, context: Context): Boolean {
+        val pm: PackageManager = context.packageManager
+
+        try {
+            for (info in pm.getInstalledPackages(0)){
+                if (info.packageName.equals(socialPackage))
+                    return true
+            }
+
+            return true
+        } catch (e: PackageManager.NameNotFoundException) {
+            println("Err: ${e.localizedMessage}")
+        }
+
+        return false
     }
 
     fun showSplashDialog(mContext: Context){

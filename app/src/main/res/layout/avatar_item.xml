@@ -7,12 +7,12 @@
             type="com.finans7.model.Avatar" />
     </data>
 
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<de.hdodenhof.circleimageview.CircleImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:id="@+id/avatar_item_imgAvater"
+    android:id="@+id/avatar_item_imgAvatar"
     android:downloadAvatarImg="@{avatar.AVATARNAME}"
     android:layout_height="75dp">
 
-</ImageView>
+</de.hdodenhof.circleimageview.CircleImageView>
 
 </layout>

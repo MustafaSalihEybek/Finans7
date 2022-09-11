@@ -22,6 +22,17 @@ class Singleton {
         val H_SIZE: Int = 25
         val H_SIZE_TAG: Int = 15
 
+        val FACEBOOK_PACKAGE: String = "com.facebook.katana"
+        val TWITTER_PACKAGE: String = "com.twitter.android"
+        val WHATSAPP_PACKAGE: String = "com.whatsapp"
+        val PINTEREST_PACKAGE: String = "com.pinterest"
+        val GMAIL_PACKAGE: String = "com.google.android.gm"
+        val FACEBOOK_PAGE: String = "https://www.facebook.com/sharer/sharer.php?u="
+        val TWITTER_PAGE: String = "https://twitter.com/intent/tweet?text="
+        val WHATSAPP_PAGE: String = "https://web.whatsapp.com/send?text="
+        val PINTEREST_PAGE: String = "https://pinterest.com/pin/create/link/?url="
+        val GMAIL_PAGE: String = "mailto:?subject="
+
         var themeMode: String = "Light"
         var homeIsCreated: Boolean = false
         var sliderCurrentPage: Int = 0

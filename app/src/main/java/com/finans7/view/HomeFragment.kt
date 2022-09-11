@@ -19,6 +19,7 @@ import com.finans7.adapter.*
 import com.finans7.adapter.decoration.GridManagerDecoration
 import com.finans7.adapter.decoration.LinearManagerDecoration
 import com.finans7.databinding.FragmentHomeBinding
+import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.HomePageNews
 import com.finans7.model.homepage.News
 import com.finans7.util.AppUtil
@@ -39,13 +40,13 @@ class HomeFragment : Fragment() {
     private lateinit var fourNewsAdapter: FourNewsAdapter
     private lateinit var newsByTitleAdapter: NewsFragmentAdapter
 
-    private lateinit var trendingNewsList: ArrayList<News>
+    private lateinit var trendingNewsList: ArrayList<PostListModel>
     private lateinit var trendingNewsAdapter: TrendingNewsAdapter
 
     private lateinit var homeCategoryNewsAdapters: HomeCategoryNewsAdapters
 
     private lateinit var categoryList: ArrayList<String>
-    private lateinit var categoryNewsList: ArrayList<ArrayList<News>>
+    private lateinit var categoryNewsList: ArrayList<ArrayList<PostListModel>>
     private lateinit var homeNewsByCategoryAdapters: HomeNewsByCategoryAdapters
 
     private var isLastItem: Boolean = false
@@ -123,7 +124,7 @@ class HomeFragment : Fragment() {
             homeBinding.homeFragmentNestedScrollView.scrollTo(Singleton.scrollXPosition, Singleton.scrollYPosition)
     }
 
-    private fun getCategoryList(newsList: List<News>) : ArrayList<String> {
+    private fun getCategoryList(newsList: List<PostListModel>) : ArrayList<String> {
         val categoryList: ArrayList<String> = ArrayList()
 
         for (news in newsList){
@@ -136,9 +137,9 @@ class HomeFragment : Fragment() {
         return categoryList
     }
 
-    private fun getNewsListByCategory(categoryList: ArrayList<String>, newsList: List<News>) : ArrayList<ArrayList<News>> {
-        val categoryNewsList: ArrayList<ArrayList<News>> = ArrayList()
-        lateinit var newsArr: ArrayList<News>
+    private fun getNewsListByCategory(categoryList: ArrayList<String>, newsList: List<PostListModel>) : ArrayList<ArrayList<PostListModel>> {
+        val categoryNewsList: ArrayList<ArrayList<PostListModel>> = ArrayList()
+        lateinit var newsArr: ArrayList<PostListModel>
 
         for (category in categoryList){
             newsArr = ArrayList()
@@ -154,7 +155,7 @@ class HomeFragment : Fragment() {
         return categoryNewsList
     }
 
-    private fun loadSlide(mainHeadLine: List<News>){
+    private fun loadSlide(mainHeadLine: List<PostListModel>){
         imageUrlList = ArrayList()
 
         for (headline in mainHeadLine){
@@ -211,7 +212,7 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun loadFourNews(fourNews: List<News>){
+    private fun loadFourNews(fourNews: List<PostListModel>){
         if (homeBinding.homeFragmentRecyclerViewFourNews.itemDecorationCount > 0)
             homeBinding.homeFragmentRecyclerViewFourNews.removeItemDecorationAt(0)
 
@@ -219,13 +220,13 @@ class HomeFragment : Fragment() {
         fourNewsAdapter.loadData(fourNews)
 
         fourNewsAdapter.setFourNewsOnItemClickListener(object : FourNewsAdapter.FourNewsItemClickListener{
-            override fun onItemClick(newsData: News, newsIn: Int) {
+            override fun onItemClick(newsData: PostListModel, newsIn: Int) {
                 goToNewsPage(arrayListOf(newsData), 0)
             }
         })
     }
 
-    private fun loadLastNews(lastNews: List<News>){
+    private fun loadLastNews(lastNews: List<PostListModel>){
         newsByTitleAdapter = NewsFragmentAdapter(this)
 
         for (n in lastNews.indices)
@@ -241,7 +242,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadHeadlineNews(headlineNews: List<News>){
+    private fun loadHeadlineNews(headlineNews: List<PostListModel>){
         newsByTitleAdapter = NewsFragmentAdapter(this)
 
         for (n in headlineNews.indices)
@@ -257,7 +258,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadTrendingNews(trendingNews: List<News>){
+    private fun loadTrendingNews(trendingNews: List<PostListModel>){
         newsByTitleAdapter = NewsFragmentAdapter(this)
         trendingNewsList = ArrayList()
 
@@ -283,7 +284,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadMostReadNews(mostReadNews: List<News>){
+    private fun loadMostReadNews(mostReadNews: List<PostListModel>){
         newsByTitleAdapter = NewsFragmentAdapter(this)
 
         for (n in mostReadNews.indices)
@@ -299,14 +300,14 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadInterestingNews(interestingNews: List<News>){
+    private fun loadInterestingNews(interestingNews: List<PostListModel>){
         homeBinding.homeFragmentRecyclerViewInterestingNews.setHasFixedSize(true)
         homeBinding.homeFragmentRecyclerViewInterestingNews.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
         homeCategoryNewsAdapters = HomeCategoryNewsAdapters(interestingNews)
         homeBinding.homeFragmentRecyclerViewInterestingNews.adapter = homeCategoryNewsAdapters
     }
 
-    private fun loadNewsByCategory(categoryNewsPair: Pair<ArrayList<String>, ArrayList<ArrayList<News>>>){
+    private fun loadNewsByCategory(categoryNewsPair: Pair<ArrayList<String>, ArrayList<ArrayList<PostListModel>>>){
         homeBinding.homeFragmentRecyclerViewNewsByCategory.setHasFixedSize(true)
         homeBinding.homeFragmentRecyclerViewNewsByCategory.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
         homeBinding.homeFragmentRecyclerViewNewsByCategory.addItemDecoration(LinearManagerDecoration(Singleton.V_SIZE, Singleton.H_SIZE, categoryNewsPair.first.size, true, false))
@@ -336,8 +337,8 @@ class HomeFragment : Fragment() {
         }.start()
     }
 
-    private fun goToNewsPage(newsList: List<News>, newsIn: Int){
-        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(newsList.toTypedArray(), null, newsIn, false)
+    private fun goToNewsPage(newsList: List<PostListModel>, newsIn: Int){
+        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(newsList.toTypedArray(), newsIn)
         Navigation.findNavController(v).navigate(navDirections)
     }
 }

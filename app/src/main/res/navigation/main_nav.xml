@@ -27,17 +27,8 @@
             app:argType="integer"
             android:defaultValue="0" />
         <argument
-            android:name="newsList"
-            app:argType="com.finans7.model.homepage.News[]"
-            app:nullable="true" />
-        <argument
-            android:name="fromCategory"
-            app:argType="boolean"
-            android:defaultValue="false" />
-        <argument
             android:name="postList"
-            app:argType="com.finans7.model.categorynews.PostListModel[]"
-            app:nullable="true" />
+            app:argType="com.finans7.model.categorynews.PostListModel[]" />
         <action
             android:id="@+id/action_newsFragment_to_commentsFragment"
             app:destination="@id/commentsFragment" />

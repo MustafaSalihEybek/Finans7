@@ -15,12 +15,6 @@ fun String.show(v: View, msg: String){
     Snackbar.make(v, msg, Snackbar.LENGTH_LONG).show()
 }
 
-fun String.getTurkishToEnglish() = lowercase().replace("", " ")
-    .replace("[^a-z\\d\\s]".toRegex(), " ")
-    .split(" ")
-    .joinToString("-")
-    .replace("-+".toRegex(), "-")
-
 fun ImageView.downloadImageUrl(imageUrl: String?){
     val options = RequestOptions()
         //.placeholder(placeHolderProgress(context))

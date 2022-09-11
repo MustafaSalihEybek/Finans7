@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.finans7.databinding.TrendItemBinding
+import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.News
 
-class TrendingNewsAdapter(val newsList: ArrayList<News>) : RecyclerView.Adapter<TrendingNewsAdapter.TrendingNewsHolder>() {
+class TrendingNewsAdapter(val newsList: ArrayList<PostListModel>) : RecyclerView.Adapter<TrendingNewsAdapter.TrendingNewsHolder>() {
     private lateinit var v: TrendItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrendingNewsHolder {
