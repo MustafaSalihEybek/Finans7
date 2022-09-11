@@ -81,11 +81,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         v = view
         init()
-
-        homeBinding.homeFragmentNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            Singleton.scrollXPosition = scrollX
-            Singleton.scrollYPosition = scrollY
-        })
     }
 
     private fun observeLiveData(){
@@ -120,18 +115,17 @@ class HomeFragment : Fragment() {
         loadInterestingNews(homePageNews.haberBandı)
         loadNewsByCategory(Pair(categoryList, categoryNewsList))
 
-        if (Singleton.homeIsCreated)
+        if (Singleton.homeIsCreated){
             homeBinding.homeFragmentNestedScrollView.scrollTo(Singleton.scrollXPosition, Singleton.scrollYPosition)
+        }
     }
 
     private fun getCategoryList(newsList: List<PostListModel>) : ArrayList<String> {
         val categoryList: ArrayList<String> = ArrayList()
 
         for (news in newsList){
-            news.termname?.let {
-                if (!categoryList.contains(it))
-                    categoryList.add(it)
-            }
+            if (!categoryList.contains(news.termname))
+                categoryList.add(news.termname)
         }
 
         return categoryList
@@ -158,11 +152,8 @@ class HomeFragment : Fragment() {
     private fun loadSlide(mainHeadLine: List<PostListModel>){
         imageUrlList = ArrayList()
 
-        for (headline in mainHeadLine){
-            headline.mainimage?.let {
-                imageUrlList.add(AppUtil.getPostImageUrl(it))
-            }
-        }
+        for (headline in mainHeadLine)
+            imageUrlList.add(AppUtil.getPostImageUrl(headline.mainimage))
 
         newsImagesPagerAdapter = NewsImagesPagerAdapter(imageUrlList, v.context)
 
@@ -274,7 +265,7 @@ class HomeFragment : Fragment() {
 
         homeBinding.homeFragmentRecyclerViewTrendingNews.setHasFixedSize(true)
         homeBinding.homeFragmentRecyclerViewTrendingNews.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
-        trendingNewsAdapter = TrendingNewsAdapter(trendingNewsList)
+        trendingNewsAdapter = TrendingNewsAdapter(trendingNewsList, v)
         homeBinding.homeFragmentRecyclerViewTrendingNews.adapter = trendingNewsAdapter
 
         if (Singleton.homeIsCreated){
@@ -303,7 +294,7 @@ class HomeFragment : Fragment() {
     private fun loadInterestingNews(interestingNews: List<PostListModel>){
         homeBinding.homeFragmentRecyclerViewInterestingNews.setHasFixedSize(true)
         homeBinding.homeFragmentRecyclerViewInterestingNews.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
-        homeCategoryNewsAdapters = HomeCategoryNewsAdapters(interestingNews)
+        homeCategoryNewsAdapters = HomeCategoryNewsAdapters(interestingNews, v)
         homeBinding.homeFragmentRecyclerViewInterestingNews.adapter = homeCategoryNewsAdapters
     }
 
@@ -322,19 +313,8 @@ class HomeFragment : Fragment() {
         Singleton.headlineNewsCurrentPage = homeBinding.homeFragmentViewPagerHeadlineNews.currentItem
         Singleton.trendingNewsCurrentPage = homeBinding.homeFragmentViewPagerTrendingNews.currentItem
         Singleton.mostNewsCurrentPage = homeBinding.homeFragmentViewPagerMostReadNews.currentItem
-    }
-
-    private fun saveScrollState(scrollName: String){
-        object : CountDownTimer(200, 100){
-            override fun onTick(p0: Long) {}
-
-            override fun onFinish() {
-                if (scrollName.equals("Last"))
-                    isLastItem = false
-                else
-                    isFirstItem = false
-            }
-        }.start()
+        Singleton.scrollXPosition = homeBinding.homeFragmentNestedScrollView.scrollX
+        Singleton.scrollYPosition = homeBinding.homeFragmentNestedScrollView.scrollY
     }
 
     private fun goToNewsPage(newsList: List<PostListModel>, newsIn: Int){
