@@ -1,5 +1,6 @@
 package com.finans7.util
 
+import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.HomePageNews
 
 class Singleton {
@@ -9,6 +10,12 @@ class Singleton {
         val POST_IMAGE_PATH: String = "ProjectImages/PostImages/"
         val USER_IMAGE_PATH: String = "ProjectImages/UserProfiles/"
         val AVATAR_IMAGE_PATH: String = "ProjectImages/avatarImages/"
+        val NEWS_SHARE_BASE_URL: String = "https://www.finans7.com/haber/"
+        val TWITTER_USER_ID: String = "gRm5NJ2JCU0Zc1PrzeONiA&s"
+        val TWITTER_PROFILE_NAME: String = "Finans7haber1"
+        val INSTAGRAM_PROFILE_NAME: String = "finans7haber"
+        val PRIVACY_POLICY_URL: String = "https://www.finans7.com/ProjectImages/news/gizlilik.html"
+        val TERMS_OF_SERVICE: String = "https://www.finans7.com/ProjectImages/news/kunye.html"
         val MAIN_IMAGE_WIDTH: Double = 637.0
         val MAIN_IMAGE_HEIGHT: Double = 332.0
         val V_SIZE: Int = 35
@@ -25,5 +32,11 @@ class Singleton {
         var scrollXPosition: Int = 0
         var scrollYPosition: Int = 0
         lateinit var homePageNews: HomePageNews
+
+        var selectedPageIn: Int = 0
+
+        var searchIsCreated: Boolean = false
+        var searchedValue: String = ""
+        var postList: ArrayList<PostListModel> = arrayListOf()
     }
 }

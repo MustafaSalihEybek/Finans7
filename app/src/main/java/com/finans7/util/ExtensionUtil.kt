@@ -15,6 +15,12 @@ fun String.show(v: View, msg: String){
     Snackbar.make(v, msg, Snackbar.LENGTH_LONG).show()
 }
 
+fun String.getTurkishToEnglish() = lowercase().replace("", " ")
+    .replace("[^a-z\\d\\s]".toRegex(), " ")
+    .split(" ")
+    .joinToString("-")
+    .replace("-+".toRegex(), "-")
+
 fun ImageView.downloadImageUrl(imageUrl: String?){
     val options = RequestOptions()
         //.placeholder(placeHolderProgress(context))
@@ -57,8 +63,8 @@ fun downloadUserImage(view: ImageView, imageName: String?){
 
 @BindingAdapter("android:setNewsDate")
 fun setNewsDate(view: TextView, news: News){
-    if (news.INSERTDAY != null && news.INSERTMONTH != null && news.INSERTYEAR != null)
-        view.text = "${AppUtil.getEditNumberByString(news.INSERTDAY)}.${AppUtil.getEditNumberByString(news.INSERTMONTH)}.${AppUtil.getEditNumberByString(news.INSERTYEAR)} ${news.POSTTIME}"
+    if (news.insertday != null && news.insertmonth != null && news.insertyear != null)
+        view.text = "${AppUtil.getEditNumberByString(news.insertday)}.${AppUtil.getEditNumberByString(news.insertmonth)}.${AppUtil.getEditNumberByString(news.insertyear)} ${news.posttime}"
 }
 
 @BindingAdapter("android:setPostDate")

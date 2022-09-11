@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <data>
-        <variable
-            name="category"
-            type="com.finans7.model.category.CategoryModel" />
-    </data>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -38,9 +32,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
+                android:id="@+id/news_by_category_fragment_txtCategoryName"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/poppins_bold"
-                android:text="@{category.NAME}"
                 android:textColor="?attr/appBarTextColor"
                 android:textSize="18sp" />
 
@@ -52,13 +46,24 @@
             android:layout_height="20dp"
             android:layout_gravity="end"
             android:layout_marginEnd="17dp"
-            android:src="@drawable/share_black" />
+            android:src="@drawable/share_black"
+            app:tint="?attr/appBarMenuColor"/>
 
     </androidx.appcompat.widget.Toolbar>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_marginTop="15dp"
+        android:id="@+id/news_by_category_fragment_progressBar"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="?attr/boldColor"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:scrollbars="none"
+        android:visibility="gone"
         android:id="@+id/news_by_category_fragment_recyclerView"
         android:layout_height="match_parent"/>
 

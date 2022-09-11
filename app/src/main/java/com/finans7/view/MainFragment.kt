@@ -1,10 +1,11 @@
 package com.finans7.view
 
 import android.app.Activity
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,21 +14,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.finans7.R
 import com.finans7.adapter.NavCategoriesAdapter
 import com.finans7.databinding.FragmentMainBinding
 import com.finans7.model.category.RootCategory
 import com.finans7.util.AppUtil
+import com.finans7.util.SharedPreferences
 import com.finans7.util.Singleton
 import com.finans7.util.show
 import com.finans7.viewmodel.MainViewModel
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
 
-
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), View.OnClickListener {
     private lateinit var v: View
     private lateinit var mainBinding: FragmentMainBinding
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var navDirections: NavDirections
 
     private lateinit var transaction: FragmentTransaction
     private lateinit var mToggle: ActionBarDrawerToggle
@@ -38,6 +44,12 @@ class MainFragment : Fragment() {
 
     private lateinit var categoryFragment: CategoryFragment
     private var categoryRetrieved: Boolean = false
+
+    private lateinit var socialIntent: Intent
+    private var selectedPageIn: Int = 0
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private var userTopic: Boolean = false
 
     private fun init(){
         mToggle = ActionBarDrawerToggle(
@@ -50,8 +62,10 @@ class MainFragment : Fragment() {
         mainBinding.mainFragmentDrawerLayout.addDrawerListener(mToggle)
         mToggle.syncState()
 
+        sharedPreferences = SharedPreferences(v.context)
+        userTopic = sharedPreferences.getUserTopic()
+
         fragmentList = arrayOf(HomeFragment(), SearchFragment())
-        selectPage(0)
 
         mainBinding.mainFragmentRecyclerView.setHasFixedSize(true)
         mainBinding.mainFragmentRecyclerView.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
@@ -62,10 +76,24 @@ class MainFragment : Fragment() {
         observeLiveData()
         mainViewModel.getCategoryList()
 
+        if (!userTopic){
+            mainViewModel.generateUserTopic(
+                "Android",
+                AppUtil.getDeviceId(v.context),
+                AppUtil.getDeviceName(),
+                AppUtil.getDeviceVersion()
+            )
+        }
+
         if (Singleton.themeMode.equals("Dark")){
             mainBinding.mainFragmentImgAppLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
             mainBinding.mainFragmentImgNavAppLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
         }
+
+        mainBinding.mainFragmentImgTwitter.setOnClickListener(this)
+        mainBinding.mainFragmentImgInstagram.setOnClickListener(this)
+        mainBinding.navHeaderLinearSettings.setOnClickListener(this)
+        mainBinding.customAppBarImgShare.setOnClickListener(this)
     }
 
     override fun onCreateView(
@@ -106,9 +134,51 @@ class MainFragment : Fragment() {
         }
     }
 
+    override fun onClick(p0: View?) {
+        p0?.let {
+            when (it.id){
+                R.id.main_fragment_imgTwitter -> goToTwitterPage()
+                R.id.main_fragment_imgInstagram -> goToInstagramPage()
+                R.id.nav_header_linearSettings -> goToSettingsPage()
+                R.id.custom_app_bar_imgShare -> AppUtil.shareNews(Singleton.BASE_URL, v.context)
+            }
+        }
+    }
+
+    private fun goToSettingsPage(){
+        navDirections = MainFragmentDirections.actionMainFragmentToSettingsFragment()
+        Navigation.findNavController(v).navigate(navDirections)
+    }
+
+    private fun goToInstagramPage(){
+        try {
+            v.context.packageManager.getPackageInfo("com.instagram.android", 0)
+            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/${Singleton.INSTAGRAM_PROFILE_NAME}"))
+            socialIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        } catch (e: Exception){
+            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/${Singleton.INSTAGRAM_PROFILE_NAME}"))
+        }
+
+        startActivity(socialIntent)
+    }
+
+    private fun goToTwitterPage(){
+        try {
+            v.context.packageManager.getPackageInfo("com.twitter.android", 0)
+            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=${Singleton.TWITTER_USER_ID}"))
+            socialIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        } catch (e: Exception){
+            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/${Singleton.TWITTER_PROFILE_NAME}"))
+        }
+
+        startActivity(socialIntent)
+    }
+
     private fun selectPage(sIn: Int){
-        if (sIn >= 0 && sIn < fragmentList.size)
+        if (sIn >= 0 && sIn < fragmentList.size){
             setFragment(fragmentList.get(sIn))
+            Singleton.selectedPageIn = sIn
+        }
     }
 
     private fun setFragment(fragment: Fragment){
@@ -118,6 +188,13 @@ class MainFragment : Fragment() {
     }
 
     private fun observeLiveData(){
+        mainViewModel.successMessage.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it.equals("Topic token başarıyla oluşturuldu"))
+                    sharedPreferences.saveUserTopic()
+            }
+        })
+
         mainViewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             it?.let {
                 it.show(v, it)
@@ -132,5 +209,17 @@ class MainFragment : Fragment() {
                 categoryRetrieved = true
             }
         })
+    }
+
+    /*private fun generateFirebaseToken(){
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            println("Token: $it")
+        }
+    }*/
+
+    override fun onResume() {
+        super.onResume()
+        selectedPageIn = Singleton.selectedPageIn
+        selectPage(selectedPageIn)
     }
 }

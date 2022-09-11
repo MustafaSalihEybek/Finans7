@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.finans7.model.categorynews.RootCategoryNews
 import com.finans7.repository.GetNewsByCategory
+import com.finans7.repository.GetNewsByTagRepository
 import com.finans7.util.AppUtil
 import com.finans7.viewmodel.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,6 +21,26 @@ class NewsByCategoryViewModel(application: Application) : BaseViewModel(applicat
 
         AppUtil.disposable.add(
             AppUtil.getNewsByCategory.getNewsByCategory(categoryName, skip)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<RootCategoryNews>(){
+                    override fun onSuccess(t: RootCategoryNews) {
+                        rootCategoryNews.value = t
+                    }
+
+                    override fun onError(e: Throwable) {
+                        errorMessage.value = e.localizedMessage
+                    }
+                })
+        )
+    }
+
+    fun getNewsByTag(categoryName: String, skip: Int){
+        AppUtil.getNewsByTagRepository = GetNewsByTagRepository()
+        AppUtil.disposable = CompositeDisposable()
+
+        AppUtil.disposable.add(
+            AppUtil.getNewsByTagRepository.getNewsByTag(categoryName, skip)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<RootCategoryNews>(){

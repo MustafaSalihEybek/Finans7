@@ -17,7 +17,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:scaleType="fitXY"
-        android:downloadImg="@{newdata.MAINIMAGE}"
+        android:downloadImg="@{newdata.mainimage}"
         android:layout_height="110dp"/>
 
     <TextView
@@ -29,7 +29,7 @@
         android:textColor="?attr/boldColor"
         android:gravity="center_horizontal"
         android:fontFamily="@font/poppins_bold"
-        android:text="@{newdata.POSTTITLE}"
+        android:text="@{newdata.posttitle}"
         android:layout_height="wrap_content"/>
 
 </LinearLayout>

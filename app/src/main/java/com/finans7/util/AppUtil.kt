@@ -1,7 +1,9 @@
 package com.finans7.util
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.provider.Settings
 import android.util.TypedValue
 import com.finans7.api.AppAPI
@@ -14,10 +16,13 @@ import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
+import kotlin.collections.ArrayList
 
 object AppUtil {
     lateinit var disposable: CompositeDisposable
     private lateinit var imageUrl: String
+    private lateinit var shareIntent: Intent
 
     lateinit var getHomePageNewsRepository: GetHomePageNewsRepository
     lateinit var getCategoryListRepository: GetCategoryListRepository
@@ -25,6 +30,10 @@ object AppUtil {
     lateinit var getNewsByCategory: GetNewsByCategory
     lateinit var getNewsBySearchRepository: GetNewsBySearchRepository
     lateinit var getCommentsRepository: GetCommentsRepository
+    lateinit var getAvatarsRepository: GetAvatarsRepository
+    lateinit var addCommentRepository: AddCommentRepository
+    lateinit var getNewsByTagRepository: GetNewsByTagRepository
+    lateinit var generateUserTopicRepository: GenerateUserTopicRepository
 
     @SuppressLint("StaticFieldLeak")
     private lateinit var splashDialog: SplashDialog
@@ -93,6 +102,16 @@ object AppUtil {
 
     fun getDeviceVersion() : String {
         return android.os.Build.VERSION.RELEASE
+    }
+
+    fun getUrlByTitle(postTitle: String) = postTitle.lowercase().getTurkishToEnglish()
+
+    fun shareNews(url: String, context: Context){
+        shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, url)
+        context.startActivity(shareIntent)
     }
 
     fun showSplashDialog(mContext: Context){

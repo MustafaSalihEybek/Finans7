@@ -11,24 +11,37 @@
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/circle_indicator_selected.xml" value="0.112" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/circle_indicator_unselected.xml" value="0.112" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/comment_box_bg.xml" value="0.1215" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/comment_count.xml" value="0.1215" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/comment_item_bg.xml" value="0.1215" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/contact_bg.xml" value="0.1215" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/custom_scrubber_control.xml" value="0.1215" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/custom_scrubber_progress.xml" value="0.1215" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/font_bg.xml" value="0.1215" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/ic_icon_left.xml" value="0.112" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/ic_icon_right.xml" value="0.112" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/new_bg.xml" value="0.112" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/pager_bg.xml" value="0.112" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/privacy_bg.xml" value="0.1215" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/search_bar_bg.xml" value="0.1215" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/send_bg.xml" value="0.1215" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/share_bg.xml" value="0.112" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/tag_bg.xml" value="0.1215" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/terms_bg.xml" value="0.1215" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/app_bar.xml" value="0.253125" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/avatar_item.xml" value="0.253125" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/avatars_fragment.xml" value="0.253125" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/bottom_sheet_category_item.xml" value="0.253125" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/category_fragment.xml" value="0.253125" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/category_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/comment_item.xml" value="0.253125" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/comment_shorting_fragment.xml" value="0.253125" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/custom_app_bar.xml" value="0.253125" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/four_new_item.xml" value="0.264" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_category.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_comments.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_comments.xml" value="0.264" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_contact.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_font_news.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_main.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_new.xml" value="0.25416666666666665" />
@@ -36,7 +49,9 @@
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_news_by_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_news_by_title.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_post.xml" value="0.25" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_privacy_and_terms.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_search.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/fragment_settings.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/home_category_news_item.xml" value="0.253125" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/home_news_by_category_item.xml" value="0.253125" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/layout/last_new_item.xml" value="0.253125" />

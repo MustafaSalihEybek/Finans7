@@ -31,7 +31,7 @@ class NewFragment(val newsData: News) : Fragment() {
         newViewModel = ViewModelProvider(this).get(NewViewModel::class.java)
         observeLiveData()
 
-        newsData.POSTID?.let {
+        newsData.postid?.let {
             newViewModel.getPostDetail(it, AppUtil.getDeviceId(v.context))
         }
     }

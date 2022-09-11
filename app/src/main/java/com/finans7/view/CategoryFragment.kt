@@ -92,7 +92,7 @@ class CategoryFragment(val categories: List<CategoryModel>, val vV: View) : Bott
     }
 
     private fun goToNewsByCategoryPage(categoryData: CategoryModel){
-        navDirections = MainFragmentDirections.actionMainFragmentToNewsByCategoryFragment(categoryData)
+        navDirections = MainFragmentDirections.actionMainFragmentToNewsByCategoryFragment(categoryData, null)
         Navigation.findNavController(vV).navigate(navDirections)
     }
 }

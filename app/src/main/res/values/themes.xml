@@ -42,6 +42,12 @@
         <item name="commentBoxTextColor">#606060</item>
         <item name="splashBgColor">#ffffff</item>
         <item name="navBgColor">#ffffff</item>
+        <item name="commentCountBgColor">#FB3434</item>
+        <item name="commentCountTextColor">#ffffff</item>
+        <item name="settingsBgColor">#ffffff</item>
+        <item name="seekBarBgColor">?attr/normalColor</item>
+        <item name="seekBarTintColor">#4A4A4A</item>
+        <item name="seekBarThumbColor">?attr/boldColor</item>
     </style>
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
@@ -50,5 +56,11 @@
 
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="MySeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint">?attr/seekBarBgColor</item>
+        <item name="android:progressTint">?attr/seekBarTintColor</item>
+        <item name="android:thumbTint">?attr/seekBarThumbColor</item>
     </style>
 </resources>

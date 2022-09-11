@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_mainFragment_to_newsByCategoryFragment"
             app:destination="@id/newsByCategoryFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsFragment"
@@ -35,6 +38,12 @@
             android:name="postList"
             app:argType="com.finans7.model.categorynews.PostListModel[]"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_newsFragment_to_commentsFragment"
+            app:destination="@id/commentsFragment" />
+        <action
+            android:id="@+id/action_newsFragment_to_newsByCategoryFragment"
+            app:destination="@id/newsByCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsByCategoryFragment"
@@ -42,9 +51,55 @@
         android:label="NewsByCategoryFragment" >
         <argument
             android:name="categoryData"
-            app:argType="com.finans7.model.category.CategoryModel" />
+            app:argType="com.finans7.model.category.CategoryModel"
+            app:nullable="true" />
         <action
             android:id="@+id/action_newsByCategoryFragment_to_newsFragment"
             app:destination="@id/newsFragment" />
+        <argument
+            android:name="tagName"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/commentsFragment"
+        android:name="com.finans7.view.CommentsFragment"
+        android:label="CommentsFragment" >
+        <argument
+            android:name="posId"
+            app:argType="integer" />
+        <argument
+            android:name="postTitle"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.finans7.view.settings.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_fontNewsFragment"
+            app:destination="@id/fontNewsFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_privacyAndTermsFragment"
+            app:destination="@id/privacyAndTermsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.finans7.view.settings.ContactFragment"
+        android:label="ContactFragment" />
+    <fragment
+        android:id="@+id/fontNewsFragment"
+        android:name="com.finans7.view.settings.FontNewsFragment"
+        android:label="FontNewsFragment" />
+    <fragment
+        android:id="@+id/privacyAndTermsFragment"
+        android:name="com.finans7.view.settings.PrivacyAndTermsFragment"
+        android:label="PrivacyAndTermsFragment" >
+        <argument
+            android:name="fromPrivacy"
+            app:argType="boolean" />
     </fragment>
 </navigation>

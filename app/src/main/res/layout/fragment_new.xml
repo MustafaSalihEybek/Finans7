@@ -17,7 +17,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:scaleType="fitXY"
-        android:downloadImg="@{newsdata.MAINIMAGE}"
+        android:downloadImg="@{newsdata.mainimage}"
         android:id="@+id/new_fragment_imgNew"
         android:layout_height="220dp"/>
 
@@ -27,7 +27,7 @@
         android:layout_margin="10dp"
         android:textColor="?attr/boldColor"
         android:fontFamily="@font/poppins_bold"
-        android:text="@{newsdata.POSTTITLE}"
+        android:text="@{newsdata.posttitle}"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
@@ -45,7 +45,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:text="@{newsdata.AUTHORNAMESURNAME}"
+            android:text="@{newsdata.authornamesurname}"
             android:textSize="15sp"
             android:textColor="?attr/normalColor"
             android:fontFamily="@font/poppins_medium"

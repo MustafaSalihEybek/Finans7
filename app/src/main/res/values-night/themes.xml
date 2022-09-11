@@ -41,6 +41,7 @@
         <item name="commentBoxTextColor">#CDCDCD</item>
         <item name="splashBgColor">#000000</item>
         <item name="navBgColor">#1E1E1E</item>
+        <item name="settingsBgColor">#1E1E1E</item>
     </style>
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">

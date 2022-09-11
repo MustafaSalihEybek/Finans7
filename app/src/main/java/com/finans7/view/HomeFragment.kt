@@ -81,9 +81,6 @@ class HomeFragment : Fragment() {
         v = view
         init()
 
-        if (Singleton.homeIsCreated)
-            homeBinding.homeFragmentNestedScrollView.scrollTo(Singleton.scrollXPosition, Singleton.scrollYPosition)
-
         homeBinding.homeFragmentNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             Singleton.scrollXPosition = scrollX
             Singleton.scrollYPosition = scrollY
@@ -110,24 +107,27 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadAllData(homePageNews: HomePageNews){
-        categoryList = getCategoryList(homePageNews.KategoriHaberleri)
-        categoryNewsList = getNewsListByCategory(categoryList, homePageNews.KategoriHaberleri)
+        categoryList = getCategoryList(homePageNews.kategoriHaberleri)
+        categoryNewsList = getNewsListByCategory(categoryList, homePageNews.kategoriHaberleri)
 
-        loadSlide(homePageNews.AnaManset)
-        loadFourNews(homePageNews.BesliManset)
-        loadLastNews(homePageNews.YatayHaberler)
-        loadHeadlineNews(homePageNews.GununManseti)
-        loadTrendingNews(homePageNews.SagManset)
-        loadMostReadNews(homePageNews.OzelHaberler)
-        loadInterestingNews(homePageNews.HaberBandı)
+        loadSlide(homePageNews.anaManset)
+        loadFourNews(homePageNews.besliManset)
+        loadLastNews(homePageNews.yatayHaberler)
+        loadHeadlineNews(homePageNews.gununManseti)
+        loadTrendingNews(homePageNews.sagManset)
+        loadMostReadNews(homePageNews.ozelHaberler)
+        loadInterestingNews(homePageNews.haberBandı)
         loadNewsByCategory(Pair(categoryList, categoryNewsList))
+
+        if (Singleton.homeIsCreated)
+            homeBinding.homeFragmentNestedScrollView.scrollTo(Singleton.scrollXPosition, Singleton.scrollYPosition)
     }
 
     private fun getCategoryList(newsList: List<News>) : ArrayList<String> {
         val categoryList: ArrayList<String> = ArrayList()
 
         for (news in newsList){
-            news.TERMNAME?.let {
+            news.termname?.let {
                 if (!categoryList.contains(it))
                     categoryList.add(it)
             }
@@ -144,7 +144,7 @@ class HomeFragment : Fragment() {
             newsArr = ArrayList()
 
             for (news in newsList){
-                if (news.TERMNAME.equals(category))
+                if (news.termname.equals(category))
                     newsArr.add(news)
             }
 
@@ -158,7 +158,7 @@ class HomeFragment : Fragment() {
         imageUrlList = ArrayList()
 
         for (headline in mainHeadLine){
-            headline.MAINIMAGE?.let {
+            headline.mainimage?.let {
                 imageUrlList.add(AppUtil.getPostImageUrl(it))
             }
         }

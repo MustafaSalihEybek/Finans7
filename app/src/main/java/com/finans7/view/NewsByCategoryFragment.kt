@@ -16,6 +16,8 @@ import com.finans7.databinding.FragmentNewsByCategoryBinding
 import com.finans7.model.category.CategoryModel
 import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.categorynews.RootCategoryNews
+import com.finans7.util.AppUtil
+import com.finans7.util.Singleton
 import com.finans7.util.show
 import com.finans7.viewmodel.NewsByCategoryViewModel
 
@@ -24,7 +26,8 @@ class NewsByCategoryFragment : Fragment(), View.OnClickListener {
     private lateinit var newByCategoryBinding: FragmentNewsByCategoryBinding
     private lateinit var newsByCategoryViewModel: NewsByCategoryViewModel
 
-    private lateinit var categoryData: CategoryModel
+    private var categoryData: CategoryModel? = null
+    private var tagName: String? = null
     private lateinit var rootCategoryNews: RootCategoryNews
     private lateinit var postList: List<PostListModel>
     private lateinit var newsByCategoryAdapter: NewsByCategoryAdapter
@@ -33,7 +36,7 @@ class NewsByCategoryFragment : Fragment(), View.OnClickListener {
     private fun init(){
         arguments?.let {
             categoryData = NewsByCategoryFragmentArgs.fromBundle(it).categoryData
-            newByCategoryBinding.category = categoryData
+            tagName = NewsByCategoryFragmentArgs.fromBundle(it).tagName
 
             newByCategoryBinding.newsByCategoryFragmentRecyclerView.setHasFixedSize(true)
             newsLayoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
@@ -43,9 +46,19 @@ class NewsByCategoryFragment : Fragment(), View.OnClickListener {
 
             newsByCategoryViewModel = ViewModelProvider(this).get(NewsByCategoryViewModel::class.java)
             observeLiveData()
-            newsByCategoryViewModel.getNewsByCategory(categoryData.SLUG, 0)
+
+            categoryData?.let {
+                newByCategoryBinding.newsByCategoryFragmentTxtCategoryName.text = it.NAME
+                newsByCategoryViewModel.getNewsByCategory(it.SLUG, 0)
+            }
+
+            tagName?.let {
+                newByCategoryBinding.newsByCategoryFragmentTxtCategoryName.text = it
+                newsByCategoryViewModel.getNewsByTag(it, 0)
+            }
 
             newByCategoryBinding.newsByCategoryFragmentImgBack.setOnClickListener(this)
+            newByCategoryBinding.newsByCategoryFragmentImgShare.setOnClickListener(this)
         }
     }
 
@@ -67,6 +80,7 @@ class NewsByCategoryFragment : Fragment(), View.OnClickListener {
         p0?.let {
             when (it.id){
                 R.id.news_by_category_fragment_imgBack -> backToPage()
+                R.id.news_by_category_fragment_imgShare -> shareNews()
             }
         }
     }
@@ -81,10 +95,16 @@ class NewsByCategoryFragment : Fragment(), View.OnClickListener {
         newsByCategoryViewModel.rootCategoryNews.observe(viewLifecycleOwner, Observer {
             it?.let {
                 rootCategoryNews = it
-                postList = it.postList
 
-                newsByCategoryAdapter.loadData(it.postList)
-                attachUpcomingNewsOnScrollListener()
+                if (it.postList.isNotEmpty()){
+                    postList = it.postList
+
+                    newByCategoryBinding.newsByCategoryFragmentProgressBar.visibility = View.GONE
+                    newByCategoryBinding.newsByCategoryFragmentRecyclerView.visibility = View.VISIBLE
+
+                    newsByCategoryAdapter.loadData(it.postList)
+                    attachUpcomingNewsOnScrollListener()
+                }
             }
         })
     }
@@ -98,10 +118,27 @@ class NewsByCategoryFragment : Fragment(), View.OnClickListener {
 
                 if (firstVisibleItem + visibleItemCount >= totalItemCount / 2){
                     newByCategoryBinding.newsByCategoryFragmentRecyclerView.removeOnScrollListener(this)
-                    newsByCategoryViewModel.getNewsByCategory(categoryData.SLUG, newsByCategoryAdapter.itemCount)
+
+                    categoryData?.let {
+                        newsByCategoryViewModel.getNewsByCategory(it.SLUG, newsByCategoryAdapter.itemCount)
+                    }
+
+                    tagName?.let {
+                        newsByCategoryViewModel.getNewsByTag(it, newsByCategoryAdapter.itemCount)
+                    }
                 }
             }
         })
+    }
+
+    private fun shareNews(){
+        categoryData?.let {
+            AppUtil.shareNews("${Singleton.BASE_URL}/kategori/${it.SLUG}", v.context)
+        }
+
+        tagName?.let {
+            AppUtil.shareNews("${Singleton.BASE_URL}/tag/${it}", v.context)
+        }
     }
 
     private fun backToPage(){

@@ -1,13 +1,13 @@
 package com.finans7.model.homepage
 
 data class HomePageNews(
-    val BesliManset: List<News>,
-    val AnaManset: List<News>,
-    val SagManset: List<News>,
-    val HaberBandı: List<News>,
-    val OzelHaberler: List<News>,
-    val GununManseti: List<News>,
-    val AraManset: List<News>,
-    val YatayHaberler: List<News>,
-    val KategoriHaberleri: List<News>,
+    val besliManset: List<News>,
+    val anaManset: List<News>,
+    val sagManset: List<News>,
+    val haberBandı: List<News>,
+    val ozelHaberler: List<News>,
+    val gununManseti: List<News>,
+    val araManset: List<News>,
+    val yatayHaberler: List<News>,
+    val kategoriHaberleri: List<News>,
 )

@@ -21,5 +21,8 @@ class SplashDialog(val mContext: Context) : Dialog(mContext, android.R.style.The
         window?.let {
             it.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT)
         }
+
+        if (Singleton.themeMode.equals("Dark"))
+            v.splashDialogImgAppLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
     }
 }

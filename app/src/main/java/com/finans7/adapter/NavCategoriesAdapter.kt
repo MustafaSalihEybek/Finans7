@@ -41,7 +41,7 @@ class NavCategoriesAdapter(var categoryList: List<CategoryModel>, val vV: View) 
     }
 
     private fun goToNewsByCategoryPage(categoryData: CategoryModel){
-        navDirections = MainFragmentDirections.actionMainFragmentToNewsByCategoryFragment(categoryData)
+        navDirections = MainFragmentDirections.actionMainFragmentToNewsByCategoryFragment(categoryData, null)
         Navigation.findNavController(vV).navigate(navDirections)
     }
 }

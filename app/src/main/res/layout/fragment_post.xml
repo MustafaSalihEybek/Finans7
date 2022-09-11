@@ -9,7 +9,7 @@
             type="com.finans7.model.categorynews.PostListModel" />
     </data>
 
-<ScrollView
+<androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:scrollbars="none"
     android:layout_height="wrap_content"
@@ -36,45 +36,97 @@
            android:text="@{postdata.posttitle}"
            android:layout_height="wrap_content"/>
 
-       <LinearLayout
+       <RelativeLayout
            android:layout_width="match_parent"
-           android:orientation="horizontal"
            android:layout_marginTop="10dp"
            android:layout_marginStart="10dp"
            android:layout_marginEnd="10dp"
-           android:gravity="center_vertical"
            android:layout_height="wrap_content">
 
-           <ImageView
-               android:layout_width="27dp"
-               android:src="@drawable/user"
-               android:layout_height="27dp"/>
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_alignParentStart="true"
+               android:layout_centerVertical="true"
+               android:layout_marginEnd="15dp"
+               android:layout_toStartOf="@+id/post_fragment_linearPostLeft"
+               android:gravity="center_vertical"
+               android:orientation="horizontal">
 
-           <TextView
+               <ImageView
+                   android:layout_width="30dp"
+                   android:layout_height="30dp"
+                   android:src="@drawable/user" />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="5dp"
+                   android:fontFamily="@font/poppins_medium"
+                   android:text="@{postdata.authornamesurname}"
+                   android:textColor="?attr/normalColor"
+                   android:textSize="14sp" />
+
+               <ImageView
+                   android:layout_width="3dp"
+                   android:layout_height="match_parent"
+                   android:layout_marginStart="5dp"
+                   android:src="?attr/shadowColor" />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="5dp"
+                   android:fontFamily="@font/poppins_medium"
+                   android:setPostDate="@{postdata}"
+                   android:textColor="?attr/normalColor"
+                   android:textSize="14sp" />
+
+           </LinearLayout>
+
+           <LinearLayout
                android:layout_width="wrap_content"
-               android:text="@{postdata.authornamesurname}"
-               android:textSize="15sp"
-               android:textColor="?attr/normalColor"
-               android:fontFamily="@font/poppins_medium"
-               android:layout_marginStart="5dp"
-               android:layout_height="wrap_content"/>
+               android:orientation="horizontal"
+               android:layout_alignParentEnd="true"
+               android:gravity="center"
+               android:id="@+id/post_fragment_linearPostLeft"
+               android:layout_height="wrap_content">
 
-           <ImageView
-               android:layout_width="3dp"
-               android:layout_marginStart="5dp"
-               android:src="?attr/shadowColor"
-               android:layout_height="match_parent"/>
+               <RelativeLayout
+                   android:layout_width="25dp"
+                   android:id="@+id/post_fragment_relativeCommentCount"
+                   android:background="@drawable/comment_count_bg"
+                   android:layout_height="25dp">
 
-           <TextView
-               android:layout_width="wrap_content"
-               android:setPostDate="@{postdata}"
-               android:textSize="15sp"
-               android:layout_marginStart="5dp"
-               android:fontFamily="@font/poppins_medium"
-               android:textColor="?attr/normalColor"
-               android:layout_height="wrap_content"/>
+                   <TextView
+                       android:id="@+id/post_fragment_txtCommentCount"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_centerInParent="true"
+                       android:fontFamily="@font/poppins_bold"
+                       android:textColor="?attr/commentCountTextColor"
+                       android:textSize="15sp" />
 
-       </LinearLayout>
+               </RelativeLayout>
+
+               <ImageView
+                   android:layout_width="27dp"
+                   android:layout_marginTop="2dp"
+                   android:id="@+id/post_fragment_imgMessage"
+                   android:src="@drawable/ic_comment"
+                   android:layout_height="27dp"
+                   app:tint="?attr/boldColor"/>
+
+               <ImageView
+                   android:layout_width="28dp"
+                   android:layout_marginStart="15dp"
+                   android:id="@+id/post_fragment_imgShare"
+                   android:src="@drawable/share_black"
+                   android:layout_height="28dp"/>
+
+           </LinearLayout>
+
+       </RelativeLayout>
 
        <LinearLayout
            android:layout_width="match_parent"
@@ -187,6 +239,7 @@
            android:layout_width="match_parent"
            android:orientation="horizontal"
            android:gravity="center"
+           android:id="@+id/post_fragment_linearComments"
            android:layout_marginTop="25dp"
            android:layout_marginStart="15dp"
            android:layout_height="wrap_content">
@@ -199,7 +252,6 @@
            <LinearLayout
                android:layout_width="match_parent"
                android:orientation="horizontal"
-               android:id="@+id/search_fragment_linearTop"
                android:background="@drawable/comment_box_bg"
                android:layout_marginStart="15dp"
                android:layout_marginEnd="15dp"
@@ -211,9 +263,10 @@
                    android:layout_width="match_parent"
                    android:hint="Yorum Yap"
                    android:textSize="16sp"
+                   android:focusableInTouchMode="false"
                    android:background="?attr/commentBoxBgColor"
                    android:textColor="?attr/commentBoxTextColor"
-                   android:id="@+id/search_fragment_editSearch"
+                   android:id="@+id/post_fragment_editSearch"
                    android:textColorHint="?attr/commentBoxTextColor"
                    android:layout_marginStart="10dp"
                    android:layout_height="45dp"/>
@@ -248,6 +301,7 @@
        <androidx.recyclerview.widget.RecyclerView
            android:layout_width="match_parent"
            android:scrollbars="none"
+           android:nestedScrollingEnabled="false"
            android:layout_marginTop="10dp"
            android:visibility="gone"
            android:id="@+id/post_fragment_recyclerViewComments"
@@ -255,6 +309,6 @@
 
    </LinearLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
 
 </layout>

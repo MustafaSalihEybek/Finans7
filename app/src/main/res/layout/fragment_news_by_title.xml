@@ -20,12 +20,12 @@
     <ImageView
         android:layout_width="match_parent"
         android:scaleType="fitXY"
-        android:downloadImg="@{newdata.MAINIMAGE}"
+        android:downloadImg="@{newdata.mainimage}"
         android:layout_height="210dp"/>
 
     <TextView
         android:layout_width="wrap_content"
-        android:text="@{newdata.POSTTIME}"
+        android:text="@{newdata.posttime}"
         android:layout_marginTop="5dp"
         android:textColor="?attr/boldColor"
         android:textSize="17sp"
@@ -39,7 +39,7 @@
         android:textColor="?attr/boldColor"
         android:lines="2"
         android:ellipsize="end"
-        android:text="@{newdata.POSTTITLE}"
+        android:text="@{newdata.posttitle}"
         android:layout_height="wrap_content"/>
 
 </LinearLayout>

@@ -1,41 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout>
+
+    <data>
+        <variable
+            name="defaultavatar"
+            type="com.finans7.model.Avatar" />
+    </data>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context=".view.CommentsFragment">
 
-    <androidx.appcompat.widget.Toolbar
+    <LinearLayout
         android:layout_width="match_parent"
-        android:background="@drawable/bar_bg"
-        android:layout_height="wrap_content">
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/comments_fragment_linearBottom"
+        android:id="@+id/comments_fragment_linearTop"
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:background="@drawable/bar_bg"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="22dp"
-                android:id="@+id/news_fragment_imgBack"
-                android:src="@drawable/arrow_back"
-                android:layout_height="22dp"
-                app:tint="?attr/appBarMenuColor"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:id="@+id/comments_fragment_imgBack"
+                    android:src="@drawable/arrow_back"
+                    android:layout_height="22dp"
+                    app:tint="?attr/appBarMenuColor"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Yorum Listesi"
+                    android:textSize="20sp"
+                    android:layout_marginStart="35dp"
+                    android:textColor="?attr/boldColor"
+                    android:fontFamily="@font/poppins_bold"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:id="@+id/comments_fragment_txtPostTitle"
+            android:layout_marginTop="5dp"
+            android:textColor="?attr/normalColor"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Ekmek Fiyatlarına Enerji Zammı Yolda!"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="end"
+            android:id="@+id/comments_fragment_linearShorting"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:text="Yorum Listesi"
-                android:textSize="20sp"
-                android:layout_marginStart="35dp"
-                android:textColor="?attr/boldColor"
+                android:text="Yeniden Eskiye"
+                android:textSize="15sp"
+                android:id="@+id/comments_fragment_txtShorting"
+                android:textColor="?attr/normalColor"
                 android:fontFamily="@font/poppins_bold"
                 android:layout_height="wrap_content"/>
 
+            <ImageView
+                android:layout_width="24dp"
+                android:rotation="90"
+                android:src="@drawable/ic_icon_right"
+                android:layout_height="24dp"
+                app:tint="?attr/normalColor"/>
+
         </LinearLayout>
 
-    </androidx.appcompat.widget.Toolbar>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:src="?attr/normalColor"
+            android:layout_height="0.5dp"/>
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:scrollbars="none"
+            android:layout_marginTop="10dp"
+            android:id="@+id/comments_fragment_recyclerView"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:id="@+id/comments_fragment_linearBottom"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="15dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/comments_fragment_imgAvatars"
+            android:layout_width="45dp"
+            android:downloadAvatarImg="@{defaultavatar.AVATARNAME}"
+            android:layout_height="45dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_toEndOf="@+id/comments_fragment_imgAvatars"
+            android:layout_toStartOf="@+id/comments_fragment_imgSend"
+            android:id="@+id/comments_fragment_linearComments"
+            android:background="@drawable/comment_box_bg"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/comments_fragment_editSearch"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="?attr/commentBoxBgColor"
+                android:hint="Yorum Yap"
+                android:lines="1"
+                android:textColor="?attr/commentBoxTextColor"
+                android:textColorHint="?attr/commentBoxTextColor"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:padding="10dp"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/comments_fragment_linearComments"
+            android:layout_alignTop="@+id/comments_fragment_linearComments"
+            android:id="@+id/comments_fragment_imgSend"
+            android:background="@drawable/send_bg"
+            android:src="@drawable/ic_send"
+            android:layout_height="35dp"
+            app:tint="?attr/commentBoxTextColor"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+</layout>

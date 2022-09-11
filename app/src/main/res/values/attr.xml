@@ -28,5 +28,11 @@
         <attr name="commentBoxTextColor" format="color"/>
         <attr name="splashBgColor" format="color"/>
         <attr name="navBgColor" format="color"/>
+        <attr name="commentCountBgColor" format="color"/>
+        <attr name="commentCountTextColor" format="color"/>
+        <attr name="settingsBgColor" format="color"/>
+        <attr name="seekBarBgColor" format="color"/>
+        <attr name="seekBarTintColor" format="color"/>
+        <attr name="seekBarThumbColor" format="color"/>
     </declare-styleable>
 </resources>

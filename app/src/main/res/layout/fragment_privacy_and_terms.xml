@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/settingsBgColor"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".view.settings.PrivacyAndTermsFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/settings_fragment_customAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bar_bg">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:id="@+id/privacy_and_terms_fragment_imgBack"
+                android:src="@drawable/arrow_back"
+                android:layout_centerVertical="true"
+                android:layout_height="20dp"
+                app:tint="?attr/appBarMenuColor"/>
+
+            <TextView
+                android:id="@+id/privacy_and_terms_fragment_txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="25dp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="?attr/appBarTextColor"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <WebView
+        android:layout_width="match_parent"
+        android:id="@+id/privacy_and_terms_fragment_webView"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+
+</layout>
