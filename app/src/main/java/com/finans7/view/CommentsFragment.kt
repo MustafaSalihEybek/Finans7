@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -52,6 +53,8 @@ class CommentsFragment : Fragment(), View.OnClickListener {
     private lateinit var selectedCommentData: CommentModel
     private var selectedCommentType: Int = 0
 
+    private var oneTimeLoadData: Boolean = true
+
     private fun init(){
         arguments?.let {
             postId = CommentsFragmentArgs.fromBundle(it).posId
@@ -62,6 +65,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
             commentsBinding.defaultavatar = selectedAvatar
 
             commentsBinding.commentsFragmentRecyclerView.setHasFixedSize(true)
+            commentsBinding.commentsFragmentRecyclerView.itemAnimator = null
             commentsLayoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
             commentsBinding.commentsFragmentRecyclerView.layoutManager = commentsLayoutManager
             commentsAdapter = CommentsAdapter(arrayListOf())
@@ -230,13 +234,14 @@ class CommentsFragment : Fragment(), View.OnClickListener {
     private fun attachUpcomingCommentsOnScrollListener(){
         commentsBinding.commentsFragmentRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val totalItemCount = commentsLayoutManager.itemCount
+                /*val totalItemCount = commentsLayoutManager.itemCount
                 val visibleItemCount = commentsLayoutManager.childCount
-                val firstVisibleItem = commentsLayoutManager.findFirstVisibleItemPosition()
+                val firstVisibleItem = commentsLayoutManager.findFirstVisibleItemPosition()*/
 
-                if ((firstVisibleItem + visibleItemCount) == totalItemCount){
+                if (oneTimeLoadData){
                     commentsBinding.commentsFragmentRecyclerView.removeOnScrollListener(this)
                     commentsViewModel.getCommentList(postId, commentsAdapter.itemCount, selectedShortingIn, AppUtil.getDeviceId(v.context))
+                    oneTimeLoadData = false
                 }
             }
         })

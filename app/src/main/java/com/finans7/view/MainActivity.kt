@@ -2,9 +2,13 @@ package com.finans7.view
 
 import android.app.Activity
 import android.content.res.Configuration
+import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowInsetsController
 import android.view.WindowManager
+import androidx.core.view.ViewCompat
 import com.finans7.R
 import com.finans7.util.Singleton
 
@@ -32,5 +36,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         Singleton.window = window
+
+        if (themeMode.equals("Dark")){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.insetsController?.setSystemBarsAppearance(
+                    0,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                )
+            } else {
+                val windowInsetController = ViewCompat.getWindowInsetsController(window.decorView)
+                windowInsetController?.isAppearanceLightStatusBars = true
+            }
+        }
     }
 }
