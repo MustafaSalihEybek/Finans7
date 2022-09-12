@@ -27,6 +27,13 @@
            android:id="@+id/new_fragment_imgNew"
            android:layout_height="220dp"/>
 
+       <WebView
+           android:layout_width="match_parent"
+           android:visibility="gone"
+           android:id="@+id/post_fragment_webViewPost"
+           android:layout_height="220dp"
+           tools:ignore="WebViewLayout" />
+
        <TextView
            android:layout_width="wrap_content"
            android:textSize="19sp"

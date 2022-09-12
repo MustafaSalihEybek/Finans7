@@ -146,7 +146,7 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
     private fun observeLiveData(){
         postViewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             it?.let {
-                println(it)
+                it.show(v, it)
             }
         })
 
@@ -175,24 +175,36 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun loadPostContent(postDetailModel: PostDetailModel){
+        postDetailModel.postDetailFromModel.videoname?.let {
+            if (!it.isEmpty())
+                loadNewsVideo(it)
+        }
+
         postBinding.postFragmentWebView.settings.javaScriptEnabled = true
         postBinding.postFragmentWebView.settings.setGeolocationEnabled(true)
         postBinding.postFragmentWebView.settings.textZoom = sharedPreferences.getFontSize()
-        postBinding.postFragmentWebView.loadDataWithBaseURL(null, "<style>img{display: inline;height: auto;max-width: 100%;}</style>" + postDetailModel.postDetailFromModel.postcontent, "text/html", "UTF-8", null)
+        postBinding.postFragmentWebView.loadDataWithBaseURL(null, "<style>img, iframe{display: inline;height: auto;max-width: 100%;}</style>" + postDetailModel.postDetailFromModel.postcontent, "text/html", "UTF-8", null)
 
         if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK) && Singleton.themeMode.equals("Dark")) {
             WebSettingsCompat.setForceDark(postBinding.postFragmentWebView.settings, WebSettingsCompat.FORCE_DARK_ON);
         }
 
-        postDetailModel.postDetailFromModel.commentcount?.let {
-            commentAmount = it
-        }
-
+        commentAmount = postDetailModel.commentList_1.size
         postBinding.postFragmentTxtCommentCount.text = commentAmount.toString()
     }
 
     private fun goToCommentsPage(postId: Int, postTitle: String){
         navDirections = NewsFragmentDirections.actionNewsFragmentToCommentsFragment(postId, postTitle)
         Navigation.findNavController(v).navigate(navDirections)
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun loadNewsVideo(videoName: String){
+        postBinding.newFragmentImgNew.visibility = View.GONE
+        postBinding.postFragmentWebViewPost.visibility = View.VISIBLE
+
+        postBinding.postFragmentWebViewPost.settings.javaScriptEnabled = true
+        postBinding.postFragmentWebViewPost.settings.setGeolocationEnabled(true)
+        postBinding.postFragmentWebViewPost.loadDataWithBaseURL(null, "<style>iframe{display: inline;height: 100vh;max-width: 100%;}</style>" + videoName, "text/html", "UTF-8", null)
     }
 }

@@ -21,7 +21,7 @@ data class PostListModel(
     val termid: String,
     val termname: String,
     val termslug: String,
-    val isvideo: @RawValue Any,
+    val isvideo: Boolean,
     val commentcount: @RawValue Any,
     val postviewcount: @RawValue Any,
     val imagewidth: Int,
@@ -31,6 +31,6 @@ data class PostListModel(
     val coverimage: @RawValue Any,
     val posttype: String,
     val posttime: String,
-    val videoname: @RawValue Any,
+    val videoname: String?,
     val sagmansetimage: @RawValue Any
 ) : Parcelable
