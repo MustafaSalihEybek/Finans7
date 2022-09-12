@@ -217,7 +217,10 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
             WebSettingsCompat.setForceDark(postBinding.postFragmentWebView.settings, WebSettingsCompat.FORCE_DARK_ON);
         }
 
-        commentAmount = postDetailModel.commentList_1.size
+        postDetailModel.postDetailFromModel.commentcount?.let {
+            commentAmount = it
+        }
+
         postBinding.postFragmentTxtCommentCount.text = commentAmount.toString()
     }
 

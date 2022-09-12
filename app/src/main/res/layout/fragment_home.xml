@@ -19,23 +19,26 @@
             android:background="@drawable/pager_bg"
             android:layout_height="wrap_content">
 
-            <androidx.viewpager.widget.ViewPager
+            <com.finans7.adapter.InfiniteScrollViewPager
                 android:id="@+id/home_fragment_viewPagerMainHeadline"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_alignParentTop="true"
                 android:scrollbars="none" />
 
-            <me.relex.circleindicator.CircleIndicator
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="24dp"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="5dp"
                 android:layout_below="@+id/home_fragment_viewPagerMainHeadline"
-                android:id="@+id/home_fragment_circleIndicator"
-                app:ci_orientation="horizontal"
-                app:ci_drawable="@drawable/circle_indicator_selected"
-                app:ci_drawable_unselected="@drawable/circle_indicator_unselected"/>
+                android:id="@+id/home_fragment_linearIndicator"
+                android:layout_height="wrap_content">
+
+
+
+            </LinearLayout>
 
         </RelativeLayout>
 

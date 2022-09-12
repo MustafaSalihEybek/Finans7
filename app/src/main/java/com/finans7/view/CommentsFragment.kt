@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.finans7.R
 import com.finans7.adapter.CommentsAdapter
 import com.finans7.databinding.FragmentCommentsBinding
@@ -39,6 +40,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
 
     private lateinit var rootComment: RootComment
     private lateinit var commentsAdapter: CommentsAdapter
+    private lateinit var commentsLayoutManager: LinearLayoutManager
 
     private lateinit var commentValue: String
     private lateinit var selectedAvatar: Avatar
@@ -60,7 +62,8 @@ class CommentsFragment : Fragment(), View.OnClickListener {
             commentsBinding.defaultavatar = selectedAvatar
 
             commentsBinding.commentsFragmentRecyclerView.setHasFixedSize(true)
-            commentsBinding.commentsFragmentRecyclerView.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
+            commentsLayoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
+            commentsBinding.commentsFragmentRecyclerView.layoutManager = commentsLayoutManager
             commentsAdapter = CommentsAdapter(arrayListOf())
             commentsBinding.commentsFragmentRecyclerView.adapter = commentsAdapter
 
@@ -164,6 +167,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
                 commentList = it.commentList
 
                 commentsAdapter.loadData(commentList)
+                attachUpcomingCommentsOnScrollListener()
             }
         })
 
@@ -219,6 +223,21 @@ class CommentsFragment : Fragment(), View.OnClickListener {
                 selectedShortingIn = shortIn
                 commentsBinding.commentsFragmentTxtShorting.text = shortName
                 commentsViewModel.getCommentList(postId, 0, selectedShortingIn, AppUtil.getDeviceId(v.context))
+            }
+        })
+    }
+
+    private fun attachUpcomingCommentsOnScrollListener(){
+        commentsBinding.commentsFragmentRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val totalItemCount = commentsLayoutManager.itemCount
+                val visibleItemCount = commentsLayoutManager.childCount
+                val firstVisibleItem = commentsLayoutManager.findFirstVisibleItemPosition()
+
+                if ((firstVisibleItem + visibleItemCount) == totalItemCount){
+                    commentsBinding.commentsFragmentRecyclerView.removeOnScrollListener(this)
+                    commentsViewModel.getCommentList(postId, commentsAdapter.itemCount, selectedShortingIn, AppUtil.getDeviceId(v.context))
+                }
             }
         })
     }

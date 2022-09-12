@@ -22,7 +22,7 @@ data class PostListModel(
     val termname: String,
     val termslug: String,
     val isvideo: Boolean,
-    val commentcount: @RawValue Any,
+    val commentcount: Int?,
     val postviewcount: @RawValue Any,
     val imagewidth: Int,
     val imageheight: Int,

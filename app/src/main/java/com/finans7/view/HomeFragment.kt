@@ -1,10 +1,13 @@
 package com.finans7.view
 
+import android.media.Image
 import android.os.*
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
@@ -34,6 +37,7 @@ class HomeFragment() : Fragment(), View.OnClickListener {
     private lateinit var homePageNews: HomePageNews
     private lateinit var imageUrlList: ArrayList<String>
     private lateinit var newsImagesPagerAdapter: NewsImagesPagerAdapter
+    private lateinit var infiniteScrollPagerAdapter: InfiniteScrollPagerAdapter
 
     private lateinit var fourNewsAdapter: FourNewsAdapter
     private lateinit var newsByTitleAdapter: NewsFragmentAdapter
@@ -52,6 +56,11 @@ class HomeFragment() : Fragment(), View.OnClickListener {
     private var loadLastData: Boolean = false
     private var amount: Int = 0
 
+    private lateinit var dotsImages: ArrayList<ImageView>
+    private lateinit var newDotImage: ImageView
+    private lateinit var newDotParams: LinearLayout.LayoutParams
+    private var realSliderPosition: Int = 0
+
     private fun init(){
         homeBinding.homeFragmentRecyclerViewFourNews.setHasFixedSize(true)
         homeBinding.homeFragmentRecyclerViewFourNews.layoutManager = GridLayoutManager(v.context, 2)
@@ -63,7 +72,7 @@ class HomeFragment() : Fragment(), View.OnClickListener {
 
         if (!Singleton.homeIsCreated){
             homeViewModel.getHomePageNews()
-            AppUtil.showSplashDialog(v.context)
+           // AppUtil.showSplashDialog(v.context)
         }
 
         homeBinding.homeFragmentImgLastNewsRight.setOnClickListener(this)
@@ -119,7 +128,7 @@ class HomeFragment() : Fragment(), View.OnClickListener {
 
                     Singleton.homePageNews = homePageNews
                     Singleton.homeIsCreated = true
-                    closeSplashDialog()
+                    //closeSplashDialog()
                 }
             }
         })
@@ -186,20 +195,19 @@ class HomeFragment() : Fragment(), View.OnClickListener {
 
     private fun loadSlide(mainHeadLine: List<PostListModel>){
         imageUrlList = ArrayList()
+        dotsImages = ArrayList()
 
         for (headline in mainHeadLine)
             imageUrlList.add(AppUtil.getPostImageUrl(headline.mainimage))
 
         newsImagesPagerAdapter = NewsImagesPagerAdapter(imageUrlList, v.context)
+        infiniteScrollPagerAdapter = InfiniteScrollPagerAdapter(newsImagesPagerAdapter)
 
-        homeBinding.homeFragmentViewPagerMainHeadline.adapter = newsImagesPagerAdapter
+        homeBinding.homeFragmentViewPagerMainHeadline.adapter = infiniteScrollPagerAdapter
         homeBinding.homeFragmentViewPagerMainHeadline.isSaveEnabled = false
 
         if (Singleton.homeIsCreated)
             homeBinding.homeFragmentViewPagerMainHeadline.currentItem = Singleton.sliderCurrentPage
-
-        homeBinding.homeFragmentCircleIndicator.setViewPager(homeBinding.homeFragmentViewPagerMainHeadline)
-        newsImagesPagerAdapter.registerDataSetObserver(homeBinding.homeFragmentCircleIndicator.dataSetObserver)
 
         homeBinding.homeFragmentViewPagerMainHeadline.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrolled(
@@ -209,33 +217,46 @@ class HomeFragment() : Fragment(), View.OnClickListener {
             ) {}
 
             override fun onPageSelected(position: Int) {
+                realSliderPosition = (position % imageUrlList.size)
+                transitionDots()
             }
 
-            override fun onPageScrollStateChanged(state: Int) {
-                /*if (state == ViewPager.SCROLL_STATE_IDLE){
-                    if (homeBinding.homeFragmentViewPagerMainHeadline.currentItem == 0 && !isFirstItem)
-                        isFirstItem = true
-                    else if (homeBinding.homeFragmentViewPagerMainHeadline.currentItem == (imageUrlList.size - 1) && !isLastItem)
-                        isLastItem = true
-
-                    if (isLastItem) {
-                        homeBinding.homeFragmentViewPagerMainHeadline.currentItem = 0
-                        saveScrollState("Last")
-                    }
-
-                    if (isFirstItem){
-                        homeBinding.homeFragmentViewPagerMainHeadline.currentItem = (imageUrlList.size - 1)
-                        saveScrollState("First")
-                    }
-                }*/
-            }
+            override fun onPageScrollStateChanged(state: Int) {}
         })
+
+        initDotsLayout(imageUrlList.size)
+        realSliderPosition = 0
+        transitionDots()
 
         newsImagesPagerAdapter.setOnNewsSliderOnItemClickListener(object : NewsImagesPagerAdapter.NewsSliderOnClickListener{
             override fun onItemClick(newsIn: Int) {
                 goToNewsPage(mainHeadLine, newsIn)
             }
         })
+    }
+
+    private fun initDotsLayout(aSize: Int){
+        homeBinding.homeFragmentLinearIndicator.removeAllViews()
+
+        for (d in 0 until aSize){
+            newDotImage = ImageView(v.context)
+            newDotParams = LinearLayout.LayoutParams(25, 25)
+            newDotParams.setMargins(10, 15, 10, 15)
+            newDotImage.layoutParams = newDotParams
+            newDotImage.setBackgroundResource(R.drawable.circle_indicator_unselected)
+
+            dotsImages.add(newDotImage)
+            homeBinding.homeFragmentLinearIndicator.addView(newDotImage)
+        }
+    }
+
+    private fun transitionDots(){
+        for (d in dotsImages.indices){
+            if (d == realSliderPosition)
+                dotsImages[d].setBackgroundResource(R.drawable.circle_indicator_selected)
+            else
+                dotsImages[d].setBackgroundResource(R.drawable.circle_indicator_unselected)
+        }
     }
 
     private fun loadFourNews(fourNews: List<PostListModel>){

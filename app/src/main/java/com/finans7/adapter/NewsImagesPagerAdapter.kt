@@ -1,14 +1,16 @@
 package com.finans7.adapter
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
+import com.bumptech.glide.Glide
+import com.finans7.R
 import com.finans7.util.downloadImageUrl
 
 class NewsImagesPagerAdapter(val imageUrlList: ArrayList<String>, val context: Context) : PagerAdapter() {
-    private lateinit var imgPage: ImageView
     private lateinit var listener: NewsSliderOnClickListener
 
     override fun getCount() = imageUrlList.size
@@ -16,16 +18,17 @@ class NewsImagesPagerAdapter(val imageUrlList: ArrayList<String>, val context: C
     override fun isViewFromObject(view: View, `object`: Any) = view == `object`
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        imgPage = ImageView(context)
-        imgPage.scaleType = ImageView.ScaleType.FIT_XY
-        imgPage.downloadImageUrl(imageUrlList.get(position))
+        val inflater: LayoutInflater = container.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view: View = inflater.inflate(R.layout.slider_item, null)
+        val imgView: ImageView = view.findViewById(R.id.slider_item_imgNews)
+        Glide.with(context).load(imageUrlList.get(position)).override(600, 400).into(imgView)
 
-        imgPage.setOnClickListener {
+        imgView.setOnClickListener {
             listener.onItemClick(position)
         }
 
-        container.addView(imgPage)
-        return imgPage
+        container.addView(view)
+        return view
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
