@@ -7,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
-import com.finans7.R
 import com.finans7.databinding.FragmentNewsByTitleBinding
 import com.finans7.model.categorynews.PostListModel
-import com.finans7.model.homepage.News
+import com.finans7.util.AppUtil
 
 class NewsByTitleFragment(val newsData: PostListModel, val newsList: List<PostListModel>, val newsIn: Int) : Fragment() {
     private lateinit var v: View
@@ -40,7 +39,7 @@ class NewsByTitleFragment(val newsData: PostListModel, val newsList: List<PostLi
     }
 
     private fun goToNewsPage(newsList: List<PostListModel>, newsIn: Int){
-        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(newsList.toTypedArray(), newsIn)
+        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(AppUtil.getPostIdList(newsList), newsIn)
         Navigation.findNavController(v).navigate(navDirections)
     }
 }

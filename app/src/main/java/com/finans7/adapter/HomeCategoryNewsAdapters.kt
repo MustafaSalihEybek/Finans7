@@ -8,7 +8,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.finans7.databinding.HomeCategoryNewsItemBinding
 import com.finans7.model.categorynews.PostListModel
-import com.finans7.model.homepage.News
+import com.finans7.util.AppUtil
 import com.finans7.view.MainFragmentDirections
 
 class HomeCategoryNewsAdapters(val newsList: List<PostListModel>, val vV: View) : RecyclerView.Adapter<HomeCategoryNewsAdapters.HomeCategoryNewsHolder>() {
@@ -37,7 +37,7 @@ class HomeCategoryNewsAdapters(val newsList: List<PostListModel>, val vV: View) 
     inner class HomeCategoryNewsHolder(var hCV: HomeCategoryNewsItemBinding) : RecyclerView.ViewHolder(hCV.root)
 
     private fun goToNewsDetailPage(newsData: PostListModel){
-        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(arrayOf(newsData), 0)
+        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(AppUtil.getPostIdList(arrayListOf(newsData)), 0)
         Navigation.findNavController(vV).navigate(navDirections)
     }
 }

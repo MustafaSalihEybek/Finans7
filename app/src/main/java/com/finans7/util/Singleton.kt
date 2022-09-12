@@ -2,11 +2,15 @@ package com.finans7.util
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.widget.NestedScrollView
+import androidx.viewpager2.widget.ViewPager2
 import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.HomePageNews
+import com.finans7.model.postdetail.PostDetailModel
 
 class Singleton {
     @SuppressLint("StaticFieldLeak")
@@ -59,6 +63,12 @@ class Singleton {
         var searchIsCreated: Boolean = false
         var searchedValue: String = ""
         var postList: ArrayList<PostListModel> = arrayListOf()
+
+        var postDetailIsCreated: Boolean = false
+        var newsIsCreated: Boolean = false
+        var postDetailSliderIn: Int = 0
+        lateinit var postDetailModel: PostDetailModel
+        lateinit var postDetailSlider: ViewPager2
 
         lateinit var window: Window
 

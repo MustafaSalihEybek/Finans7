@@ -11,9 +11,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.finans7.api.AppAPI
 import com.finans7.model.Tag
+import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.comment.CommentModel
 import com.finans7.model.favorite.CommentFavoriteResponse
-import com.finans7.model.homepage.News
 import com.finans7.repository.*
 import com.finans7.view.FooterFragment
 import com.finans7.view.dialog.SplashDialog
@@ -46,8 +46,6 @@ object AppUtil {
 
     @SuppressLint("StaticFieldLeak")
     private lateinit var splashDialog: SplashDialog
-
-    lateinit var newsData: News
 
     fun getAppAPI() : AppAPI {
         return Retrofit.Builder()
@@ -226,6 +224,15 @@ object AppUtil {
         }
 
         return comments
+    }
+
+    fun getPostIdList(newsList: List<PostListModel>) : IntArray {
+        val idList: ArrayList<Int> = ArrayList()
+
+        for (n in newsList.indices)
+            idList.add(newsList.get(n).postid)
+
+        return idList.toIntArray()
     }
 
     fun showSplashDialog(mContext: Context){

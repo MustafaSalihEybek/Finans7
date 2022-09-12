@@ -1,6 +1,8 @@
 package com.finans7.view
 
+import android.content.Intent
 import android.media.Image
+import android.net.Uri
 import android.os.*
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,6 +29,7 @@ import com.finans7.util.AppUtil
 import com.finans7.util.Singleton
 import com.finans7.util.show
 import com.finans7.viewmodel.HomeViewModel
+import com.google.firebase.messaging.RemoteMessage
 
 class HomeFragment() : Fragment(), View.OnClickListener {
     private lateinit var v: View
@@ -51,15 +54,15 @@ class HomeFragment() : Fragment(), View.OnClickListener {
     private lateinit var categoryNewsList: ArrayList<ArrayList<PostListModel>>
     private lateinit var homeNewsByCategoryAdapters: HomeNewsByCategoryAdapters
 
-    private var isLastItem: Boolean = false
-    private var isFirstItem: Boolean = false
-    private var loadLastData: Boolean = false
     private var amount: Int = 0
 
     private lateinit var dotsImages: ArrayList<ImageView>
     private lateinit var newDotImage: ImageView
     private lateinit var newDotParams: LinearLayout.LayoutParams
     private var realSliderPosition: Int = 0
+
+    private var notificationNewsId: String = ""
+    private var notificationType: String = ""
 
     private fun init(){
         homeBinding.homeFragmentRecyclerViewFourNews.setHasFixedSize(true)
@@ -72,7 +75,7 @@ class HomeFragment() : Fragment(), View.OnClickListener {
 
         if (!Singleton.homeIsCreated){
             homeViewModel.getHomePageNews()
-           // AppUtil.showSplashDialog(v.context)
+            AppUtil.showSplashDialog(v.context)
         }
 
         homeBinding.homeFragmentImgLastNewsRight.setOnClickListener(this)
@@ -101,6 +104,17 @@ class HomeFragment() : Fragment(), View.OnClickListener {
         if (Singleton.homeIsCreated){
             homePageNews = Singleton.homePageNews
             loadAllData(homePageNews)
+        } else {
+            val intent = requireActivity().intent
+            handleIntent(intent)
+        }
+
+        homeBinding.homeFragmentSwipeRefreshLayout.setOnRefreshListener {
+            Handler(Looper.getMainLooper()).postDelayed({
+                Singleton.homeIsCreated = false
+                homeViewModel.getHomePageNews()
+                homeBinding.homeFragmentSwipeRefreshLayout.isRefreshing = false
+            }, 2000)
         }
     }
 
@@ -128,7 +142,7 @@ class HomeFragment() : Fragment(), View.OnClickListener {
 
                     Singleton.homePageNews = homePageNews
                     Singleton.homeIsCreated = true
-                    //closeSplashDialog()
+                    closeSplashDialog()
                 }
             }
         })
@@ -138,6 +152,45 @@ class HomeFragment() : Fragment(), View.OnClickListener {
                 it.show(v, it)
             }
         })
+    }
+
+
+    fun handleIntent(intent: Intent) {
+        try {
+            if (intent.extras != null) {
+                val builder = RemoteMessage.Builder("MyFirebaseMessagingService")
+                for (key in intent.extras!!.keySet()) {
+                    if (key.equals("Bildirim_Id") || key.equals("Bildirim_Tipi")){
+                        if (key.equals("Bildirim_Id"))
+                            notificationNewsId = intent.extras!![key].toString()
+                        else if (key.equals("Bildirim_Tipi"))
+                            notificationType = intent.extras!![key].toString()
+
+                        builder.addData(key!!, intent.extras!![key].toString())
+                    }
+                }
+
+                setNotificationProcess(notificationNewsId, notificationType)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun setNotificationProcess(newsId: String, type: String){
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (Singleton.homeIsCreated){
+                if (type.equals("1")){
+                    navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(intArrayOf(newsId.toInt()), 0)
+                    Navigation.findNavController(v).navigate(navDirections)
+                } else {
+                    val webIntent: Intent = Intent(Intent.ACTION_VIEW)
+                    webIntent.data = Uri.parse(newsId)
+                    v.context.startActivity(webIntent)
+                }
+            } else
+                setNotificationProcess(newsId, type)
+        }, 100)
     }
 
     private fun loadAllData(homePageNews: HomePageNews){
@@ -283,8 +336,6 @@ class HomeFragment() : Fragment(), View.OnClickListener {
         homeBinding.homeFragmentViewPagerLastNews.isSaveEnabled = false
 
         if (Singleton.homeIsCreated){
-            println("${Singleton.lastNewsCurrentPage} => ${homeBinding.homeFragmentViewPagerLastNews.currentItem}")
-
             Handler(Looper.getMainLooper()).postDelayed({
                 homeBinding.homeFragmentViewPagerLastNews.currentItem = Singleton.lastNewsCurrentPage
             }, 25)
@@ -402,7 +453,7 @@ class HomeFragment() : Fragment(), View.OnClickListener {
     }
 
     private fun goToNewsPage(newsList: List<PostListModel>, newsIn: Int){
-        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(newsList.toTypedArray(), newsIn)
+        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(AppUtil.getPostIdList(newsList), newsIn)
         Navigation.findNavController(v).navigate(navDirections)
     }
 }

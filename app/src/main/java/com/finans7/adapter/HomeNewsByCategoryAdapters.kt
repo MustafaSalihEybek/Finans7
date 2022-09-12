@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.finans7.databinding.HomeNewsByCategoryItemBinding
 import com.finans7.model.categorynews.PostListModel
-import com.finans7.model.homepage.News
 import com.finans7.view.MainFragmentDirections
 
 class HomeNewsByCategoryAdapters(val categoryNewsPair: Pair<ArrayList<String>, ArrayList<ArrayList<PostListModel>>>, val vV: View) : RecyclerView.Adapter<HomeNewsByCategoryAdapters.HomeNewsByCategoryHolder>() {

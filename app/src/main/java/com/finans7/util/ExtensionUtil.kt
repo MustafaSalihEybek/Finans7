@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.finans7.R
 import com.finans7.model.categorynews.PostListModel
-import com.finans7.model.homepage.News
 import com.google.android.material.snackbar.Snackbar
 
 fun String.show(v: View, msg: String){
@@ -55,13 +54,10 @@ fun downloadUserImage(view: ImageView, imageName: String?){
     }
 }
 
-@BindingAdapter("android:setNewsDate")
-fun setNewsDate(view: TextView, news: News){
-    if (news.insertday != null && news.insertmonth != null && news.insertyear != null)
-        view.text = "${AppUtil.getEditNumberByString(news.insertday)}.${AppUtil.getEditNumberByString(news.insertmonth)}.${AppUtil.getEditNumberByString(news.insertyear)} ${news.posttime}"
-}
-
 @BindingAdapter("android:setPostDate")
-fun setPostDate(view: TextView, post: PostListModel){
-    view.text = "${AppUtil.getEditNumberByString(post.insertday.toInt())}.${AppUtil.getEditNumberByString(post.insertmonth.toInt())}.${AppUtil.getEditNumberByString(post.insertyear.toInt())} ${post.posttime}"
+fun setPostDate(view: TextView, post: PostListModel?){
+    post?.let {
+        if (post.insertday != null && post.insertyear != null && post.insertmonth != null && post.posttime != null)
+            view.text = "${AppUtil.getEditNumberByString(post.insertday.toInt())}.${AppUtil.getEditNumberByString(post.insertmonth.toInt())}.${AppUtil.getEditNumberByString(post.insertyear.toInt())} ${post.posttime}"
+    }
 }

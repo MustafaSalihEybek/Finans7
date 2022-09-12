@@ -1,7 +1,5 @@
 package com.finans7.model.postdetail
 
-import com.finans7.model.homepage.News
-
 data class PostDetailFromModel(
     val postid: Int,
     val categoryid: Int,

@@ -70,7 +70,7 @@
                    android:layout_height="wrap_content"
                    android:layout_marginStart="5dp"
                    android:fontFamily="@font/poppins_medium"
-                   android:text="@{postdata.authornamesurname}"
+                   android:text="Editör"
                    android:textColor="?attr/normalColor"
                    android:textSize="14sp" />
 

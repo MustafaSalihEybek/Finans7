@@ -8,6 +8,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.finans7.databinding.NewsByCategoryItemBinding
 import com.finans7.model.categorynews.PostListModel
+import com.finans7.util.AppUtil
 import com.finans7.view.MainFragmentDirections
 import com.finans7.view.NewsByCategoryFragmentDirections
 
@@ -43,9 +44,9 @@ class NewsByCategoryAdapter(var postList: ArrayList<PostListModel>, val vV: View
 
     private fun goToNewsPage(postData: PostListModel){
         if (!fromMain)
-            navDirections = NewsByCategoryFragmentDirections.actionNewsByCategoryFragmentToNewsFragment(arrayOf(postData), 0)
+            navDirections = NewsByCategoryFragmentDirections.actionNewsByCategoryFragmentToNewsFragment(AppUtil.getPostIdList(arrayListOf(postData)), 0)
         else
-            navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(arrayOf(postData), 0)
+            navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(AppUtil.getPostIdList(arrayListOf(postData)), 0)
 
         Navigation.findNavController(vV).navigate(navDirections)
     }

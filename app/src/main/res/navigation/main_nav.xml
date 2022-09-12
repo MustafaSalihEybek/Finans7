@@ -33,8 +33,8 @@
             app:argType="integer"
             android:defaultValue="0" />
         <argument
-            android:name="postList"
-            app:argType="com.finans7.model.categorynews.PostListModel[]" />
+            android:name="postIdList"
+            app:argType="integer[]" />
         <action
             android:id="@+id/action_newsFragment_to_commentsFragment"
             app:destination="@id/commentsFragment" />

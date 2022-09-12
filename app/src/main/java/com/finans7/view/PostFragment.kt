@@ -29,8 +29,7 @@ import com.finans7.util.Singleton
 import com.finans7.util.show
 import com.finans7.viewmodel.PostViewModel
 
-
-class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListener {
+class PostFragment(val postId: Int) : Fragment(), View.OnClickListener {
     private lateinit var v: View
     private lateinit var postBinding: FragmentPostBinding
     private lateinit var postViewModel: PostViewModel
@@ -39,6 +38,7 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
     private lateinit var commentsAdapter: CommentsAdapter
     private lateinit var postDetailModel: PostDetailModel
 
+    private lateinit var postData: PostListModel
     private lateinit var tagList: ArrayList<Tag>
     private lateinit var tagsAdapter: TagsAdapter
 
@@ -50,16 +50,7 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
     private var selectedCommentType: Int = 0
 
     private fun init(){
-        postBinding.postdata = postData
-        tagList = AppUtil.getTagList(postData.tags)
-
         sharedPreferences = SharedPreferences(v.context)
-
-        postBinding.postFragmentRecyclerViewTags.setHasFixedSize(true)
-        postBinding.postFragmentRecyclerViewTags.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.HORIZONTAL, false)
-        tagsAdapter = TagsAdapter(tagList, v)
-        postBinding.postFragmentRecyclerViewTags.addItemDecoration(LinearManagerDecoration(0, Singleton.H_SIZE_TAG, tagList.size, false, true))
-        postBinding.postFragmentRecyclerViewTags.adapter = tagsAdapter
 
         postBinding.postFragmentRecyclerViewComments.setHasFixedSize(true)
         postBinding.postFragmentRecyclerViewComments.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
@@ -68,20 +59,11 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
 
         postViewModel = ViewModelProvider(this).get(PostViewModel::class.java)
         observeLiveData()
-        postViewModel.getPostDetail(postData.postid, AppUtil.getDeviceId(v.context))
+
+        if (!Singleton.postDetailIsCreated)
+            postViewModel.getPostDetail(postId, AppUtil.getDeviceId(v.context))
 
         AppUtil.loadFooterFragment(R.id.post_fragment_footerFrameLayout, childFragmentManager, false)
-
-        postBinding.postFragmentLinearComments.setOnClickListener(this)
-        postBinding.postFragmentEditSearch.setOnClickListener(this)
-        postBinding.postFragmentRelativeCommentCount.setOnClickListener(this)
-        postBinding.postFragmentImgMessage.setOnClickListener(this)
-        postBinding.postFragmentImgShare.setOnClickListener(this)
-        postBinding.postFragmentImgFacebook.setOnClickListener(this)
-        postBinding.postFragmentImgTwitter.setOnClickListener(this)
-        postBinding.postFragmentImgGmail.setOnClickListener(this)
-        postBinding.postFragmentImgPinterest.setOnClickListener(this)
-        postBinding.postFragmentImgWhatsApp.setOnClickListener(this)
     }
 
     override fun onCreateView(
@@ -97,6 +79,11 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
         v = view
         init()
 
+        if (Singleton.postDetailIsCreated){
+            postDetailModel = Singleton.postDetailModel
+            setPostDetailData(postDetailModel)
+        }
+
         commentsAdapter.setOnUpdateFavoriteClickListener(object : CommentsAdapter.UpdateFavoriteClickListener{
             override fun onUpdateClick(commentData: CommentModel, commentType: Int) {
                 selectedCommentData = commentData
@@ -105,7 +92,7 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
                 postViewModel.updateFavoriteComment(
                     FavoritePostModel(
                         AppUtil.getDeviceId(v.context),
-                        postData.postid,
+                        postId,
                         commentType
                     )
                 )
@@ -175,21 +162,8 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
         postViewModel.postDetailModel.observe(viewLifecycleOwner, Observer {
             it?.let {
                 postDetailModel = it
-                commentList = it.commentList_1
-
-                postBinding.postFragmentProgressBar.visibility = View.GONE
-                postBinding.postFragmentWebView.visibility = View.VISIBLE
-
-                if (postDetailModel.commentList_1.isNotEmpty()){
-                    postBinding.postFragmentTxtCommentMessage.visibility = View.GONE
-                    postBinding.postFragmentRecyclerViewComments.visibility = View.VISIBLE
-                } else {
-                    postBinding.postFragmentRecyclerViewComments.visibility = View.GONE
-                    postBinding.postFragmentTxtCommentMessage.visibility = View.VISIBLE
-                }
-
-                commentsAdapter.loadData(commentList)
-                loadPostContent(postDetailModel)
+                Singleton.postDetailModel = it
+                setPostDetailData(postDetailModel)
             }
         })
 
@@ -199,6 +173,33 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
                 commentsAdapter.loadData(commentList)
             }
         })
+    }
+
+    private fun setPostDetailData(postDetailModel: PostDetailModel){
+        commentList = postDetailModel.commentList_1
+
+        postData = postDetailModel.postDetailFromModel
+        postBinding.postdata = postData
+        tagList = AppUtil.getTagList(postData.tags)
+
+        postBinding.postFragmentProgressBar.visibility = View.GONE
+        postBinding.postFragmentWebView.visibility = View.VISIBLE
+
+        if (postDetailModel.commentList_1.isNotEmpty()){
+            postBinding.postFragmentTxtCommentMessage.visibility = View.GONE
+            postBinding.postFragmentRecyclerViewComments.visibility = View.VISIBLE
+        } else {
+            postBinding.postFragmentRecyclerViewComments.visibility = View.GONE
+            postBinding.postFragmentTxtCommentMessage.visibility = View.VISIBLE
+        }
+
+        commentsAdapter.loadData(commentList)
+        loadPostContent(postDetailModel)
+        loadTagsData()
+        setAllClickSettings()
+
+        if (!Singleton.postDetailIsCreated)
+            Singleton.postDetailIsCreated = true
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -227,6 +228,27 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
     private fun goToCommentsPage(postId: Int, postTitle: String){
         navDirections = NewsFragmentDirections.actionNewsFragmentToCommentsFragment(postId, postTitle)
         Navigation.findNavController(v).navigate(navDirections)
+    }
+
+    private fun loadTagsData(){
+        postBinding.postFragmentRecyclerViewTags.setHasFixedSize(true)
+        postBinding.postFragmentRecyclerViewTags.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.HORIZONTAL, false)
+        tagsAdapter = TagsAdapter(tagList, v)
+        postBinding.postFragmentRecyclerViewTags.addItemDecoration(LinearManagerDecoration(0, Singleton.H_SIZE_TAG, tagList.size, false, true))
+        postBinding.postFragmentRecyclerViewTags.adapter = tagsAdapter
+    }
+
+    private fun setAllClickSettings(){
+        postBinding.postFragmentLinearComments.setOnClickListener(this)
+        postBinding.postFragmentEditSearch.setOnClickListener(this)
+        postBinding.postFragmentRelativeCommentCount.setOnClickListener(this)
+        postBinding.postFragmentImgMessage.setOnClickListener(this)
+        postBinding.postFragmentImgShare.setOnClickListener(this)
+        postBinding.postFragmentImgFacebook.setOnClickListener(this)
+        postBinding.postFragmentImgTwitter.setOnClickListener(this)
+        postBinding.postFragmentImgGmail.setOnClickListener(this)
+        postBinding.postFragmentImgPinterest.setOnClickListener(this)
+        postBinding.postFragmentImgWhatsApp.setOnClickListener(this)
     }
 
     @SuppressLint("SetJavaScriptEnabled")

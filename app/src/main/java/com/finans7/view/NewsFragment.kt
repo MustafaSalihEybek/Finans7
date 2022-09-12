@@ -10,11 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import androidx.viewpager2.widget.ViewPager2
 import com.finans7.R
 import com.finans7.adapter.NewsFragmentAdapter
 import com.finans7.databinding.FragmentNewsBinding
-import com.finans7.model.categorynews.PostListModel
-import com.finans7.model.homepage.News
 import com.finans7.util.Singleton
 
 class NewsFragment : Fragment(), View.OnClickListener {
@@ -22,23 +21,45 @@ class NewsFragment : Fragment(), View.OnClickListener {
     private lateinit var newsBinding: FragmentNewsBinding
     private lateinit var newsFragmentAdapter: NewsFragmentAdapter
 
-    private lateinit var postList: Array<PostListModel>
+    private lateinit var postIdList: IntArray
     private var newsIn: Int = 0
 
     private fun init(){
         arguments?.let {
-            postList = NewsFragmentArgs.fromBundle(it).postList
+            postIdList = NewsFragmentArgs.fromBundle(it).postIdList
             newsIn = NewsFragmentArgs.fromBundle(it).newsIn
 
             newsFragmentAdapter = NewsFragmentAdapter(this)
 
-            for (post in postList)
-                newsFragmentAdapter.addFragment(PostFragment(post))
+            Singleton.postDetailIsCreated = false
+
+            for (id in postIdList)
+                newsFragmentAdapter.addFragment(PostFragment(id))
 
             newsBinding.newsFragmentViewPager.adapter = newsFragmentAdapter
+            Singleton.postDetailSlider = newsBinding.newsFragmentViewPager
+
+            newsBinding.newsFragmentViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {}
+
+                override fun onPageSelected(position: Int) {
+                    Singleton.postDetailSliderIn = position
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+                    Singleton.postDetailIsCreated = false
+                }
+            })
 
             Handler(Looper.getMainLooper()).postDelayed({
-                newsBinding.newsFragmentViewPager.setCurrentItem(newsIn, false)
+                if (Singleton.postDetailSliderIn != 0)
+                    newsBinding.newsFragmentViewPager.setCurrentItem(Singleton.postDetailSliderIn, false)
+                else
+                    newsBinding.newsFragmentViewPager.setCurrentItem(newsIn, false)
             }, 100)
 
             newsBinding.newsFragmentImgBack.setOnClickListener(this)

@@ -24,7 +24,7 @@ class SharedPreferences {
         sharedEdit.commit()
     }
 
-    fun getFontSize() = sharedPref.getInt("FontSize", 80)
+    fun getFontSize() = sharedPref.getInt("FontSize", 100)
 
     fun getUserTopic() = sharedPref.getBoolean("UserTopic", false)
 }

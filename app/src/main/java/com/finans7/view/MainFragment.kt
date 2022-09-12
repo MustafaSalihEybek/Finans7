@@ -97,6 +97,8 @@ class MainFragment : Fragment(), View.OnClickListener {
             mainBinding.mainFragmentImgNavAppLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
         }
 
+        //generateFirebaseToken()
+
         mainBinding.mainFragmentImgTwitter.setOnClickListener(this)
         mainBinding.mainFragmentImgInstagram.setOnClickListener(this)
         mainBinding.navHeaderLinearSettings.setOnClickListener(this)
@@ -201,11 +203,11 @@ class MainFragment : Fragment(), View.OnClickListener {
         })
     }
 
-    /*private fun generateFirebaseToken(){
+    private fun generateFirebaseToken(){
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
             println("Token: $it")
         }
-    }*/
+    }
 
     private fun scrollToFirstPosition(){
         Handler(Looper.getMainLooper()).postDelayed({

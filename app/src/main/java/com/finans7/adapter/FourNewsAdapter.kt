@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.finans7.databinding.FourNewItemBinding
 import com.finans7.model.categorynews.PostListModel
-import com.finans7.model.homepage.News
 
 class FourNewsAdapter(private var newsList: List<PostListModel>) : RecyclerView.Adapter<FourNewsAdapter.FourNewsHolder>() {
     private lateinit var v: FourNewItemBinding
