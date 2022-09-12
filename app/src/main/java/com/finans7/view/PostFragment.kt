@@ -18,7 +18,10 @@ import com.finans7.adapter.decoration.LinearManagerDecoration
 import com.finans7.databinding.FragmentPostBinding
 import com.finans7.model.Tag
 import com.finans7.model.categorynews.PostListModel
+import com.finans7.model.comment.CommentModel
 import com.finans7.model.comment.RootComment
+import com.finans7.model.favorite.CommentFavoriteResponse
+import com.finans7.model.favorite.FavoritePostModel
 import com.finans7.model.postdetail.PostDetailModel
 import com.finans7.util.AppUtil
 import com.finans7.util.SharedPreferences
@@ -33,15 +36,18 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
     private lateinit var postViewModel: PostViewModel
     private lateinit var navDirections: NavDirections
 
-    private lateinit var postDetailModel: PostDetailModel
-    private lateinit var rootComment: RootComment
     private lateinit var commentsAdapter: CommentsAdapter
+    private lateinit var postDetailModel: PostDetailModel
 
     private lateinit var tagList: ArrayList<Tag>
     private lateinit var tagsAdapter: TagsAdapter
 
     private lateinit var sharedPreferences: SharedPreferences
     private var commentAmount: Int = 0
+
+    private lateinit var commentList: ArrayList<CommentModel>
+    private lateinit var selectedCommentData: CommentModel
+    private var selectedCommentType: Int = 0
 
     private fun init(){
         postBinding.postdata = postData
@@ -63,6 +69,8 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
         postViewModel = ViewModelProvider(this).get(PostViewModel::class.java)
         observeLiveData()
         postViewModel.getPostDetail(postData.postid, AppUtil.getDeviceId(v.context))
+
+        AppUtil.loadFooterFragment(R.id.post_fragment_footerFrameLayout, childFragmentManager, false)
 
         postBinding.postFragmentLinearComments.setOnClickListener(this)
         postBinding.postFragmentEditSearch.setOnClickListener(this)
@@ -88,6 +96,21 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
         super.onViewCreated(view, savedInstanceState)
         v = view
         init()
+
+        commentsAdapter.setOnUpdateFavoriteClickListener(object : CommentsAdapter.UpdateFavoriteClickListener{
+            override fun onUpdateClick(commentData: CommentModel, commentType: Int) {
+                selectedCommentData = commentData
+                selectedCommentType = commentType
+
+                postViewModel.updateFavoriteComment(
+                    FavoritePostModel(
+                        AppUtil.getDeviceId(v.context),
+                        postData.postid,
+                        commentType
+                    )
+                )
+            }
+        })
     }
 
     override fun onClick(p0: View?) {
@@ -151,7 +174,13 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
 
         postViewModel.postDetailModel.observe(viewLifecycleOwner, Observer {
             it?.let {
-                if (it.commentList_1.isNotEmpty()){
+                postDetailModel = it
+                commentList = it.commentList_1
+
+                postBinding.postFragmentProgressBar.visibility = View.GONE
+                postBinding.postFragmentWebView.visibility = View.VISIBLE
+
+                if (postDetailModel.commentList_1.isNotEmpty()){
                     postBinding.postFragmentTxtCommentMessage.visibility = View.GONE
                     postBinding.postFragmentRecyclerViewComments.visibility = View.VISIBLE
                 } else {
@@ -159,8 +188,15 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
                     postBinding.postFragmentTxtCommentMessage.visibility = View.VISIBLE
                 }
 
-                commentsAdapter.loadData(it.commentList_1)
-                loadPostContent(it)
+                commentsAdapter.loadData(commentList)
+                loadPostContent(postDetailModel)
+            }
+        })
+
+        postViewModel.commentFavoriteResponse.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                commentList = AppUtil.getEditedCommentList(commentList, selectedCommentData, it)
+                commentsAdapter.loadData(commentList)
             }
         })
     }

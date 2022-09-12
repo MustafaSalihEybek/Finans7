@@ -6,6 +6,8 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +52,9 @@ class MainFragment : Fragment(), View.OnClickListener {
 
     private lateinit var sharedPreferences: SharedPreferences
     private var userTopic: Boolean = false
+
+    private var currentScrollPosY: Int = 0
+    private var minusScrollY: Int = 100
 
     private fun init(){
         mToggle = ActionBarDrawerToggle(
@@ -114,12 +119,19 @@ class MainFragment : Fragment(), View.OnClickListener {
         mainBinding.mainFragmentBottomNavBar.setOnItemSelectedListener {
             when (it.itemId){
                 R.id.bottom_menu_home -> {
-                    selectPage(0)
+                    if (!Singleton.currentIsHome)
+                        selectPage(0)
+                    else {
+                        currentScrollPosY = Singleton.nestedScroll.scrollY
+                        scrollToFirstPosition()
+                    }
+
                     true
                 }
 
                 R.id.bottom_menu_search -> {
                     selectPage(1)
+                    Singleton.currentIsHome = false
                     true
                 }
 
@@ -139,8 +151,8 @@ class MainFragment : Fragment(), View.OnClickListener {
     override fun onClick(p0: View?) {
         p0?.let {
             when (it.id){
-                R.id.main_fragment_imgTwitter -> goToTwitterPage()
-                R.id.main_fragment_imgInstagram -> goToInstagramPage()
+                R.id.main_fragment_imgTwitter -> AppUtil.goToTwitterPage(v.context)
+                R.id.main_fragment_imgInstagram -> AppUtil.goToInstagramPage(v.context)
                 R.id.nav_header_linearSettings -> goToSettingsPage()
                 R.id.custom_app_bar_imgShare -> AppUtil.shareNews(Singleton.BASE_URL, v.context)
             }
@@ -150,30 +162,6 @@ class MainFragment : Fragment(), View.OnClickListener {
     private fun goToSettingsPage(){
         navDirections = MainFragmentDirections.actionMainFragmentToSettingsFragment()
         Navigation.findNavController(v).navigate(navDirections)
-    }
-
-    private fun goToInstagramPage(){
-        try {
-            v.context.packageManager.getPackageInfo("com.instagram.android", 0)
-            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/${Singleton.INSTAGRAM_PROFILE_NAME}"))
-            socialIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        } catch (e: Exception){
-            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/${Singleton.INSTAGRAM_PROFILE_NAME}"))
-        }
-
-        startActivity(socialIntent)
-    }
-
-    private fun goToTwitterPage(){
-        try {
-            v.context.packageManager.getPackageInfo("com.twitter.android", 0)
-            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=${Singleton.TWITTER_USER_ID}"))
-            socialIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        } catch (e: Exception){
-            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/${Singleton.TWITTER_PROFILE_NAME}"))
-        }
-
-        startActivity(socialIntent)
     }
 
     private fun selectPage(sIn: Int){
@@ -218,6 +206,20 @@ class MainFragment : Fragment(), View.OnClickListener {
             println("Token: $it")
         }
     }*/
+
+    private fun scrollToFirstPosition(){
+        Handler(Looper.getMainLooper()).postDelayed({
+            if ((currentScrollPosY - minusScrollY) > 0)
+                currentScrollPosY-= minusScrollY
+            else
+                currentScrollPosY = 0
+
+            Singleton.nestedScroll.scrollTo(0, currentScrollPosY)
+
+            if (currentScrollPosY > 0)
+                scrollToFirstPosition()
+        }, 10)
+    }
 
     override fun onResume() {
         super.onResume()

@@ -12,6 +12,7 @@ import com.finans7.R
 import com.finans7.adapter.CategoriesAdapter
 import com.finans7.databinding.CategoryFragmentBinding
 import com.finans7.model.category.CategoryModel
+import com.finans7.util.Singleton
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.util.*
 import kotlin.collections.ArrayList
@@ -92,6 +93,8 @@ class CategoryFragment(val categories: List<CategoryModel>, val vV: View) : Bott
     }
 
     private fun goToNewsByCategoryPage(categoryData: CategoryModel){
+        Singleton.currentIsHome = false
+
         navDirections = MainFragmentDirections.actionMainFragmentToNewsByCategoryFragment(categoryData, null)
         Navigation.findNavController(vV).navigate(navDirections)
     }

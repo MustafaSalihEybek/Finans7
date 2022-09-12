@@ -48,6 +48,10 @@
         <item name="seekBarBgColor">?attr/normalColor</item>
         <item name="seekBarTintColor">#4A4A4A</item>
         <item name="seekBarThumbColor">?attr/boldColor</item>
+        <item name="footerBgColor1">#141414</item>
+        <item name="footerBgColor2">#2C2C2C</item>
+        <item name="footerTextColor">#6C6C6C</item>
+        <item name="rippleColor">#DDDDDD</item>
     </style>
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">

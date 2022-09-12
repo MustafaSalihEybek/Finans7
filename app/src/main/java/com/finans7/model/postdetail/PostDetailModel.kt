@@ -5,6 +5,6 @@ import com.finans7.model.comment.CommentModel
 
 data class PostDetailModel(
     val postDetailFromModel: PostListModel,
-    val latestPostList_1: List<PostListModel>,
-    val commentList_1: List<CommentModel>
+    val latestPostList_1: ArrayList<PostListModel>,
+    val commentList_1: ArrayList<CommentModel>
 )

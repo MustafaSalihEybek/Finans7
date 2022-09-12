@@ -1,13 +1,18 @@
 package com.finans7.util
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.widget.NestedScrollView
 import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.HomePageNews
 
 class Singleton {
+    @SuppressLint("StaticFieldLeak")
     companion object{
+        var currentIsHome: Boolean = false
+
         val BASE_URL: String = "https://www.finans7.com"
         val SERVICE_URL: String = "https://www.finans7.com/"
         val POST_IMAGE_PATH: String = "ProjectImages/PostImages/"
@@ -46,6 +51,8 @@ class Singleton {
         var scrollXPosition: Int = 0
         var scrollYPosition: Int = 0
         lateinit var homePageNews: HomePageNews
+        @SuppressLint("StaticFieldLeak")
+        lateinit var nestedScroll: NestedScrollView
 
         var selectedPageIn: Int = 0
 

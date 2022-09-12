@@ -16,8 +16,10 @@ import com.finans7.R
 import com.finans7.adapter.CommentsAdapter
 import com.finans7.databinding.FragmentCommentsBinding
 import com.finans7.model.Avatar
+import com.finans7.model.comment.CommentModel
 import com.finans7.model.comment.CommentPostModel
 import com.finans7.model.comment.RootComment
+import com.finans7.model.favorite.FavoritePostModel
 import com.finans7.util.AppUtil
 import com.finans7.util.Singleton
 import com.finans7.util.downloadImageUrl
@@ -43,6 +45,10 @@ class CommentsFragment : Fragment(), View.OnClickListener {
 
     private lateinit var commentShortingFragment: CommentShortingFragment
     private var selectedShortingIn: Int = 1
+
+    private lateinit var commentList: ArrayList<CommentModel>
+    private lateinit var selectedCommentData: CommentModel
+    private var selectedCommentType: Int = 0
 
     private fun init(){
         arguments?.let {
@@ -104,6 +110,21 @@ class CommentsFragment : Fragment(), View.OnClickListener {
                 commentsBinding.commentsFragmentImgSend.visibility = View.GONE
             }
         }
+
+        commentsAdapter.setOnUpdateFavoriteClickListener(object : CommentsAdapter.UpdateFavoriteClickListener{
+            override fun onUpdateClick(commentData: CommentModel, commentType: Int) {
+                selectedCommentData = commentData
+                selectedCommentType = commentType
+
+                commentsViewModel.updateFavoriteComment(
+                    FavoritePostModel(
+                        AppUtil.getDeviceId(v.context),
+                        postId,
+                        commentType
+                    )
+                )
+            }
+        })
     }
 
     override fun onClick(p0: View?) {
@@ -140,7 +161,16 @@ class CommentsFragment : Fragment(), View.OnClickListener {
         commentsViewModel.rootComment.observe(viewLifecycleOwner, Observer {
             it?.let {
                 rootComment = it
-                commentsAdapter.loadData(rootComment.commentList)
+                commentList = it.commentList
+
+                commentsAdapter.loadData(commentList)
+            }
+        })
+
+        commentsViewModel.commentFavoriteResponse.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                commentList = AppUtil.getEditedCommentList(commentList, selectedCommentData, it)
+                commentsAdapter.loadData(commentList)
             }
         })
 

@@ -82,7 +82,7 @@
                         android:id="@+id/home_fragment_imgLastNewsLeft"
                         android:layout_marginEnd="5dp"
                         android:src="@drawable/ic_icon_left"
-                        android:background="@drawable/arrow_bg"
+                        android:background="@drawable/arrow_bg_ripple_effect"
                         android:layout_height="30dp"/>
 
                     <ImageView
@@ -90,7 +90,7 @@
                         android:layout_marginStart="5dp"
                         android:id="@+id/home_fragment_imgLastNewsRight"
                         android:src="@drawable/ic_icon_right"
-                        android:background="@drawable/arrow_bg"
+                        android:background="@drawable/arrow_bg_ripple_effect"
                         android:layout_height="30dp"/>
 
                 </LinearLayout>
@@ -140,7 +140,7 @@
                         android:id="@+id/home_fragment_imgHeadlineNewsLeft"
                         android:layout_marginEnd="5dp"
                         android:src="@drawable/ic_icon_left"
-                        android:background="@drawable/arrow_bg"
+                        android:background="@drawable/arrow_bg_ripple_effect"
                         android:layout_height="30dp"/>
 
                     <ImageView
@@ -148,7 +148,7 @@
                         android:layout_marginStart="5dp"
                         android:id="@+id/home_fragment_imgHeadlineNewsRight"
                         android:src="@drawable/ic_icon_right"
-                        android:background="@drawable/arrow_bg"
+                        android:background="@drawable/arrow_bg_ripple_effect"
                         android:layout_height="30dp"/>
 
                 </LinearLayout>
@@ -198,7 +198,7 @@
                         android:id="@+id/home_fragment_imgTrendingNewsLeft"
                         android:layout_marginEnd="5dp"
                         android:src="@drawable/ic_icon_left"
-                        android:background="@drawable/arrow_bg"
+                        android:background="@drawable/arrow_bg_ripple_effect"
                         android:layout_height="30dp"/>
 
                     <ImageView
@@ -206,7 +206,7 @@
                         android:layout_marginStart="5dp"
                         android:id="@+id/home_fragment_imgTrendingNewsRight"
                         android:src="@drawable/ic_icon_right"
-                        android:background="@drawable/arrow_bg"
+                        android:background="@drawable/arrow_bg_ripple_effect"
                         android:layout_height="30dp"/>
 
                 </LinearLayout>
@@ -263,7 +263,7 @@
                         android:id="@+id/home_fragment_imgMostReadNewsLeft"
                         android:layout_marginEnd="5dp"
                         android:src="@drawable/ic_icon_left"
-                        android:background="@drawable/arrow_bg"
+                        android:background="@drawable/arrow_bg_ripple_effect"
                         android:layout_height="30dp"/>
 
                     <ImageView
@@ -271,7 +271,7 @@
                         android:layout_marginStart="5dp"
                         android:id="@+id/home_fragment_imgMostReadNewsRight"
                         android:src="@drawable/ic_icon_right"
-                        android:background="@drawable/arrow_bg"
+                        android:background="@drawable/arrow_bg_ripple_effect"
                         android:layout_height="30dp"/>
 
                 </LinearLayout>
@@ -321,6 +321,11 @@
             android:layout_marginBottom="15dp"
             android:id="@+id/home_fragment_recyclerViewNewsByCategory"
             android:nestedScrollingEnabled="false"
+            android:layout_height="wrap_content"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:id="@+id/home_fragment_footerFrameLayout"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>

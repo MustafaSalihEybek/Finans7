@@ -17,6 +17,12 @@
         <action
             android:id="@+id/action_mainFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_privacyAndTermsFragment"
+            app:destination="@id/privacyAndTermsFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsFragment"
@@ -35,6 +41,12 @@
         <action
             android:id="@+id/action_newsFragment_to_newsByCategoryFragment"
             app:destination="@id/newsByCategoryFragment" />
+        <action
+            android:id="@+id/action_newsFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
+        <action
+            android:id="@+id/action_newsFragment_to_privacyAndTermsFragment"
+            app:destination="@id/privacyAndTermsFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsByCategoryFragment"

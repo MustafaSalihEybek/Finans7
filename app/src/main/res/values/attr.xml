@@ -34,5 +34,9 @@
         <attr name="seekBarBgColor" format="color"/>
         <attr name="seekBarTintColor" format="color"/>
         <attr name="seekBarThumbColor" format="color"/>
+        <attr name="footerBgColor1" format="color"/>
+        <attr name="footerBgColor2" format="color"/>
+        <attr name="footerTextColor" format="color"/>
+        <attr name="rippleColor" format="color"/>
     </declare-styleable>
 </resources>

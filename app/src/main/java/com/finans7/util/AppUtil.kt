@@ -7,10 +7,15 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import android.util.TypedValue
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.finans7.api.AppAPI
 import com.finans7.model.Tag
+import com.finans7.model.comment.CommentModel
+import com.finans7.model.favorite.CommentFavoriteResponse
 import com.finans7.model.homepage.News
 import com.finans7.repository.*
+import com.finans7.view.FooterFragment
 import com.finans7.view.dialog.SplashDialog
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Retrofit
@@ -21,8 +26,11 @@ import java.text.Normalizer
 
 object AppUtil {
     lateinit var disposable: CompositeDisposable
+
     private lateinit var imageUrl: String
     private lateinit var shareIntent: Intent
+    private lateinit var socialIntent: Intent
+    private lateinit var transaction: FragmentTransaction
 
     lateinit var getHomePageNewsRepository: GetHomePageNewsRepository
     lateinit var getCategoryListRepository: GetCategoryListRepository
@@ -34,6 +42,7 @@ object AppUtil {
     lateinit var addCommentRepository: AddCommentRepository
     lateinit var getNewsByTagRepository: GetNewsByTagRepository
     lateinit var generateUserTopicRepository: GenerateUserTopicRepository
+    lateinit var updateFavoriteCommentRepository: UpdateFavoriteCommentRepository
 
     @SuppressLint("StaticFieldLeak")
     private lateinit var splashDialog: SplashDialog
@@ -157,6 +166,66 @@ object AppUtil {
         }
 
         return false
+    }
+
+    fun goToTwitterPage(context: Context){
+        try {
+            context.packageManager.getPackageInfo("com.twitter.android", 0)
+            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=${Singleton.TWITTER_USER_ID}"))
+            socialIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        } catch (e: Exception){
+            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/${Singleton.TWITTER_PROFILE_NAME}"))
+        }
+
+        context.startActivity(socialIntent)
+    }
+
+    fun goToInstagramPage(context: Context){
+        try {
+            context.packageManager.getPackageInfo("com.instagram.android", 0)
+            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/${Singleton.INSTAGRAM_PROFILE_NAME}"))
+            socialIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        } catch (e: Exception){
+            socialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/${Singleton.INSTAGRAM_PROFILE_NAME}"))
+        }
+
+        context.startActivity(socialIntent)
+    }
+
+    fun loadFooterFragment(frameLayout: Int, manager: FragmentManager, fromMain: Boolean){
+        transaction = manager.beginTransaction()
+        transaction.replace(frameLayout, FooterFragment(fromMain))
+        transaction.commit()
+    }
+
+    fun getEditedCommentList(commentList: ArrayList<CommentModel>, selectedCommentData: CommentModel, commentFavoriteResponse: CommentFavoriteResponse) : ArrayList<CommentModel> {
+        val comments: ArrayList<CommentModel> = ArrayList()
+
+        for (comment in commentList){
+            if (comment.commentid == selectedCommentData.commentid){
+                comments.add(
+                    CommentModel(
+                        comment.commentid,
+                        comment.postid,
+                        comment.commentauthor,
+                        comment.commentdatetext,
+                        comment.authoremail,
+                        comment.commentcontent,
+                        comment.commentapproved,
+                        comment.parentid,
+                        commentFavoriteResponse.likeCount,
+                        commentFavoriteResponse.dislikeCount,
+                        comment.userid,
+                        comment.avatar,
+                        comment.userislike,
+                        comment.userisdislike
+                    )
+                )
+            } else
+                comments.add(comment)
+        }
+
+        return comments
     }
 
     fun showSplashDialog(mContext: Context){

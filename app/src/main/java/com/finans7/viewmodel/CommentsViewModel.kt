@@ -5,9 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import com.finans7.model.Avatar
 import com.finans7.model.comment.CommentPostModel
 import com.finans7.model.comment.RootComment
+import com.finans7.model.favorite.CommentFavoriteResponse
+import com.finans7.model.favorite.FavoritePostModel
 import com.finans7.repository.AddCommentRepository
 import com.finans7.repository.GetAvatarsRepository
 import com.finans7.repository.GetCommentsRepository
+import com.finans7.repository.UpdateFavoriteCommentRepository
 import com.finans7.util.AppUtil
 import com.finans7.viewmodel.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,6 +22,7 @@ import okhttp3.ResponseBody
 class CommentsViewModel(application: Application) : BaseViewModel(application) {
     val avatarList = MutableLiveData<List<Avatar>>()
     val rootComment = MutableLiveData<RootComment>()
+    val commentFavoriteResponse = MutableLiveData<CommentFavoriteResponse>()
 
     fun getAvatars(){
         AppUtil.getAvatarsRepository = GetAvatarsRepository()
@@ -71,6 +75,26 @@ class CommentsViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object : DisposableSingleObserver<ResponseBody>(){
                     override fun onSuccess(t: ResponseBody) {
                         successMessage.value = "Yorumunuz başarılı bir şekilde bize ulaşmıştır, onaylandıktan sonra yayınlanacaktır"
+                    }
+
+                    override fun onError(e: Throwable) {
+                        errorMessage.value = e.localizedMessage
+                    }
+                })
+        )
+    }
+
+    fun updateFavoriteComment(favoritePostModel: FavoritePostModel){
+        AppUtil.updateFavoriteCommentRepository = UpdateFavoriteCommentRepository()
+        AppUtil.disposable = CompositeDisposable()
+
+        AppUtil.disposable.add(
+            AppUtil.updateFavoriteCommentRepository.updateFavoriteComment(favoritePostModel)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<CommentFavoriteResponse>(){
+                    override fun onSuccess(t: CommentFavoriteResponse) {
+                        commentFavoriteResponse.value = t
                     }
 
                     override fun onError(e: Throwable) {

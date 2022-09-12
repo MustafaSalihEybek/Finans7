@@ -3,10 +3,8 @@ package com.finans7.view
 import android.os.*
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
@@ -14,6 +12,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.finans7.R
 import com.finans7.adapter.*
 import com.finans7.adapter.decoration.GridManagerDecoration
@@ -21,13 +20,12 @@ import com.finans7.adapter.decoration.LinearManagerDecoration
 import com.finans7.databinding.FragmentHomeBinding
 import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.HomePageNews
-import com.finans7.model.homepage.News
 import com.finans7.util.AppUtil
 import com.finans7.util.Singleton
 import com.finans7.util.show
 import com.finans7.viewmodel.HomeViewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment() : Fragment(), View.OnClickListener {
     private lateinit var v: View
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var homeBinding: FragmentHomeBinding
@@ -51,6 +49,8 @@ class HomeFragment : Fragment() {
 
     private var isLastItem: Boolean = false
     private var isFirstItem: Boolean = false
+    private var loadLastData: Boolean = false
+    private var amount: Int = 0
 
     private fun init(){
         homeBinding.homeFragmentRecyclerViewFourNews.setHasFixedSize(true)
@@ -65,8 +65,15 @@ class HomeFragment : Fragment() {
             homeViewModel.getHomePageNews()
             AppUtil.showSplashDialog(v.context)
         }
-        else
-            loadAllData(Singleton.homePageNews)
+
+        homeBinding.homeFragmentImgLastNewsRight.setOnClickListener(this)
+        homeBinding.homeFragmentImgLastNewsLeft.setOnClickListener(this)
+        homeBinding.homeFragmentImgHeadlineNewsRight.setOnClickListener(this)
+        homeBinding.homeFragmentImgHeadlineNewsLeft.setOnClickListener(this)
+        homeBinding.homeFragmentImgTrendingNewsRight.setOnClickListener(this)
+        homeBinding.homeFragmentImgTrendingNewsLeft.setOnClickListener(this)
+        homeBinding.homeFragmentImgMostReadNewsRight.setOnClickListener(this)
+        homeBinding.homeFragmentImgMostReadNewsLeft.setOnClickListener(this)
     }
 
     override fun onCreateView(
@@ -81,17 +88,39 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         v = view
         init()
+
+        if (Singleton.homeIsCreated){
+            homePageNews = Singleton.homePageNews
+            loadAllData(homePageNews)
+        }
+    }
+
+    override fun onClick(p0: View?) {
+        p0?.let {
+            when (it.id){
+                R.id.home_fragment_imgLastNewsRight -> nextNews(homeBinding.homeFragmentViewPagerLastNews, homePageNews.yatayHaberler, true)
+                R.id.home_fragment_imgLastNewsLeft -> nextNews(homeBinding.homeFragmentViewPagerLastNews, homePageNews.yatayHaberler, false)
+                R.id.home_fragment_imgHeadlineNewsRight -> nextNews(homeBinding.homeFragmentViewPagerHeadlineNews, homePageNews.gununManseti, true)
+                R.id.home_fragment_imgHeadlineNewsLeft -> nextNews(homeBinding.homeFragmentViewPagerHeadlineNews, homePageNews.gununManseti, false)
+                R.id.home_fragment_imgTrendingNewsRight -> nextNews(homeBinding.homeFragmentViewPagerTrendingNews, homePageNews.sagManset, true)
+                R.id.home_fragment_imgTrendingNewsLeft -> nextNews(homeBinding.homeFragmentViewPagerTrendingNews, homePageNews.sagManset, false)
+                R.id.home_fragment_imgMostReadNewsRight -> nextNews(homeBinding.homeFragmentViewPagerMostReadNews, homePageNews.ozelHaberler, true)
+                R.id.home_fragment_imgMostReadNewsLeft -> nextNews(homeBinding.homeFragmentViewPagerMostReadNews, homePageNews.ozelHaberler, false)
+            }
+        }
     }
 
     private fun observeLiveData(){
         homeViewModel.homePageNews.observe(viewLifecycleOwner, Observer {
             it?.let {
-                homePageNews = it
-                loadAllData(homePageNews)
+                if (!Singleton.homeIsCreated){
+                    homePageNews = it
+                    loadAllData(homePageNews)
 
-                Singleton.homePageNews = homePageNews
-                Singleton.homeIsCreated = true
-                AppUtil.closeSplashDialog()
+                    Singleton.homePageNews = homePageNews
+                    Singleton.homeIsCreated = true
+                    closeSplashDialog()
+                }
             }
         })
 
@@ -114,9 +143,15 @@ class HomeFragment : Fragment() {
         loadMostReadNews(homePageNews.ozelHaberler)
         loadInterestingNews(homePageNews.haberBandı)
         loadNewsByCategory(Pair(categoryList, categoryNewsList))
+        AppUtil.loadFooterFragment(R.id.home_fragment_footerFrameLayout, childFragmentManager, true)
+
+        homeBinding.homeFragmentNestedScrollView.fling(0)
+        Singleton.nestedScroll = homeBinding.homeFragmentNestedScrollView
 
         if (Singleton.homeIsCreated){
-            homeBinding.homeFragmentNestedScrollView.scrollTo(Singleton.scrollXPosition, Singleton.scrollYPosition)
+            Handler(Looper.getMainLooper()).postDelayed({
+                homeBinding.homeFragmentNestedScrollView.scrollTo(Singleton.scrollXPosition, Singleton.scrollYPosition)
+            }, 25)
         }
     }
 
@@ -227,9 +262,11 @@ class HomeFragment : Fragment() {
         homeBinding.homeFragmentViewPagerLastNews.isSaveEnabled = false
 
         if (Singleton.homeIsCreated){
+            println("${Singleton.lastNewsCurrentPage} => ${homeBinding.homeFragmentViewPagerLastNews.currentItem}")
+
             Handler(Looper.getMainLooper()).postDelayed({
                 homeBinding.homeFragmentViewPagerLastNews.currentItem = Singleton.lastNewsCurrentPage
-            }, 100)
+            }, 25)
         }
     }
 
@@ -245,7 +282,7 @@ class HomeFragment : Fragment() {
         if (Singleton.homeIsCreated){
             Handler(Looper.getMainLooper()).postDelayed({
                 homeBinding.homeFragmentViewPagerHeadlineNews.currentItem = Singleton.headlineNewsCurrentPage
-            }, 100)
+            }, 25)
         }
     }
 
@@ -271,7 +308,7 @@ class HomeFragment : Fragment() {
         if (Singleton.homeIsCreated){
             Handler(Looper.getMainLooper()).postDelayed({
                 homeBinding.homeFragmentViewPagerTrendingNews.currentItem = Singleton.trendingNewsCurrentPage
-            }, 100)
+            }, 25)
         }
     }
 
@@ -287,7 +324,7 @@ class HomeFragment : Fragment() {
         if (Singleton.homeIsCreated){
             Handler(Looper.getMainLooper()).postDelayed({
                 homeBinding.homeFragmentViewPagerMostReadNews.currentItem = Singleton.mostNewsCurrentPage
-            }, 100)
+            }, 25)
         }
     }
 
@@ -306,15 +343,41 @@ class HomeFragment : Fragment() {
         homeBinding.homeFragmentRecyclerViewNewsByCategory.adapter = homeNewsByCategoryAdapters
     }
 
+    private fun nextNews(viewPager: ViewPager2, newsList: List<PostListModel>, isNext: Boolean){
+        if (isNext){
+            if (viewPager.currentItem < (newsList.size - 1))
+                viewPager.currentItem++
+        } else {
+            if (viewPager.currentItem > 0)
+                viewPager.currentItem--
+        }
+    }
+
+    private fun closeSplashDialog(){
+        Handler(Looper.getMainLooper()).postDelayed({
+            AppUtil.closeSplashDialog()
+        }, 1000)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Singleton.currentIsHome = true
+    }
+
     override fun onPause() {
         super.onPause()
-        Singleton.sliderCurrentPage = homeBinding.homeFragmentViewPagerMainHeadline.currentItem
-        Singleton.lastNewsCurrentPage = homeBinding.homeFragmentViewPagerLastNews.currentItem
-        Singleton.headlineNewsCurrentPage = homeBinding.homeFragmentViewPagerHeadlineNews.currentItem
-        Singleton.trendingNewsCurrentPage = homeBinding.homeFragmentViewPagerTrendingNews.currentItem
-        Singleton.mostNewsCurrentPage = homeBinding.homeFragmentViewPagerMostReadNews.currentItem
-        Singleton.scrollXPosition = homeBinding.homeFragmentNestedScrollView.scrollX
-        Singleton.scrollYPosition = homeBinding.homeFragmentNestedScrollView.scrollY
+        amount++
+
+        if (amount == 1){
+            Singleton.sliderCurrentPage = homeBinding.homeFragmentViewPagerMainHeadline.currentItem
+            Singleton.lastNewsCurrentPage = homeBinding.homeFragmentViewPagerLastNews.currentItem
+            Singleton.headlineNewsCurrentPage = homeBinding.homeFragmentViewPagerHeadlineNews.currentItem
+            Singleton.trendingNewsCurrentPage = homeBinding.homeFragmentViewPagerTrendingNews.currentItem
+            Singleton.mostNewsCurrentPage = homeBinding.homeFragmentViewPagerMostReadNews.currentItem
+            Singleton.scrollXPosition = homeBinding.homeFragmentNestedScrollView.scrollX
+            Singleton.scrollYPosition = homeBinding.homeFragmentNestedScrollView.scrollY
+            Singleton.currentIsHome = false
+        }
     }
 
     private fun goToNewsPage(newsList: List<PostListModel>, newsIn: Int){

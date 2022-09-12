@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/arrow_bg.xml" value="0.112" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/arrow_bg_ripple_effect.xml" value="0.1215" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/bar_bg.xml" value="0.112" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/bottom_bar_bg.xml" value="0.112" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/category_fragment_bg.xml" value="0.1215" />
@@ -22,6 +23,7 @@
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/new_bg.xml" value="0.112" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/pager_bg.xml" value="0.112" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/privacy_bg.xml" value="0.1215" />
+        <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/ripple_effect.xml" value="0.1215" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/search_bar_bg.xml" value="0.1215" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/send_bg.xml" value="0.1215" />
         <entry key="..\:/Users/Nexis/AndroidStudioProjects/Finans7/app/src/main/res/drawable/share_bg.xml" value="0.112" />

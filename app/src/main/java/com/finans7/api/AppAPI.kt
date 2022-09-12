@@ -5,6 +5,8 @@ import com.finans7.model.category.RootCategory
 import com.finans7.model.categorynews.RootCategoryNews
 import com.finans7.model.comment.CommentPostModel
 import com.finans7.model.comment.RootComment
+import com.finans7.model.favorite.CommentFavoriteResponse
+import com.finans7.model.favorite.FavoritePostModel
 import com.finans7.model.homepage.HomePageNews
 import com.finans7.model.postdetail.PostDetailModel
 import io.reactivex.Single
@@ -49,4 +51,7 @@ interface AppAPI {
         @Query("deviceName") deviceName: String,
         @Query("deviceVersion") deviceVersion: String
     ) : Single<ResponseBody>
+
+    @POST("/f7api/favoriteOperations")
+    fun updateFavoriteComment(@Body favoritePostModel: FavoritePostModel) : Single<CommentFavoriteResponse>
 }
