@@ -1,10 +1,12 @@
 package com.finans7.view
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -30,7 +32,6 @@ class SearchFragment : Fragment() {
     private lateinit var newsLayoutManager: LinearLayoutManager
     private lateinit var newsByCategoryAdapter: NewsByCategoryAdapter
 
-    private var lastCount: Int = 0
     private var lastData: Boolean = false
 
     private fun init(){

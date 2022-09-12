@@ -1,5 +1,8 @@
 package com.finans7.util
 
+import android.os.Build
+import android.view.Window
+import android.view.WindowManager
 import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.HomePageNews
 
@@ -49,5 +52,16 @@ class Singleton {
         var searchIsCreated: Boolean = false
         var searchedValue: String = ""
         var postList: ArrayList<PostListModel> = arrayListOf()
+
+        lateinit var window: Window
+
+        fun setSoftInput(inputMode: Int){
+            if (inputMode == 1){
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+            }
+            else{
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            }
+        }
     }
 }

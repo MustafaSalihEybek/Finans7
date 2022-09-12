@@ -62,7 +62,6 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
 
         postViewModel = ViewModelProvider(this).get(PostViewModel::class.java)
         observeLiveData()
-        postViewModel.getComments(postData.postid, 0, 1, AppUtil.getDeviceId(v.context))
         postViewModel.getPostDetail(postData.postid, AppUtil.getDeviceId(v.context))
 
         postBinding.postFragmentLinearComments.setOnClickListener(this)
@@ -150,11 +149,9 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
             }
         })
 
-        postViewModel.rootComment.observe(viewLifecycleOwner, Observer {
+        postViewModel.postDetailModel.observe(viewLifecycleOwner, Observer {
             it?.let {
-                rootComment = it
-
-                if (rootComment.commentList.isNotEmpty()){
+                if (it.commentList_1.isNotEmpty()){
                     postBinding.postFragmentTxtCommentMessage.visibility = View.GONE
                     postBinding.postFragmentRecyclerViewComments.visibility = View.VISIBLE
                 } else {
@@ -162,12 +159,7 @@ class PostFragment(val postData: PostListModel) : Fragment(), View.OnClickListen
                     postBinding.postFragmentTxtCommentMessage.visibility = View.VISIBLE
                 }
 
-                commentsAdapter.loadData(rootComment.commentList)
-            }
-        })
-
-        postViewModel.postDetailModel.observe(viewLifecycleOwner, Observer {
-            it?.let {
+                commentsAdapter.loadData(it.commentList_1)
                 loadPostContent(it)
             }
         })

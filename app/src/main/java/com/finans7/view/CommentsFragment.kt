@@ -1,10 +1,12 @@
 package com.finans7.view
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +19,7 @@ import com.finans7.model.Avatar
 import com.finans7.model.comment.CommentPostModel
 import com.finans7.model.comment.RootComment
 import com.finans7.util.AppUtil
+import com.finans7.util.Singleton
 import com.finans7.util.downloadImageUrl
 import com.finans7.util.show
 import com.finans7.viewmodel.CommentsViewModel
@@ -59,6 +62,20 @@ class CommentsFragment : Fragment(), View.OnClickListener {
             observeLiveData()
             commentsViewModel.getAvatars()
             commentsViewModel.getCommentList(postId, 0, selectedShortingIn, AppUtil.getDeviceId(v.context))
+
+            /*commentsBinding.root.setOnApplyWindowInsetsListener { view, windowInsets ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    val imeHeight = windowInsets.getInsets(WindowInsets.Type.ime()).bottom
+                    commentsBinding.root.setPadding(0, 0, 0, imeHeight)
+                    val insets = windowInsets.getInsets(WindowInsets.Type.ime() or WindowInsets.Type.systemGestures())
+                    insets
+                } else
+                    Singleton.setSoftInput(2)
+
+                windowInsets
+            }*/
+
+            Singleton.setSoftInput(2)
 
             commentsBinding.commentsFragmentImgBack.setOnClickListener(this)
             commentsBinding.commentsFragmentImgSend.setOnClickListener(this)

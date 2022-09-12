@@ -72,6 +72,8 @@ class MainFragment : Fragment(), View.OnClickListener {
         navCategoriesAdapter = NavCategoriesAdapter(arrayListOf(), v)
         mainBinding.mainFragmentRecyclerView.adapter = navCategoriesAdapter
 
+        Singleton.setSoftInput(1)
+
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         observeLiveData()
         mainViewModel.getCategoryList()
