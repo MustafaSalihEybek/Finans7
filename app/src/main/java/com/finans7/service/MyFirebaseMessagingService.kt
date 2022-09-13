@@ -2,6 +2,7 @@ package com.finans7.service
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import androidx.navigation.NavDirections
@@ -19,8 +20,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private lateinit var notificationData: Map<String, String>
     private lateinit var notificationNewsId: String
     private lateinit var notificationType: String
-    private lateinit var navDirections: NavDirections
-    private lateinit var mAlert: AlertDialog.Builder
+    private lateinit var dataIntent: Intent
 
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
@@ -33,21 +33,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationNewsId = notificationData.get("Bildirim_Id").toString()
             notificationType = notificationData.get("Bildirim_Tipi").toString()
 
-            setNotificationProcess(notificationNewsId, notificationType, if (it.title != null) it.title!! else "Yeni haber eklendi görmek ister misin?")
+            dataIntent = Intent()
+            dataIntent.action = "com.finans7"
+            dataIntent.putExtra("newsId", notificationNewsId)
+            dataIntent.putExtra("newsType", notificationType)
+            dataIntent.putExtra("message", it.title)
+
+            sendBroadcast(dataIntent)
         }
-    }
-
-    fun setNotificationProcess(newsId: String, type: String, alertMessage: String) {
-        if (type.equals("1")){
-            when (Singleton.currentPage){
-                "Main" -> navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(intArrayOf(newsId.toInt()), 0)
-                "Category" -> navDirections = NewsByCategoryFragmentDirections.actionNewsByCategoryFragmentToNewsFragment(intArrayOf(newsId.toInt()), 0)
-                "Post" -> navDirections = NewsFragmentDirections.actionNewsFragmentSelf(intArrayOf(newsId.toInt()), 0)
-                "Comments" -> navDirections = CommentsFragmentDirections.actionCommentsFragmentToNewsFragment(intArrayOf(newsId.toInt()), 0)
-            }
-
-            Singleton.showAlertDialog("Yeni Haber", alertMessage, navDirections)
-        } else
-            AppUtil.openWebUrl(newsId, applicationContext)
     }
 }

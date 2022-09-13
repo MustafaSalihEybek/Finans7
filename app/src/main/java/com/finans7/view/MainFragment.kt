@@ -2,6 +2,7 @@ package com.finans7.view
 
 import android.app.Activity
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
@@ -23,6 +24,7 @@ import com.finans7.R
 import com.finans7.adapter.NavCategoriesAdapter
 import com.finans7.databinding.FragmentMainBinding
 import com.finans7.model.category.RootCategory
+import com.finans7.service.AlertReceiver
 import com.finans7.util.AppUtil
 import com.finans7.util.SharedPreferences
 import com.finans7.util.Singleton
@@ -55,6 +57,9 @@ class MainFragment : Fragment(), View.OnClickListener {
 
     private var currentScrollPosY: Int = 0
     private var minusScrollY: Int = 100
+
+    private lateinit var intentFilter: IntentFilter
+    private lateinit var alertReceiver: AlertReceiver
 
     private fun init(){
         mToggle = ActionBarDrawerToggle(
@@ -193,7 +198,7 @@ class MainFragment : Fragment(), View.OnClickListener {
         mainViewModel.topicToken.observe(viewLifecycleOwner, Observer {
             it?.let {
                 println("Topic: $it")
-                mainViewModel.subscribeTopicFromFirebase("test_topic")
+                mainViewModel.subscribeTopicFromFirebase(it)
             }
         })
 
@@ -237,5 +242,14 @@ class MainFragment : Fragment(), View.OnClickListener {
         super.onResume()
         selectedPageIn = Singleton.selectedPageIn
         selectPage(selectedPageIn)
+
+        intentFilter = IntentFilter("com.finans7")
+        alertReceiver = AlertReceiver()
+        v.context.registerReceiver(alertReceiver, intentFilter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        v.context.unregisterReceiver(alertReceiver)
     }
 }

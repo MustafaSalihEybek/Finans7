@@ -49,7 +49,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object : DisposableSingleObserver<ResponseBody>(){
                     override fun onSuccess(t: ResponseBody) {
                         successMessage.value = "Topic token başarıyla oluşturuldu"
-                        topicToken.value = t.source().toString()
+                        topicToken.value = t.string()
                     }
 
                     override fun onError(e: Throwable) {
