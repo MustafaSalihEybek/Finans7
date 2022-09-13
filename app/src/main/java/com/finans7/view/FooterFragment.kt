@@ -13,23 +13,25 @@ import com.finans7.util.AppUtil
 
 class FooterFragment(val fromMain: Boolean) : Fragment(), View.OnClickListener {
     private lateinit var v: View
-    private lateinit var footerBinding: FragmentFooterBinding
+    private var footerBinding: FragmentFooterBinding? = null
     private lateinit var navDirections: NavDirections
 
     private fun init(){
-        footerBinding.footerFragmentImgInstagram.setOnClickListener(this)
-        footerBinding.footerFragmentImgTwitter.setOnClickListener(this)
-        footerBinding.footerFragmentTxtContact.setOnClickListener(this)
-        footerBinding.footerFragmentTxtPrivacy.setOnClickListener(this)
-        footerBinding.footerFragmentTxtTerms.setOnClickListener(this)
+        footerBinding?.let {
+            it.footerFragmentImgInstagram.setOnClickListener(this)
+            it.footerFragmentImgTwitter.setOnClickListener(this)
+            it.footerFragmentTxtContact.setOnClickListener(this)
+            it.footerFragmentTxtPrivacy.setOnClickListener(this)
+            it.footerFragmentTxtTerms.setOnClickListener(this)
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         footerBinding = FragmentFooterBinding.inflate(inflater)
-        return footerBinding.root
+        return footerBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,5 +68,10 @@ class FooterFragment(val fromMain: Boolean) : Fragment(), View.OnClickListener {
             navDirections = NewsFragmentDirections.actionNewsFragmentToPrivacyAndTermsFragment(fromPrivacy)
 
         Navigation.findNavController(v).navigate(navDirections)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        footerBinding = null
     }
 }
