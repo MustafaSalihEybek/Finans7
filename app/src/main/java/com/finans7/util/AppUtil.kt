@@ -235,6 +235,12 @@ object AppUtil {
         return idList.toIntArray()
     }
 
+    fun openWebUrl(url: String, context: Context){
+        val webIntent: Intent = Intent(Intent.ACTION_VIEW)
+        webIntent.data = Uri.parse(url)
+        context.startActivity(webIntent)
+    }
+
     fun showSplashDialog(mContext: Context){
         splashDialog = SplashDialog(mContext)
         splashDialog.setCancelable(false)

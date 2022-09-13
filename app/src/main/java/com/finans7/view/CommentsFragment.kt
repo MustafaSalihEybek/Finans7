@@ -89,6 +89,9 @@ class CommentsFragment : Fragment(), View.OnClickListener {
             }*/
 
             Singleton.setSoftInput(2)
+            Singleton.currentPage = "Comments"
+            Singleton.currentPageV = v
+            Singleton.mContext = v.context
 
             commentsBinding.commentsFragmentImgBack.setOnClickListener(this)
             commentsBinding.commentsFragmentImgSend.setOnClickListener(this)

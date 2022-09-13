@@ -32,6 +32,9 @@ class NewsFragment : Fragment(), View.OnClickListener {
             newsFragmentAdapter = NewsFragmentAdapter(this)
 
             Singleton.postDetailIsCreated = false
+            Singleton.currentPage = "Post"
+            Singleton.currentPageV = v
+            Singleton.mContext = v.context
 
             for (id in postIdList)
                 newsFragmentAdapter.addFragment(PostFragment(id))

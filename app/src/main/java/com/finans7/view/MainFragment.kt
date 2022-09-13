@@ -78,6 +78,9 @@ class MainFragment : Fragment(), View.OnClickListener {
         mainBinding.mainFragmentRecyclerView.adapter = navCategoriesAdapter
 
         Singleton.setSoftInput(1)
+        Singleton.currentPage = "Main"
+        Singleton.currentPageV = v
+        Singleton.mContext = v.context
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         observeLiveData()
@@ -184,6 +187,13 @@ class MainFragment : Fragment(), View.OnClickListener {
             it?.let {
                 if (it.equals("Topic token başarıyla oluşturuldu"))
                     sharedPreferences.saveUserTopic()
+            }
+        })
+
+        mainViewModel.topicToken.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                println("Topic: $it")
+                mainViewModel.subscribeTopicFromFirebase("test_topic")
             }
         })
 

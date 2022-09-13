@@ -7,6 +7,7 @@ import com.finans7.repository.GenerateUserTopicRepository
 import com.finans7.repository.GetCategoryListRepository
 import com.finans7.util.AppUtil
 import com.finans7.viewmodel.base.BaseViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -15,6 +16,7 @@ import okhttp3.ResponseBody
 
 class MainViewModel(application: Application) : BaseViewModel(application) {
     val categoryList = MutableLiveData<RootCategory>()
+    val topicToken = MutableLiveData<String>()
 
     fun getCategoryList(){
         AppUtil.getCategoryListRepository = GetCategoryListRepository()
@@ -47,7 +49,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object : DisposableSingleObserver<ResponseBody>(){
                     override fun onSuccess(t: ResponseBody) {
                         successMessage.value = "Topic token başarıyla oluşturuldu"
-                        println("Topic Token Data: ${t.source()}")
+                        topicToken.value = t.source().toString()
                     }
 
                     override fun onError(e: Throwable) {
@@ -55,5 +57,11 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                     }
                 })
         )
+    }
+
+    fun subscribeTopicFromFirebase(topic: String){
+        FirebaseMessaging.getInstance().subscribeToTopic(topic).addOnSuccessListener {
+            println("Başarıyla abone olundu")
+        }
     }
 }

@@ -104,9 +104,6 @@ class HomeFragment() : Fragment(), View.OnClickListener {
         if (Singleton.homeIsCreated){
             homePageNews = Singleton.homePageNews
             loadAllData(homePageNews)
-        } else {
-            val intent = requireActivity().intent
-            handleIntent(intent)
         }
 
         homeBinding.homeFragmentSwipeRefreshLayout.setOnRefreshListener {
@@ -115,6 +112,11 @@ class HomeFragment() : Fragment(), View.OnClickListener {
                 homeViewModel.getHomePageNews()
                 homeBinding.homeFragmentSwipeRefreshLayout.isRefreshing = false
             }, 2000)
+        }
+
+        if (!Singleton.fromNotif){
+            val intent = requireActivity().intent
+            handleIntent(intent)
         }
     }
 
@@ -180,14 +182,13 @@ class HomeFragment() : Fragment(), View.OnClickListener {
     private fun setNotificationProcess(newsId: String, type: String){
         Handler(Looper.getMainLooper()).postDelayed({
             if (Singleton.homeIsCreated){
+                Singleton.fromNotif = true
+
                 if (type.equals("1")){
                     navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(intArrayOf(newsId.toInt()), 0)
                     Navigation.findNavController(v).navigate(navDirections)
-                } else {
-                    val webIntent: Intent = Intent(Intent.ACTION_VIEW)
-                    webIntent.data = Uri.parse(newsId)
-                    v.context.startActivity(webIntent)
-                }
+                } else
+                    AppUtil.openWebUrl(newsId, v.context)
             } else
                 setNotificationProcess(newsId, type)
         }, 100)

@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_newsFragment_to_privacyAndTermsFragment"
             app:destination="@id/privacyAndTermsFragment" />
+        <action
+            android:id="@+id/action_newsFragment_self"
+            app:destination="@id/newsFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsByCategoryFragment"
@@ -74,6 +77,9 @@
         <argument
             android:name="postTitle"
             app:argType="string" />
+        <action
+            android:id="@+id/action_commentsFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"

@@ -57,6 +57,10 @@ class NewsByCategoryFragment : Fragment(), View.OnClickListener {
                 newsByCategoryViewModel.getNewsByTag(it, 0)
             }
 
+            Singleton.currentPage = "Category"
+            Singleton.currentPageV = v
+            Singleton.mContext = v.context
+
             newByCategoryBinding.newsByCategoryFragmentImgBack.setOnClickListener(this)
             newByCategoryBinding.newsByCategoryFragmentImgShare.setOnClickListener(this)
         }

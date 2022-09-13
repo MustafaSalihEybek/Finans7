@@ -1,21 +1,31 @@
 package com.finans7.util
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.widget.NestedScrollView
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
 import androidx.viewpager2.widget.ViewPager2
+import com.finans7.R
 import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.homepage.HomePageNews
 import com.finans7.model.postdetail.PostDetailModel
 
 class Singleton {
-    @SuppressLint("StaticFieldLeak")
     companion object{
         var currentIsHome: Boolean = false
+        var currentPage: String = ""
+        @SuppressLint("StaticFieldLeak")
+        lateinit var currentPageV: View
+        @SuppressLint("StaticFieldLeak")
+        lateinit var mContext: Context
 
         val BASE_URL: String = "https://www.finans7.com"
         val SERVICE_URL: String = "https://www.finans7.com/"
@@ -47,6 +57,7 @@ class Singleton {
 
         var themeMode: String = "Light"
         var homeIsCreated: Boolean = false
+        var fromNotif: Boolean = false
         var sliderCurrentPage: Int = 0
         var lastNewsCurrentPage: Int = 0
         var headlineNewsCurrentPage: Int = 0
@@ -79,6 +90,23 @@ class Singleton {
             else{
                 window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
             }
+        }
+
+        fun showAlertDialog(title: String, message: String, navDirections: NavDirections){
+            Handler(Looper.myLooper()!!).postDelayed({
+                val mAlert: AlertDialog.Builder = AlertDialog.Builder(mContext)
+                mAlert.setTitle(title)
+                mAlert.setIcon(R.mipmap.ic_launcher)
+                mAlert.setMessage(message)
+                mAlert.setCancelable(false)
+                mAlert.setPositiveButton("Yönlendir") { p0, p1 ->
+                    Navigation.findNavController(Singleton.currentPageV).navigate(navDirections)
+                }
+                mAlert.setNegativeButton("Kapat") { p0, p1 ->
+                    p0.dismiss()
+                }
+                mAlert.show()
+            }, 1000)
         }
     }
 }
