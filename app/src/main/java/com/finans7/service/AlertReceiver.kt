@@ -37,6 +37,7 @@ class AlertReceiver : BroadcastReceiver() {
             }
 
             Singleton.showAlertDialog("Yeni Haber", alertMessage, navDirections)
-        }
+        } else
+            AppUtil.openWebUrl(newsId, Singleton.mContext)
     }
 }
