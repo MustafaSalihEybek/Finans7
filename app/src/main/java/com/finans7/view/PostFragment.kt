@@ -170,7 +170,7 @@ class PostFragment(val postId: Int) : Fragment(), View.OnClickListener {
         postViewModel.commentFavoriteResponse.observe(viewLifecycleOwner, Observer {
             it?.let {
                 commentList = AppUtil.getEditedCommentList(commentList, selectedCommentData, it)
-                commentsAdapter.loadData(commentList)
+                commentsAdapter.loadData(commentList, false)
             }
         })
     }
@@ -193,7 +193,7 @@ class PostFragment(val postId: Int) : Fragment(), View.OnClickListener {
             postBinding.postFragmentTxtCommentMessage.visibility = View.VISIBLE
         }
 
-        commentsAdapter.loadData(commentList)
+        commentsAdapter.loadData(commentList, true)
         loadPostContent(postDetailModel)
         loadTagsData()
         setAllClickSettings()

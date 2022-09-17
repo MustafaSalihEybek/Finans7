@@ -38,8 +38,12 @@ class CommentsAdapter(var commentList: ArrayList<CommentModel>)  : RecyclerView.
 
     inner class CommentsHolder(var cI: CommentItemBinding) : RecyclerView.ViewHolder(cI.root)
 
-    fun loadData(comments: ArrayList<CommentModel>){
-        commentList.addAll(comments)
+    fun loadData(comments: ArrayList<CommentModel>, isLoad: Boolean){
+        if (isLoad)
+            commentList.addAll(comments)
+        else
+            commentList = comments
+
         notifyDataSetChanged()
     }
 

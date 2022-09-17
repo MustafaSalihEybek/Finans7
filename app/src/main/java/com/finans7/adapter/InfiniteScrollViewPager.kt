@@ -31,25 +31,38 @@ class InfiniteScrollViewPager : ViewPager {
     }
 
     override fun getCurrentItem(): Int {
-        if (adapter!!.count == 0) {
+        if (adapter == null)
             return super.getCurrentItem()
-        }
+        else if (adapter!!.count == 0)
+            return super.getCurrentItem()
+
         val position = super.getCurrentItem()
+
         return if (adapter is InfiniteScrollPagerAdapter) {
             val infAdapter: InfiniteScrollPagerAdapter? = adapter as InfiniteScrollPagerAdapter?
-            return (position % infAdapter!!.getRealCount());
+
+            if (infAdapter != null)
+                return (position % infAdapter.getRealCount())
+            else
+                return super.getCurrentItem()
         } else {
             super.getCurrentItem()
         }
     }
 
     private fun getOffsetAmount(): Int {
-        if (adapter!!.count == 0) {
+        if (adapter == null)
             return 0
-        }
+        else if (adapter!!.count == 0)
+            return 0
+
         return if (adapter is InfiniteScrollPagerAdapter) {
             val infAdapter: InfiniteScrollPagerAdapter? = adapter as InfiniteScrollPagerAdapter?
-            return infAdapter!!.getRealCount() * 100;
+
+            if (infAdapter != null)
+                return infAdapter.getRealCount() * 100
+            else
+                return 0
         } else {
             0
         }

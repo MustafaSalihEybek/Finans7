@@ -173,7 +173,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
                 rootComment = it
                 commentList = it.commentList
 
-                commentsAdapter.loadData(commentList)
+                commentsAdapter.loadData(commentList, commentsAdapter.itemCount == 0)
                 attachUpcomingCommentsOnScrollListener()
             }
         })
@@ -181,7 +181,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
         commentsViewModel.commentFavoriteResponse.observe(viewLifecycleOwner, Observer {
             it?.let {
                 commentList = AppUtil.getEditedCommentList(commentList, selectedCommentData, it)
-                commentsAdapter.loadData(commentList)
+                commentsAdapter.loadData(commentList, false)
             }
         })
 
@@ -243,7 +243,7 @@ class CommentsFragment : Fragment(), View.OnClickListener {
 
                 if (oneTimeLoadData){
                     commentsBinding.commentsFragmentRecyclerView.removeOnScrollListener(this)
-                    commentsViewModel.getCommentList(postId, commentsAdapter.itemCount, selectedShortingIn, AppUtil.getDeviceId(v.context))
+                    commentsViewModel.getCommentList(postId, if (commentsAdapter.itemCount > 15) commentsAdapter.itemCount else 0, selectedShortingIn, AppUtil.getDeviceId(v.context))
                     oneTimeLoadData = false
                 }
             }

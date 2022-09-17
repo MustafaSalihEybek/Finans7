@@ -260,9 +260,6 @@ class HomeFragment() : Fragment(), View.OnClickListener {
         homeBinding.homeFragmentViewPagerMainHeadline.adapter = infiniteScrollPagerAdapter
         homeBinding.homeFragmentViewPagerMainHeadline.isSaveEnabled = false
 
-        if (Singleton.homeIsCreated)
-            homeBinding.homeFragmentViewPagerMainHeadline.currentItem = Singleton.sliderCurrentPage
-
         homeBinding.homeFragmentViewPagerMainHeadline.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrolled(
                 position: Int,
@@ -278,8 +275,13 @@ class HomeFragment() : Fragment(), View.OnClickListener {
             override fun onPageScrollStateChanged(state: Int) {}
         })
 
+        if (Singleton.homeIsCreated){
+            homeBinding.homeFragmentViewPagerMainHeadline.currentItem = Singleton.sliderCurrentPage
+            realSliderPosition = Singleton.sliderCurrentPage
+        } else
+            realSliderPosition = 0
+
         initDotsLayout(imageUrlList.size)
-        realSliderPosition = 0
         transitionDots()
 
         newsImagesPagerAdapter.setOnNewsSliderOnItemClickListener(object : NewsImagesPagerAdapter.NewsSliderOnClickListener{
