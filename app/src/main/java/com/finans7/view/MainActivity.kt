@@ -1,16 +1,15 @@
 package com.finans7.view
 
-import android.app.Activity
 import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsetsController
-import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import com.finans7.R
 import com.finans7.util.Singleton
+import com.google.android.gms.ads.MobileAds
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var themeMode: String
@@ -48,5 +47,9 @@ class MainActivity : AppCompatActivity() {
                 windowInsetController?.isAppearanceLightStatusBars = true
             }
         }
+
+        MobileAds.initialize(
+            this
+        ) { }
     }
 }

@@ -1,6 +1,7 @@
 package com.finans7.view
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -28,8 +29,15 @@ import com.finans7.util.SharedPreferences
 import com.finans7.util.Singleton
 import com.finans7.util.show
 import com.finans7.viewmodel.PostViewModel
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 
 class PostFragment(val postId: Int) : Fragment(), View.OnClickListener {
+
+    private var mInterstitialAd: InterstitialAd? = null
+
     private lateinit var v: View
     private lateinit var postBinding: FragmentPostBinding
     private lateinit var postViewModel: PostViewModel
@@ -63,7 +71,23 @@ class PostFragment(val postId: Int) : Fragment(), View.OnClickListener {
         if (!Singleton.postDetailIsCreated)
             postViewModel.getPostDetail(postId, AppUtil.getDeviceId(v.context))
 
-        AppUtil.loadFooterFragment(R.id.post_fragment_footerFrameLayout, childFragmentManager, false)
+
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+       val highScore = sharedPref.getInt(getString(R.string.ad_last_request), 0)
+
+        var adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(v.context,"ca-app-pub-1061289666088981/6758085393", adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                mInterstitialAd = interstitialAd
+                interstitialAd.show(activity)
+            }
+        })
+
+        //AppUtil.loadFooterFragment(R.id.post_fragment_footerFrameLayout, childFragmentManager, false)
     }
 
     override fun onCreateView(

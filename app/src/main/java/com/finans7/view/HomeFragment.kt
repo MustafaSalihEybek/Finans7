@@ -187,7 +187,7 @@ class HomeFragment() : Fragment(), View.OnClickListener {
                 if (type.equals("1")){
                     navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(intArrayOf(newsId.toInt()), 0)
                     Navigation.findNavController(v).navigate(navDirections)
-                } else
+                } else if (type.equals("2"))
                     AppUtil.openWebUrl(newsId, v.context)
             } else
                 setNotificationProcess(newsId, type)

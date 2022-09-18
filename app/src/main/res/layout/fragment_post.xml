@@ -330,11 +330,11 @@
            android:id="@+id/post_fragment_recyclerViewComments"
            android:layout_height="wrap_content"/>
 
-       <FrameLayout
-           android:layout_width="match_parent"
-           android:layout_marginTop="25dp"
-           android:id="@+id/post_fragment_footerFrameLayout"
-           android:layout_height="wrap_content"/>
+<!--       <FrameLayout-->
+<!--           android:layout_width="match_parent"-->
+<!--           android:layout_marginTop="25dp"-->
+<!--           android:id="@+id/post_fragment_footerFrameLayout"-->
+<!--           android:layout_height="wrap_content"/>-->
 
    </LinearLayout>
 
