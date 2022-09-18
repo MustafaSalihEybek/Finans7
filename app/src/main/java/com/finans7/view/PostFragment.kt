@@ -20,8 +20,6 @@ import com.finans7.databinding.FragmentPostBinding
 import com.finans7.model.Tag
 import com.finans7.model.categorynews.PostListModel
 import com.finans7.model.comment.CommentModel
-import com.finans7.model.comment.RootComment
-import com.finans7.model.favorite.CommentFavoriteResponse
 import com.finans7.model.favorite.FavoritePostModel
 import com.finans7.model.postdetail.PostDetailModel
 import com.finans7.util.AppUtil
@@ -33,6 +31,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import java.util.*
 
 class PostFragment(val postId: Int) : Fragment(), View.OnClickListener {
 
@@ -73,21 +72,40 @@ class PostFragment(val postId: Int) : Fragment(), View.OnClickListener {
 
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-       val highScore = sharedPref.getInt(getString(R.string.ad_last_request), 0)
+       val count = sharedPref.getLong(getString(R.string.ad_last_request), 0)
+        var lastCount = getCurrentDate();
+        val diff: Long = lastCount - count
+        val seconds = diff / 1000
+        val minutes = seconds / 60
+        val hours = minutes / 60
 
-        var adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(v.context,"ca-app-pub-1061289666088981/6758085393", adRequest, object : InterstitialAdLoadCallback() {
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                mInterstitialAd = null
-            }
 
-            override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                mInterstitialAd = interstitialAd
-                interstitialAd.show(activity)
-            }
-        })
+        if (hours>5 || count <= 0){
+            var adRequest = AdRequest.Builder().build()
+            InterstitialAd.load(v.context,"ca-app-pub-1061289666088981/6758085393", adRequest, object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                    interstitialAd.show(activity)
+
+                    sharedPref.edit().putLong(getString(R.string.ad_last_request), lastCount).apply()
+                }
+            })
+        }
+
+
+
+
 
         //AppUtil.loadFooterFragment(R.id.post_fragment_footerFrameLayout, childFragmentManager, false)
+    }
+    fun getCurrentDate() : Long{
+        val date = Date(System.currentTimeMillis())
+        val millis = date.time
+        return millis
     }
 
     override fun onCreateView(
