@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id("androidx.navigation.safeargs.kotlin")
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -14,9 +15,9 @@ android {
         applicationId "com.finans7"
         minSdk 21
         targetSdk 32
-        versionCode 59
+        versionCode 67
         multiDexEnabled = true
-        versionName "6.0.14"
+        versionName "6.0.20"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -60,6 +61,8 @@ dependencies {
     implementation 'androidx.webkit:webkit:1.3.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    implementation 'androidx.work:work-runtime-ktx:2.7.0'
+
     //Okttp3
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
@@ -102,4 +105,14 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+
+    compile 'com.facebook.android:audience-network-sdk:6.+'
+
+
+    implementation 'com.google.android.play:core:1.8.2'
 }

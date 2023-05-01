@@ -134,16 +134,16 @@ object AppUtil {
     }
 
     fun shareWithSocialMedia(url: String, context: Context, socialPackage: String, socialUrl: String) {
-        if (checkAppInstall(socialPackage, context)){
-            shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.setPackage(socialPackage)
-            shareIntent.type = "text/plain"
-            shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            shareIntent.putExtra(Intent.EXTRA_TEXT, url)
-        } else{
+//        if (checkAppInstall(socialPackage, context)){
+//            shareIntent = Intent(Intent.ACTION_SEND)
+//            shareIntent.setPackage(socialPackage)
+//            shareIntent.type = "text/plain"
+//            shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//            shareIntent.putExtra(Intent.EXTRA_TEXT, url)
+//        } else{
             shareIntent = Intent(Intent.ACTION_VIEW)
             shareIntent.data = Uri.parse(socialUrl)
-        }
+//        }
 
         context.startActivity(shareIntent)
     }

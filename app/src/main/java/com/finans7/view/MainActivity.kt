@@ -31,7 +31,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
         Singleton.themeMode = themeMode
-        super.onCreate(savedInstanceState)
+//        super.onCreate(savedInstanceState)
+        try {
+            super.onCreate(null)
+        }catch (ex : InstantiationException){
+
+        }
+        catch (ex : RuntimeException){
+
+        }
+
         setContentView(R.layout.activity_main)
 
         Singleton.window = window

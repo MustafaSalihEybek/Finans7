@@ -59,6 +59,8 @@ class PostFragment(val postId: Int) : Fragment(), View.OnClickListener {
     private fun init(){
         sharedPreferences = SharedPreferences(v.context)
 
+
+
         postBinding.postFragmentRecyclerViewComments.setHasFixedSize(true)
         postBinding.postFragmentRecyclerViewComments.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
         commentsAdapter = CommentsAdapter(arrayListOf())
@@ -81,8 +83,10 @@ class PostFragment(val postId: Int) : Fragment(), View.OnClickListener {
 
 
         if (hours>5 || count <= 0){
+
+            sharedPref.edit().putLong(getString(R.string.ad_last_request), lastCount).apply()
             var adRequest = AdRequest.Builder().build()
-            InterstitialAd.load(v.context,"ca-app-pub-1061289666088981/6758085393", adRequest, object : InterstitialAdLoadCallback() {
+            InterstitialAd.load(v.context,"ca-app-pub-3968327090165222/4386036834", adRequest, object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     mInterstitialAd = null
                 }
@@ -91,7 +95,7 @@ class PostFragment(val postId: Int) : Fragment(), View.OnClickListener {
                     mInterstitialAd = interstitialAd
                     interstitialAd.show(activity)
 
-                    sharedPref.edit().putLong(getString(R.string.ad_last_request), lastCount).apply()
+
                 }
             })
         }

@@ -95,7 +95,10 @@ class CategoryFragment(val categories: List<CategoryModel>, val vV: View) : Bott
     private fun goToNewsByCategoryPage(categoryData: CategoryModel){
         Singleton.currentIsHome = false
 
-        navDirections = MainFragmentDirections.actionMainFragmentToNewsByCategoryFragment(categoryData, null)
-        Navigation.findNavController(vV).navigate(navDirections)
+            navDirections = MainFragmentDirections.actionMainFragmentToNewsByCategoryFragment(categoryData, null)
+            Navigation.findNavController(vV).navigate(navDirections)
+
+
+
     }
 }

@@ -1,5 +1,6 @@
 package com.finans7.view
 
+import android.content.Context
 import android.content.Intent
 import android.media.Image
 import android.net.Uri
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.lifecycle.Observer
@@ -29,7 +31,10 @@ import com.finans7.util.AppUtil
 import com.finans7.util.Singleton
 import com.finans7.util.show
 import com.finans7.viewmodel.HomeViewModel
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.messaging.RemoteMessage
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment() : Fragment(), View.OnClickListener {
     private lateinit var v: View
@@ -86,8 +91,72 @@ class HomeFragment() : Fragment(), View.OnClickListener {
         homeBinding.homeFragmentImgTrendingNewsLeft.setOnClickListener(this)
         homeBinding.homeFragmentImgMostReadNewsRight.setOnClickListener(this)
         homeBinding.homeFragmentImgMostReadNewsLeft.setOnClickListener(this)
+
+
+
+
+        fillAppFirstLoad();
+        reviewApp();
+
     }
 
+    fun fillAppFirstLoad(){
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val firstLoadTime = sharedPref.getLong(getString(R.string.app_first_load_time), 0)
+
+
+        if (firstLoadTime <= 0){
+            var lastCount = getCurrentDate();
+            sharedPref.edit().putLong(getString(R.string.app_first_load_time), lastCount).apply()
+        }
+
+    }
+    fun getCurrentDate() : Long{
+        val date = Date(System.currentTimeMillis())
+        val millis = date.time
+        return millis
+    }
+
+    fun reviewApp(){
+
+
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val firstLoadTime = sharedPref.getLong(getString(R.string.app_first_load_time), 0)
+        val isReview = sharedPref.getBoolean(getString(R.string.app_review_info), false);
+
+        var isTimeToShow = false;
+        var lastCount = getCurrentDate();
+        val diff: Long = lastCount - firstLoadTime
+        val seconds = diff / 1000
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        if (hours>=24){
+            isTimeToShow = true
+        }
+    if (!isReview && isTimeToShow){
+        val reviewManager = ReviewManagerFactory.create(requireContext())
+        val requestReviewFlow = reviewManager.requestReviewFlow()
+        requestReviewFlow.addOnCompleteListener { request ->
+            if (request.isSuccessful) {
+                try {
+
+                    val reviewInfo = request.result
+                    val flow = reviewManager.launchReviewFlow(requireActivity(), reviewInfo)
+                    flow.addOnCompleteListener {
+                        sharedPref.edit().putBoolean(getString(R.string.app_review_info), true).apply()
+                    }
+                }catch (ex : java.lang.IllegalStateException ){
+
+                }
+
+            } else {
+                //Herhangi bir hata alındığında çalışacak olan kod bloğu
+            }
+        }
+    }
+
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -185,8 +254,13 @@ class HomeFragment() : Fragment(), View.OnClickListener {
                 Singleton.fromNotif = true
 
                 if (type.equals("1")){
-                    navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(intArrayOf(newsId.toInt()), 0)
-                    Navigation.findNavController(v).navigate(navDirections)
+                    try {
+                        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(intArrayOf(newsId.toInt()), 0)
+                        Navigation.findNavController(v).navigate(navDirections)
+                    }catch (e: IllegalStateException){
+
+                    }
+
                 } else if (type.equals("2"))
                     AppUtil.openWebUrl(newsId, v.context)
             } else
@@ -456,7 +530,13 @@ class HomeFragment() : Fragment(), View.OnClickListener {
     }
 
     private fun goToNewsPage(newsList: List<PostListModel>, newsIn: Int){
-        navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(AppUtil.getPostIdList(newsList), newsIn)
-        Navigation.findNavController(v).navigate(navDirections)
+
+        try {
+            navDirections = MainFragmentDirections.actionMainFragmentToNewsFragment(AppUtil.getPostIdList(newsList), newsIn)
+            Navigation.findNavController(v).navigate(navDirections)
+        } catch (e: IllegalArgumentException){
+
+        }
+
     }
 }
